@@ -1,0 +1,36 @@
+{
+  "name": "kodicms/framework",
+  "description": "The official KodiCMS framework",
+  "homepage": "http://kodicms.com/",
+  "license": "MIT",
+  "keywords": ["laravel", "framework", "kodicms", "cmf"],
+  "support": {
+    "issues": "https://github.com/KodiCMS/framework/issues",
+    "forum": "https://gitter.im/KodiCMS/framework",
+    "source": "https://github.com/KodiCMS/framework"
+  },
+  "authors": [
+    {
+      "name": "Pavel Buchnev",
+      "email": "butschster@gmail.com",
+      "homepage": "https://github.com/butschster"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "KodiCMS\\Framework\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.0.0",
+    "laravel/framework": "5.3.*",
+    "nesbot/carbon": "~1.20"
+  },
+  "require-dev": {
+    "mockery/mockery": "~0.9.4",
+    "phpunit/phpunit": "~5.4"
+  }
+}
