@@ -1,13 +1,13 @@
 {
-  "name": "kodicms/framework",
-  "description": "The official KodiCMS framework",
-  "homepage": "http://kodicms.com/",
+  "name": "sleepingowl/framework",
+  "description": "The official SleepingOwl framework",
+  "homepage": "http://sleepingowl.com/",
   "license": "MIT",
-  "keywords": ["laravel", "framework", "kodicms", "cmf"],
+  "keywords": ["laravel", "framework", "sleepingowl", "cmf"],
   "support": {
-    "issues": "https://github.com/KodiCMS/framework/issues",
-    "forum": "https://gitter.im/KodiCMS/framework",
-    "source": "https://github.com/KodiCMS/framework"
+    "issues": "https://github.com/SleepingOwl/framework/issues",
+    "forum": "https://gitter.im/SleepingOwl/framework",
+    "source": "https://github.com/SleepingOwl/framework"
   },
   "authors": [
     {
@@ -21,13 +21,15 @@
       "src/helpers.php"
     ],
     "psr-4": {
-      "KodiCMS\\Framework\\": "src/"
+      "SleepingOwl\\Framework\\": "src/"
     }
   },
   "require": {
     "php": ">=7.0.0",
     "laravel/framework": "5.3.*",
-    "nesbot/carbon": "~1.20"
+    "nesbot/carbon": "~1.20",
+    "kodicomponents/navigation": "^0.5.3",
+    "kodicms/laravel-assets": "^0.3.5"
   },
   "require-dev": {
     "mockery/mockery": "~0.9.4",
