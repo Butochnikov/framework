@@ -18,10 +18,11 @@
   ],
   "autoload": {
     "files": [
-      "src/helpers.php"
+      "framework/helpers.php"
     ],
     "psr-4": {
-      "SleepingOwl\\Framework\\": "src/"
+      "SleepingOwl\\Framework\\": "framework/",
+      "SleepingOwl\\Api\\": "api/"
     }
   },
   "require": {
@@ -33,6 +34,7 @@
   },
   "require-dev": {
     "mockery/mockery": "~0.9.4",
-    "phpunit/phpunit": "~5.4"
+    "phpunit/phpunit": "~5.4",
+    "phpunit/php-code-coverage": "^4.0"
   }
 }

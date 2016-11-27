@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -51,7 +50,7 @@ class InstallCommand extends Command
      *
      * @return bool
      */
-    protected function alreadyInstalled()
+    protected function alreadyInstalled(): bool
     {
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
 

@@ -1,18 +1,11 @@
 <?php
-
 namespace SleepingOwl\Framework\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
-class SleepingOwlServiceProvider extends ServiceProvider
+class RouteServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        $this->registerConsoleCommands();
-        $this->initDefaultPackageConfig();
-    }
-
     /**
      * Perform post-registration booting of services.
      *
@@ -21,7 +14,6 @@ class SleepingOwlServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->defineRoutes($this->app['router']);
-        $this->defineResources();
     }
 
     /**
@@ -42,12 +34,18 @@ class SleepingOwlServiceProvider extends ServiceProvider
             $router->group([
                 'namespace' => 'SleepingOwl\Framework\Http\Controllers'],
                 function ($router) {
-                    require SLEEPINGOWL_PATH.'/Http/routes.php';
+                    require SLEEPINGOWL_PATH.'/routes/web.php';
+                }
+            );
+
+            $router->group([
+                'namespace' => 'SleepingOwl\Api\Http\Controllers'],
+                function ($router) {
+                    require SLEEPINGOWL_PATH.'/routes/api.php';
                 }
             );
         }
     }
-
 
     /**
      * Define the SleepingOwl routes middleware
@@ -73,46 +71,5 @@ class SleepingOwlServiceProvider extends ServiceProvider
     protected function defineRouteBindings(Router $router)
     {
 
-    }
-
-    /**
-     * Define the SleepingOwl Resources.
-     *
-     * @return void
-     */
-    protected function defineResources()
-    {
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/config/sleepingowl.php' => config_path('sleepingowl.php'),
-        ], 'config');
-
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/resources/lang' => resource_path('lang/vendor/sleepingowl'),
-            SLEEPINGOWL_PATH.'/resources/views' => resource_path('views/vendor/sleepingowl'),
-        ], 'resources');
-
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/public' => public_path('vendor/sleepingowl'),
-        ], 'public');
-
-        $this->loadMigrationsFrom(SLEEPINGOWL_PATH.'/database/migrations');
-        $this->loadTranslationsFrom(SLEEPINGOWL_PATH.'/resources/lang', 'sleepingowl');
-        $this->loadViewsFrom(SLEEPINGOWL_PATH.'/resources/views', 'sleepingowl');
-    }
-
-    protected function initDefaultPackageConfig()
-    {
-        $this->mergeConfigFrom(
-            SLEEPINGOWL_PATH.'/config/sleepingowl.php', 'sleepingowl'
-        );
-    }
-
-    protected function registerConsoleCommands()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \SleepingOwl\Framework\Console\Commands\InstallCommand::class,
-            ]);
-        }
     }
 }

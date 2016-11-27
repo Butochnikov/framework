@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Console\Installation;
 
 use SleepingOwl\Framework\Contracts\Console\Installator;

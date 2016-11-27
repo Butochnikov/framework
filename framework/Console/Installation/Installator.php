@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Console\Installation;
 
 abstract class Installator implements \SleepingOwl\Framework\Contracts\Console\Installator
