@@ -26,10 +26,10 @@ class SleepingOwl implements SleepingOwlContract
     /**
      * Create a new SleepingOwl framework instance.
      *
-     * @param \Illuminate\Foundation\Application $application
+     * @param \Illuminate\Contracts\Foundation\Application $application
      * @param string|null $basePath
      */
-    public function __construct(\Illuminate\Foundation\Application $application, string $basePath = null)
+    public function __construct(\Illuminate\Contracts\Foundation\Application $application, string $basePath = null)
     {
         $this->application = $application;
 
