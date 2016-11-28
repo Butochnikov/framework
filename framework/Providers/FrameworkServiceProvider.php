@@ -3,9 +3,8 @@ namespace SleepingOwl\Framework\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use SleepingOwl\Framework\SleepingOwl;
-use SleepingOwl\Framework\Themes\ThemesManager;
 
-class SleepingOwlFrameworkServiceProvider extends ServiceProvider
+class FrameworkServiceProvider extends ServiceProvider
 {
 
     /**
@@ -19,7 +18,6 @@ class SleepingOwlFrameworkServiceProvider extends ServiceProvider
 
         $this->registerConsoleCommands();
         $this->initDefaultPackageConfig();
-        $this->registerThemes();
     }
 
     /**
@@ -29,27 +27,8 @@ class SleepingOwlFrameworkServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton('sleepingowl.theme', function ($app) {
-            return $app['sleepingowl.themes']->theme();
-        });
-
         $this->defineResources();
     }
-
-
-    /**
-     * Register the filesystem manager.
-     *
-     * @return void
-     */
-    protected function registerThemes()
-    {
-        $this->app->singleton('sleepingowl.themes', function () {
-            return new ThemesManager($this->app);
-        });
-    }
-
-
 
     /**
      * Define the SleepingOwl Resources.

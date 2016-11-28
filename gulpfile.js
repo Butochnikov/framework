@@ -16,13 +16,8 @@ require('laravel-elixir-vue-2');
 elixir(mix => {
     mix
         .less('framework.less', 'public/admin-lte/framework.css')
-        .webpack('framework.js', 'public/admin-lte/framework.js', false, {
-            resolve: {
-                // add alias for application code directory
-                alias: {
-                    jquery: path.resolve(__dirname, './node_modules/jquery/dist/jquery'),
-                    moment: path.resolve(__dirname, './node_modules/moment/moment')
-                }
-            }
-        })
+        .webpack('framework.js', 'public/admin-lte/framework.js')
+        .copy('node_modules/bootstrap/fonts', 'public/admin-lte/fonts')
+        .copy('node_modules/font-awesome/fonts', 'public/admin-lte/fonts')
+        .copy('node_modules/open-sans-all/fonts', 'public/admin-lte/fonts');
 });

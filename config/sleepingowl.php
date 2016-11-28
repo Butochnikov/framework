@@ -19,7 +19,9 @@ return [
 
         'themes' => [
             'admin-lte' => [
-                'class' => \SleepingOwl\Framework\Themes\AdminLteTheme::class
+                'class' => \SleepingOwl\Framework\Themes\AdminLteTheme::class,
+                // 'logo' => '...', // Переопределение логотипа
+                // 'logo_small' => '...' // Переопределение компактной версии логотипа
             ]
         ]
     ],

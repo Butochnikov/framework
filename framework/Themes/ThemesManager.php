@@ -31,9 +31,9 @@ class ThemesManager implements ThemeFactory
     /**
      * Create a new filesystem manager instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
-    public function __construct($app)
+    public function __construct(\Illuminate\Contracts\Foundation\Application $app)
     {
         $this->app = $app;
         $this->resolver = new OptionsResolver();
@@ -46,7 +46,7 @@ class ThemesManager implements ThemeFactory
      *
      * @return ThemeContract
      */
-    public function theme()
+    public function theme(): ThemeContract
     {
         $name = $this->getDefaultTheme();
 
@@ -58,7 +58,7 @@ class ThemesManager implements ThemeFactory
      *
      * @return ThemeContract
      */
-    protected function get(string $name)
+    protected function get(string $name): ThemeContract
     {
         return isset($this->themes[$name]) ? $this->themes[$name] : $this->resolve($name);
     }
@@ -88,7 +88,8 @@ class ThemesManager implements ThemeFactory
     /**
      * Получаение настроек для темы
      *
-     * @param  string  $name
+     * @param  string $name
+     *
      * @return array
      */
     protected function getConfig($name)
@@ -114,7 +115,7 @@ class ThemesManager implements ThemeFactory
 
         $class = $config['class'];
 
-        if ( ! class_exists($class)) {
+        if (! class_exists($class)) {
             throw new InvalidArgumentException("Theme [{$name}] is not supported.");
         }
 
@@ -125,6 +126,8 @@ class ThemesManager implements ThemeFactory
      * Настройка валидатора для конфига подключаемой темы
      *
      * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
@@ -133,8 +136,9 @@ class ThemesManager implements ThemeFactory
     }
 
     /**
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param  string $method
+     * @param  array $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

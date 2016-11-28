@@ -1,27 +1,44 @@
 <?php
 namespace SleepingOwl\Framework\Contracts\Themes;
 
+use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Contracts\View\View as ViewContract;
+use SleepingOwl\Framework\Contracts\Template\Meta;
+use SleepingOwl\Framework\Contracts\Template\Navigation;
 
 interface Theme
 {
 
     /**
-     * Генерация заголовка
+     * Название темы
      *
      * @return string
      */
     public function name() : string;
 
     /**
-     * Настройки темы
+     * Получение HTML кода логотипа
      *
-     * @return array
+     * @return string
      */
-    public function getConfig(): array;
+    public function logo() : string;
 
     /**
-     * Получение заголовка
+     * Получение HTML кода компактной версии логотипа
+     *
+     * @return string
+     */
+    public function logoSmall() : string;
+
+    /**
+     * Настройки темы
+     *
+     * @return ConfigContract
+     */
+    public function getConfig(): ConfigContract;
+
+    /**
+     * Генерация заголовка
      *
      * @param string|null $title
      *
@@ -79,4 +96,20 @@ interface Theme
      * @return \Illuminate\Contracts\View\Factory|ViewContract
      */
     public function view($view, $data = [], $mergeData = []) : ViewContract;
+
+    /**
+     * Генерация html meta
+     *
+     * @param string $title
+     *
+     * @return string
+     */
+    public function renderMeta(string $title): string;
+
+    /**
+     * Генерация HTML кода навигации
+     *
+     * @return string
+     */
+    public function renderNavigation(): string;
 }

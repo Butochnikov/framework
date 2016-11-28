@@ -1,10 +1,14 @@
 <?php
 namespace SleepingOwl\Framework\Themes;
 
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View as ViewContract;
 use SleepingOwl\Framework\Contracts\SleepingOwl;
+use SleepingOwl\Framework\Contracts\Template\Meta as MetaContract;
+use SleepingOwl\Framework\Contracts\Template\Navigation as NavigationContract;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
 
 abstract class Theme implements ThemeContract
@@ -26,30 +30,53 @@ abstract class Theme implements ThemeContract
     protected $view;
 
     /**
-     * @var array
+     * @var ConfigContract
      */
     protected $config;
 
     /**
+     * @var MetaContract
+     */
+    protected $meta;
+
+    /**
+     * @var NavigationContract
+     */
+    protected $navigation;
+
+    /**
      * @param SleepingOwl $framework
+     * @param MetaContract $meta
+     * @param NavigationContract $navigation
      * @param UrlGenerator $generator
      * @param ViewFactory $factory
      * @param array $config
      */
-    public function __construct(SleepingOwl $framework, UrlGenerator $generator, ViewFactory $factory, array $config = null)
+    public function __construct(
+        SleepingOwl $framework,
+        MetaContract $meta,
+        NavigationContract $navigation,
+        UrlGenerator $generator,
+        ViewFactory $factory,
+        array $config = null
+    )
     {
         $this->framework = $framework;
         $this->url = $generator;
         $this->view = $factory;
-        $this->config = $config;
+        $this->meta = $meta;
+        $this->navigation = $navigation;
+        $this->config = new Repository($config);
+
+        $this->initialize();
     }
 
     /**
      * Настройки темы
      *
-     * @return array
+     * @return ConfigContract
      */
-    public function getConfig(): array
+    public function getConfig(): ConfigContract
     {
         return $this->config;
     }
@@ -104,7 +131,7 @@ abstract class Theme implements ThemeContract
             return $view->getPath();
         }
 
-        return $this->namespace().'::'.$this->name().'.'.$view;
+        return $this->namespace().'.'.$view;
     }
 
     /**
@@ -122,4 +149,42 @@ abstract class Theme implements ThemeContract
 
         return $this->view->make($this->viewPath($view), $data, $mergeData);
     }
+
+    /**
+     * Генерация html meta
+     *
+     * @param string $title
+     *
+     * @return string
+     */
+    public function renderMeta(string $title): string
+    {
+        return $this->meta
+            ->setFavicon($this->asset('favicon.ico'))
+            ->setTitle($this->title($title))
+            ->addMeta(['charset' => 'utf-8'], 'meta::charset')
+            ->addMeta(['content' => csrf_token(), 'name' => 'csrf-token'])
+            ->addMeta(['content' => 'width=device-width, initial-scale=1', 'name' => 'viewport'])
+            ->addMeta(['content' => 'IE=edge', 'http-equiv' => 'X-UA-Compatible'])
+            ->render();
+    }
+
+    /**
+     * Генерация HTML кода навигации
+     *
+     * @return string
+     */
+    public function renderNavigation(): string
+    {
+        return $this->navigation->render(
+            $this->viewPath('layouts.partials.navigation')
+        );
+    }
+
+    /**
+     * Инициализация компонентов шаблона
+     *
+     * @return void
+     */
+    abstract protected function initialize();
 }

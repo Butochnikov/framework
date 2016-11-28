@@ -9,7 +9,7 @@ interface Factory
      *
      * @return Theme
      */
-    public function theme();
+    public function theme(): Theme;
 
     /**
      * Получение ключа темы по умолчанию

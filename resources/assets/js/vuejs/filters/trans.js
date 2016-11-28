@@ -1,0 +1,1 @@
+Vue.filter('trans', (value) => i18next.t(value));

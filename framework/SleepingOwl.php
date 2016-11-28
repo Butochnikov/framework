@@ -2,7 +2,10 @@
 namespace SleepingOwl\Framework;
 
 use SleepingOwl\Framework\Contracts\SleepingOwl as SleepingOwlContract;
+use SleepingOwl\Framework\Providers\AssetsServiceProvider;
+use SleepingOwl\Framework\Providers\NavigationServiceProvider;
 use SleepingOwl\Framework\Providers\RouteServiceProvider;
+use SleepingOwl\Framework\Providers\ThemeServiceProvider;
 
 class SleepingOwl implements SleepingOwlContract
 {
@@ -52,7 +55,7 @@ class SleepingOwl implements SleepingOwlContract
     }
 
     /**
-     * Get the name of the framework.
+     * Получить название фреймворка
      *
      * @return string
      */
@@ -69,6 +72,9 @@ class SleepingOwl implements SleepingOwlContract
     protected function registerBaseServiceProviders()
     {
         $this->application->register(new RouteServiceProvider($this->application));
+        $this->application->register(new NavigationServiceProvider($this->application));
+        $this->application->register(new AssetsServiceProvider($this->application));
+        $this->application->register(new ThemeServiceProvider($this->application));
     }
 
     /**
@@ -116,7 +122,9 @@ class SleepingOwl implements SleepingOwlContract
         $aliases = [
             'sleepingowl' => ['SleepingOwl\Framework\Contracts\SleepingOwl', 'SleepingOwl\Framework\SleepingOwl'],
             'sleepingowl.themes' => ['SleepingOwl\Framework\Contracts\Themes\Factory', 'SleepingOwl\Framework\Themes\ThemesManager'],
-            'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme']
+            'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme'],
+            'sleepingowl.navigation' => ['SleepingOwl\Framework\Contracts\Template\Navigation', 'SleepingOwl\Framework\Template\Navigation'],
+            'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta']
         ];
 
         foreach ($aliases as $key => $aliases) {
