@@ -2,15 +2,24 @@
 namespace SleepingOwl\Framework\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SleepingOwl\Framework\SleepingOwl;
+use SleepingOwl\Framework\Themes\ThemesManager;
 
 class SleepingOwlFrameworkServiceProvider extends ServiceProvider
 {
+
+    /**
+     * @var SleepingOwl
+     */
+    protected $framework;
+
     public function register()
     {
-        $this->app->instance('sleepingowl', new \SleepingOwl\Framework\SleepingOwl($this->app, SLEEPINGOWL_PATH));
+        $this->app->instance('sleepingowl', $this->framework = new SleepingOwl($this->app, SLEEPINGOWL_PATH));
 
         $this->registerConsoleCommands();
         $this->initDefaultPackageConfig();
+        $this->registerThemes();
     }
 
     /**
@@ -20,8 +29,27 @@ class SleepingOwlFrameworkServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->singleton('sleepingowl.theme', function ($app) {
+            return $app['sleepingowl.themes']->theme();
+        });
+
         $this->defineResources();
     }
+
+
+    /**
+     * Register the filesystem manager.
+     *
+     * @return void
+     */
+    protected function registerThemes()
+    {
+        $this->app->singleton('sleepingowl.themes', function () {
+            return new ThemesManager($this->app);
+        });
+    }
+
+
 
     /**
      * Define the SleepingOwl Resources.

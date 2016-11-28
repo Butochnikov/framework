@@ -30,7 +30,8 @@
     "laravel/framework": "5.3.*",
     "nesbot/carbon": "~1.20",
     "kodicomponents/navigation": "^0.5.3",
-    "kodicms/laravel-assets": "^0.3.5"
+    "kodicms/laravel-assets": "^0.3.5",
+    "symfony/options-resolver": "^3.1"
   },
   "require-dev": {
     "mockery/mockery": "~0.9.4",

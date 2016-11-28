@@ -52,6 +52,16 @@ class SleepingOwl implements SleepingOwlContract
     }
 
     /**
+     * Get the name of the framework.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return 'SleepingOwl framework v.'.$this->version();
+    }
+
+    /**
      * Register all of the base service providers.
      *
      * @return void
@@ -105,6 +115,8 @@ class SleepingOwl implements SleepingOwlContract
     {
         $aliases = [
             'sleepingowl' => ['SleepingOwl\Framework\Contracts\SleepingOwl', 'SleepingOwl\Framework\SleepingOwl'],
+            'sleepingowl.themes' => ['SleepingOwl\Framework\Contracts\Themes\Factory', 'SleepingOwl\Framework\Themes\ThemesManager'],
+            'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme']
         ];
 
         foreach ($aliases as $key => $aliases) {

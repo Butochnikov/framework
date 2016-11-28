@@ -11,6 +11,13 @@ interface SleepingOwl
     public function version(): string;
 
     /**
+     * Get the name of the framework.
+     *
+     * @return string
+     */
+    public function name(): string;
+
+    /**
      * Get the base path of the SleepingOwl installation.
      *
      * @return string
