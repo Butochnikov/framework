@@ -14,7 +14,7 @@ class AdminLteTheme extends Theme
     {
         $this->meta
             ->addJs($this->name(), $this->asset('framework.js'), Meta::FRAMEWORK_SCRIPTS)
-            ->addCSs($this->name(), $this->asset('framework.css'));
+            ->addCss($this->name(), $this->asset('framework.css'));
     }
 
     /**

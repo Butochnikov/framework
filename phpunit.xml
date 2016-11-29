@@ -22,7 +22,10 @@
             <directory suffix=".php">./framework</directory>
             <directory suffix=".php">./api</directory>
             <exclude>
-
+                <directory>./resources</directory>
+                <file>./bootstrap/app.php</file>
+                <file>./framework/Http/Kernel.php</file>
+                <file>./framework/Exceptions/Handler.php</file>
             </exclude>
         </whitelist>
     </filter>

@@ -131,7 +131,7 @@ abstract class Theme implements ThemeContract
             return $view->getPath();
         }
 
-        return $this->namespace().'.'.$view;
+        return $this->namespace().$view;
     }
 
     /**

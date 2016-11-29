@@ -42,11 +42,10 @@ interface SleepingOwl
     /**
      * Добавление контекста в текущий запрос
      *
-     * @param string $context
+     * @param string|string[] ...$context
      *
-     * @return void
      */
-    public function setContext(string $context);
+    public function setContext(string ...$context);
 
     /**
      * Если не переданы аргументы - получение списка контекстов для текущего запроса

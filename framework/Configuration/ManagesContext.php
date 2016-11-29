@@ -14,14 +14,16 @@ trait ManagesContext
     /**
      * Добавление контекста в текущий запрос
      *
-     * @param string $context
+     * @param string|string[] ...$context
      *
      * @return void
      */
-    public function setContext(string $context)
+    public function setContext(string ...$context)
     {
-        if (! $this->context($context)) {
-            $this->context[] = $context;
+        foreach ($context as $name) {
+            if (! $this->context($name)) {
+                $this->context[] = $name;
+            }
         }
     }
 
@@ -34,10 +36,10 @@ trait ManagesContext
     public function context()
     {
         if (func_num_args() > 0) {
-            $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
+            $context = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
 
-            foreach ($patterns as $pattern) {
-                if (in_array($pattern, $this->context)) {
+            foreach ($context as $name) {
+                if (in_array($name, $this->context)) {
                     return true;
                 }
             }

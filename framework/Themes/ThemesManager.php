@@ -4,6 +4,7 @@ namespace SleepingOwl\Framework\Themes;
 use InvalidArgumentException;
 use SleepingOwl\Framework\Contracts\Themes\Factory as ThemeFactory;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
+use SleepingOwl\Framework\Exceptions\Themes\ThemeNotFound;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThemesManager implements ThemeFactory
@@ -101,20 +102,22 @@ class ThemesManager implements ThemeFactory
      * @param string $name
      *
      * @return ThemeContract
+     * @throws ThemeNotFound
      */
     protected function resolve(string $name): ThemeContract
     {
         $config = $this->getConfig($name);
-        $config = $this->resolver->resolve($config);
 
         if (is_null($config)) {
-            throw new InvalidArgumentException("Theme [{$name}] is not defined.");
+            throw new ThemeNotFound("Theme [{$name}] is not defined.");
         }
+
+        $config = $this->resolver->resolve($config);
 
         $class = $config['class'];
 
         if (! class_exists($class)) {
-            throw new InvalidArgumentException("Theme [{$name}] is not supported.");
+            throw new ThemeNotFound("Theme [{$name}] class not found");
         }
 
         return $this->app->make($class, ['config' => $config]);
