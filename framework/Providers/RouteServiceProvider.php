@@ -1,8 +1,8 @@
 <?php
 namespace SleepingOwl\Framework\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use SleepingOwl\Framework\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -13,7 +13,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->defineRoutes($this->app['router']);
+        $this->app->singleton('sleepingowl.router', function($app) {
+            return new \SleepingOwl\Framework\Routing\Router(
+                $this->app['router'],
+                $app['config']->get('sleepingowl.url_prefix', 'backend')
+            );
+        });
+
+        $this->defineRoutes($this->app['sleepingowl.router']);
     }
 
     /**
@@ -33,14 +40,14 @@ class RouteServiceProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             $router->group([
                 'namespace' => 'SleepingOwl\Framework\Http\Controllers'],
-                function ($router) {
+                function () use($router) {
                     require SLEEPINGOWL_PATH.'/routes/web.php';
                 }
             );
 
             $router->group([
                 'namespace' => 'SleepingOwl\Api\Http\Controllers'],
-                function ($router) {
+                function () use($router) {
                     require SLEEPINGOWL_PATH.'/routes/api.php';
                 }
             );
@@ -55,10 +62,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function defineRoutesMiddleware(Router $router)
     {
+        $router->middleware('context', \SleepingOwl\Framework\Http\Middleware\Context::class);
         $router->middleware('backend.auth', \SleepingOwl\Framework\Http\Middleware\Authenticate::class);
 
         $router->middlewareGroup('backend', [
-            'web', 'backend.auth'
+            'web', 'context'
         ]);
     }
 

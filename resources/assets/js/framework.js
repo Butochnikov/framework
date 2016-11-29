@@ -15,7 +15,7 @@ const app = new Vue({
 });
 
 $(function () {
-    Window.Framework.Controllers.dispatch(
+    window.Framework.Controllers.dispatch(
         $('body:first').data('route')
     )
 })

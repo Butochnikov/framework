@@ -37,18 +37,20 @@ class FrameworkServiceProvider extends ServiceProvider
      */
     protected function defineResources()
     {
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/config/sleepingowl.php' => config_path('sleepingowl.php'),
-        ], 'config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                SLEEPINGOWL_PATH.'/config/sleepingowl.php' => config_path('sleepingowl.php'),
+            ], 'sleepingowl-config');
 
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/resources/lang' => resource_path('lang/vendor/sleepingowl'),
-            SLEEPINGOWL_PATH.'/resources/views' => resource_path('views/vendor/sleepingowl'),
-        ], 'resources');
+            $this->publishes([
+                SLEEPINGOWL_PATH.'/resources/lang' => resource_path('lang/vendor/sleepingowl'),
+                SLEEPINGOWL_PATH.'/resources/views' => resource_path('views/vendor/sleepingowl'),
+            ], 'sleepingowl-resources');
 
-        $this->publishes([
-            SLEEPINGOWL_PATH.'/public' => public_path('vendor/sleepingowl'),
-        ], 'public');
+            $this->publishes([
+                SLEEPINGOWL_PATH.'/public' => public_path('vendor/sleepingowl'),
+            ], 'sleepingowl-asset');
+        }
 
         $this->loadMigrationsFrom(SLEEPINGOWL_PATH.'/database/migrations');
         $this->loadTranslationsFrom(SLEEPINGOWL_PATH.'/resources/lang', 'sleepingowl');

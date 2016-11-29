@@ -4,6 +4,13 @@ namespace SleepingOwl\Framework\Contracts;
 interface SleepingOwl
 {
     /**
+     * The SleepingOwl contexts.
+     */
+    const CTX_BACKEND = 'backend';
+    const CTX_FRONTEND = 'frontend';
+    const CTX_API = 'api';
+
+    /**
      * Get the version number of the framework.
      *
      * @return string
@@ -31,4 +38,21 @@ interface SleepingOwl
      * @return $this
      */
     public function setBasePath(string $basePath);
+
+    /**
+     * Добавление контекста в текущий запрос
+     *
+     * @param string $context
+     *
+     * @return void
+     */
+    public function setContext(string $context);
+
+    /**
+     * Если не переданы аргументы - получение списка контекстов для текущего запроса
+     * При передачи аргументов, то проверка на наличие контекста
+     *
+     * @return bool|array
+     */
+    public function context();
 }

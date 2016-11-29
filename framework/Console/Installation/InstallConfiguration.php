@@ -8,7 +8,7 @@ class InstallConfiguration implements Installator
 
     public function showInfo()
     {
-        $this->command->line('Updating Configuration Values: <info>✔</info>');
+        // TODO: Implement install() method.
     }
 
     /**

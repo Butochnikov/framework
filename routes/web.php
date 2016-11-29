@@ -1,5 +1,12 @@
 <?php
 
-$router->group(['middleware' => 'backend', 'prefix' => config('sleepingowl.url_prefix')], function ($router) {
+$router->get('framework/scripts', 'AppController@settings');
 
+$router->backendGroup([], function ($router) {
+    $router->get('/', function(\Illuminate\Http\Request $request) {
+        return themeView('layouts.backend', [
+            'title' => 'Test title',
+            'route' => 'test'
+        ]);
+    });
 });

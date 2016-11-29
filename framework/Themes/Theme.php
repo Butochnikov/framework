@@ -166,6 +166,7 @@ abstract class Theme implements ThemeContract
             ->addMeta(['content' => csrf_token(), 'name' => 'csrf-token'])
             ->addMeta(['content' => 'width=device-width, initial-scale=1', 'name' => 'viewport'])
             ->addMeta(['content' => 'IE=edge', 'http-equiv' => 'X-UA-Compatible'])
+            ->addJs(MetaContract::FRAMEWORK_SCRIPTS, asset('framework/scripts'))
             ->render();
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace SleepingOwl\Framework;
 
+use Illuminate\Contracts\Foundation\Application;
 use SleepingOwl\Framework\Contracts\SleepingOwl as SleepingOwlContract;
 use SleepingOwl\Framework\Providers\AssetsServiceProvider;
 use SleepingOwl\Framework\Providers\NavigationServiceProvider;
@@ -9,6 +10,8 @@ use SleepingOwl\Framework\Providers\ThemeServiceProvider;
 
 class SleepingOwl implements SleepingOwlContract
 {
+    use Configuration\ManagesContext;
+
     /**
      * The SleepingOwl version.
      */
@@ -29,10 +32,10 @@ class SleepingOwl implements SleepingOwlContract
     /**
      * Create a new SleepingOwl framework instance.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $application
+     * @param Application $application
      * @param string|null $basePath
      */
-    public function __construct(\Illuminate\Contracts\Foundation\Application $application, string $basePath = null)
+    public function __construct(Application $application, string $basePath = null)
     {
         $this->application = $application;
 
@@ -124,7 +127,8 @@ class SleepingOwl implements SleepingOwlContract
             'sleepingowl.themes' => ['SleepingOwl\Framework\Contracts\Themes\Factory', 'SleepingOwl\Framework\Themes\ThemesManager'],
             'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme'],
             'sleepingowl.navigation' => ['SleepingOwl\Framework\Contracts\Template\Navigation', 'SleepingOwl\Framework\Template\Navigation'],
-            'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta']
+            'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta'],
+            'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router']
         ];
 
         foreach ($aliases as $key => $aliases) {

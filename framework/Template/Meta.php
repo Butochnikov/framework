@@ -7,5 +7,4 @@ use SleepingOwl\Framework\Contracts\Template\Meta as MetaContract;
 
 class Meta extends BaseMeta implements MetaContract
 {
-
 }

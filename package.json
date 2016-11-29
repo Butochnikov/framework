@@ -23,9 +23,9 @@
     "sweetalert2": "^4.1.0",
     "urijs": "^1.17.0",
     "vue": "^2.0.1",
-    "vue-resource": "^1.0.3"
+    "vue-resource": "^1.0.3",
+    "open-sans-all": "^0.1.0"
   },
   "dependencies": {
-    "open-sans-all": "^0.1.0"
   }
 }

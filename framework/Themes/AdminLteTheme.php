@@ -1,6 +1,8 @@
 <?php
 namespace SleepingOwl\Framework\Themes;
 
+use SleepingOwl\Framework\Contracts\Template\Meta;
+
 class AdminLteTheme extends Theme
 {
     /**
@@ -11,12 +13,8 @@ class AdminLteTheme extends Theme
     protected function initialize()
     {
         $this->meta
-            ->addJs('admin-scripts', asset('admin.scripts'))
-            ->assets()
-            ->packageManager()
-            ->add($this->name())
-            ->js(null, $this->asset('js/framework.js'), ['admin-scripts'])
-            ->css(null, $this->asset('css/framework.css'));
+            ->addJs($this->name(), $this->asset('framework.js'), Meta::FRAMEWORK_SCRIPTS)
+            ->addCSs($this->name(), $this->asset('framework.css'));
     }
 
     /**

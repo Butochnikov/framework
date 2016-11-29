@@ -13,7 +13,7 @@ i18next.init({
     ns: 'core',
     nsSeparator: '::',
     resources: {
-        [window.settings.locale]: window.Framework.Settings.trans
+        [window.Framework.Settings.locale]: window.Framework.Settings.trans
     }
 });
 

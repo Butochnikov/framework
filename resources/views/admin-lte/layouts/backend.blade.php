@@ -1,29 +1,31 @@
-@extends(themeView('layouts.app'))
+@extends(theme()->viewPath('layouts.app'))
 
 @section('content')
-    <div class="wrapper">
-        <<header class="main-header">
-            @include(themeView('layouts.partials.header'))
-        </header>
+    @include(theme()->viewPath('layouts.partials.header'))
+    @include(theme()->viewPath('layouts.partials.sidebar'))
 
-        <aside class="main-sidebar">
-            @include(themeView('layouts.partials.sidebar'))
-        </aside>
-
-        <div class="content-wrapper">.
-            @if(isset($title))
-            <div class="content-header">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        @if(isset($title))
+            <section class="content-header">
                 <h1>
                     {{{ $title }}}
                 </h1>
-            </div>
-            @endif
+            </section>
+        @endif
 
-            <div class="content body">
-                @yield('block.content.header')
-                {!! $content or null !!}
-                @yield('block.content.footer')
-            </div>
-        </div>
+        <!-- Main content -->
+        <section class="content">
+
+            @yield('block.content.header')
+            {!! $content or null !!}
+            @yield('block.content.footer')
+
+        </section>
+        <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+
+    @include(theme()->viewPath('layouts.partials.footer'))
+    @include(theme()->viewPath('layouts.partials.control-sidebar'))
 @stop

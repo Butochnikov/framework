@@ -1,7 +1,7 @@
 <?php
 
 if (! defined('SLEEPINGOWL_PATH')) {
-    define('SLEEPINGOWL_PATH', realpath(__DIR__.'/../'));
+    define('SLEEPINGOWL_PATH', realpath(__DIR__));
 }
 
 if (! function_exists('framework')) {
@@ -33,15 +33,15 @@ if (! function_exists('theme')) {
 if (! function_exists('themeView')) {
 
     /**
-     * Получение пути до view шаблона для текущей темы
-     *
      * @param string $view
+     * @param array $data
+     * @param array $mergeData
      *
-     * @return string
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    function themeView(string $view): string
+    function themeView(string $view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View
     {
-        return theme()->viewPath($view);
+        return theme()->view($view, $data, $mergeData);
     }
 }
 
