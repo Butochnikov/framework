@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SleepingOwlAdmin/framework.svg?branch=master)](https://travis-ci.org/SleepingOwlAdmin/framework)
+
 # SleepingOwl Framework built on Laravel
 
 ## Установка
