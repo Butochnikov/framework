@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Contracts\Routing;
 
 use Closure;

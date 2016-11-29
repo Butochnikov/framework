@@ -3,7 +3,6 @@ namespace SleepingOwl\Framework\Themes;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigContract;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View as ViewContract;
 use SleepingOwl\Framework\Contracts\SleepingOwl;
@@ -18,11 +17,6 @@ abstract class Theme implements ThemeContract
      * @var SleepingOwl
      */
     protected $framework;
-
-    /**
-     * @var UrlGenerator
-     */
-    protected $url;
 
     /**
      * @var ViewFactory
@@ -48,7 +42,6 @@ abstract class Theme implements ThemeContract
      * @param SleepingOwl $framework
      * @param MetaContract $meta
      * @param NavigationContract $navigation
-     * @param UrlGenerator $generator
      * @param ViewFactory $factory
      * @param array $config
      */
@@ -56,19 +49,15 @@ abstract class Theme implements ThemeContract
         SleepingOwl $framework,
         MetaContract $meta,
         NavigationContract $navigation,
-        UrlGenerator $generator,
         ViewFactory $factory,
         array $config = null
     )
     {
         $this->framework = $framework;
-        $this->url = $generator;
         $this->view = $factory;
         $this->meta = $meta;
         $this->navigation = $navigation;
         $this->config = new Repository($config);
-
-        $this->initialize();
     }
 
     /**
@@ -115,7 +104,7 @@ abstract class Theme implements ThemeContract
      */
     public function asset(string $path, bool $secure = null): string
     {
-        return $this->url->asset($this->assetPath($path), $secure);
+        return backend_url()->asset($path, $secure);
     }
 
     /**
@@ -153,12 +142,15 @@ abstract class Theme implements ThemeContract
     /**
      * Генерация html meta
      *
-     * @param string $title
+     * @param string|null $title
      *
      * @return string
      */
-    public function renderMeta(string $title): string
+    public function renderMeta(string $title = null): string
     {
+        // TODO назвать метод более адекватно
+        $this->initialize();
+
         return $this->meta
             ->setFavicon($this->asset('favicon.ico'))
             ->setTitle($this->title($title))

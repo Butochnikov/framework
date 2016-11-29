@@ -1,6 +1,8 @@
 <?php
 namespace SleepingOwl\Framework\Contracts;
 
+use Illuminate\Config\Repository as ConfigRepository;
+
 interface SleepingOwl
 {
     /**
@@ -23,6 +25,13 @@ interface SleepingOwl
      * @return string
      */
     public function name(): string;
+
+    /**
+     * Получение настроек
+     *
+     * @return ConfigRepository
+     */
+    public function config(): ConfigRepository;
 
     /**
      * Get the base path of the SleepingOwl installation.

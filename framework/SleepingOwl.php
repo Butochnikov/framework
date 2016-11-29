@@ -1,16 +1,14 @@
 <?php
 namespace SleepingOwl\Framework;
 
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
 use SleepingOwl\Framework\Contracts\SleepingOwl as SleepingOwlContract;
-use SleepingOwl\Framework\Providers\AssetsServiceProvider;
-use SleepingOwl\Framework\Providers\NavigationServiceProvider;
-use SleepingOwl\Framework\Providers\RouteServiceProvider;
-use SleepingOwl\Framework\Providers\ThemeServiceProvider;
 
 class SleepingOwl implements SleepingOwlContract
 {
-    use Configuration\ManagesContext;
+    use Configuration\ManagesContext,
+        Configuration\ManagesAuthOptions;
 
     /**
      * The SleepingOwl version.
@@ -30,6 +28,11 @@ class SleepingOwl implements SleepingOwlContract
     protected $basePath;
 
     /**
+     * @var ConfigRepository
+     */
+    protected $config;
+
+    /**
      * Create a new SleepingOwl framework instance.
      *
      * @param Application $application
@@ -38,6 +41,9 @@ class SleepingOwl implements SleepingOwlContract
     public function __construct(Application $application, string $basePath = null)
     {
         $this->application = $application;
+        $this->config = new ConfigRepository(
+            $this->application['config']->get('sleepingowl', [])
+        );
 
         $this->registerBaseServiceProviders();
         $this->registerCoreContainerAliases();
@@ -68,16 +74,34 @@ class SleepingOwl implements SleepingOwlContract
     }
 
     /**
+     * Получение настроек
+     *
+     * @return ConfigRepository
+     */
+    public function config(): ConfigRepository
+    {
+        return $this->config;
+    }
+
+
+    /**
      * Register all of the base service providers.
      *
      * @return void
      */
     protected function registerBaseServiceProviders()
     {
-        $this->application->register(new RouteServiceProvider($this->application));
-        $this->application->register(new NavigationServiceProvider($this->application));
-        $this->application->register(new AssetsServiceProvider($this->application));
-        $this->application->register(new ThemeServiceProvider($this->application));
+        $providers = [
+            \SleepingOwl\Framework\Providers\NavigationServiceProvider::class,
+            \SleepingOwl\Framework\Providers\AssetsServiceProvider::class,
+            \SleepingOwl\Framework\Providers\ThemeServiceProvider::class,
+            \SleepingOwl\Framework\Providers\AuthServiceProvider::class,
+            \SleepingOwl\Framework\Providers\RouteServiceProvider::class,
+        ];
+
+        foreach ($providers as $provider) {
+            $this->application->register(new $provider($this->application));
+        }
     }
 
     /**
@@ -128,7 +152,8 @@ class SleepingOwl implements SleepingOwlContract
             'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme'],
             'sleepingowl.navigation' => ['SleepingOwl\Framework\Contracts\Template\Navigation', 'SleepingOwl\Framework\Template\Navigation'],
             'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta'],
-            'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router']
+            'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router'],
+            'sleepingowl.url' => ['SleepingOwl\Framework\Routing\UrlGenerator']
         ];
 
         foreach ($aliases as $key => $aliases) {
@@ -136,5 +161,13 @@ class SleepingOwl implements SleepingOwlContract
                 $this->application->alias($key, $alias);
             }
         }
+    }
+
+    /**
+     * @param Repository $config
+     */
+    public function setConfig(Repository $config)
+    {
+        $this->config = $config;
     }
 }

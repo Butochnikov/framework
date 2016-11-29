@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Http\Controllers;
 
 use Illuminate\Http\Response;

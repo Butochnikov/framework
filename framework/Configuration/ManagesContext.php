@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Configuration;
 
 trait ManagesContext

@@ -113,7 +113,6 @@ class ThemesManager implements ThemeFactory
         }
 
         $config = $this->resolver->resolve($config);
-
         $class = $config['class'];
 
         if (! class_exists($class)) {

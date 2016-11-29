@@ -1,6 +1,8 @@
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
-    <h3 class="control-sidebar-heading">Recent Activity</h3>
+    <div class="control-sidebar__content">
+        <h3 class="control-sidebar__heading">Recent Activity</h3>
+    </div>
 </aside>
 <!-- /.control-sidebar -->
 

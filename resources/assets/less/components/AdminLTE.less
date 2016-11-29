@@ -27,6 +27,7 @@
 @import "@{path}modal";
 @import "@{path}miscellaneous";
 @import "@{path}print";
+@import "@{path}header";
 
 .skin-blue {
   //Navbar
@@ -76,4 +77,28 @@
 
 .skin-blue.layout-top-nav .main-header > .logo {
   .logo-variant(@light-blue);
+}
+
+.logo-lg {
+  padding: 10px;
+
+  svg {
+    float: left;
+    height: 30px;
+  }
+
+  span {
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    float: left;
+  }
+}
+
+.logo-mini {
+  padding-top: 7px;
+
+  svg {
+    height: 35px;
+  }
 }

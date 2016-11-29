@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Routing;
 
 use Closure;
@@ -50,7 +49,15 @@ class Router implements RouterContract
      */
     public function backendGroup(array $attributes, Closure $callback)
     {
-        $attributes['middleware'] = 'backend';
+        if (isset($attributes['middleware'])) {
+            $attributes['middleware'] = (array) $attributes['middleware'];
+            if (! in_array('backend', $attributes['middleware'])) {
+                $attributes['middleware'][] = 'backend';
+            }
+        } else {
+            $attributes['middleware'] = 'backend';
+        }
+
         $attributes['prefix'] = $this->urlPrefix;
 
         $this->router->group($attributes, $callback);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ trans()->getLocale() }}">
     <head>
-        {!! theme()->renderMeta( $title ?: null ) !!}
+        {!! theme()->renderMeta( isset($title) ? $title : null ) !!}
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -15,13 +15,9 @@
 
     <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
     <!-- the fixed layout is not compatible with sidebar-mini -->
-    <body class="skin-blue sidebar-mini" data-route="{{ $route ?: null }}">
+    <body class="skin-blue sidebar-mini" data-route="{{ $route or null }}">
 
-        <!-- Site wrapper -->
-        <div class="wrapper">
-            @yield('content')
-        </div>
-        <!-- ./wrapper -->
+        @yield('content')
 
         @stack('footer-scripts')
     </body>

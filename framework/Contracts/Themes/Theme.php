@@ -100,11 +100,11 @@ interface Theme
     /**
      * Генерация html meta
      *
-     * @param string $title
+     * @param string|null $title
      *
      * @return string
      */
-    public function renderMeta(string $title): string;
+    public function renderMeta(string $title = null): string;
 
     /**
      * Генерация HTML кода навигации

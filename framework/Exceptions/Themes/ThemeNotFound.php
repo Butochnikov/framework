@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Exceptions\Themes;
 
 use Exception;

@@ -1,6 +1,8 @@
 @extends(theme()->viewPath('layouts.app'))
 
 @section('content')
+<!-- Site wrapper -->
+<div class="wrapper">
     @include(theme()->viewPath('layouts.partials.header'))
     @include(theme()->viewPath('layouts.partials.sidebar'))
 
@@ -28,4 +30,6 @@
 
     @include(theme()->viewPath('layouts.partials.footer'))
     @include(theme()->viewPath('layouts.partials.control-sidebar'))
+</div>
+<!-- ./wrapper -->
 @stop

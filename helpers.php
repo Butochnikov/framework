@@ -1,5 +1,7 @@
 <?php
 
+use SleepingOwl\Framework\Routing\UrlGenerator;
+
 if (! defined('SLEEPINGOWL_PATH')) {
     define('SLEEPINGOWL_PATH', realpath(__DIR__));
 }
@@ -14,6 +16,25 @@ if (! function_exists('framework')) {
     function framework(): SleepingOwl\Framework\Contracts\SleepingOwl
     {
         return app(SleepingOwl\Framework\Contracts\SleepingOwl::class);
+    }
+}
+
+if (! function_exists('backend_url')) {
+
+    /**
+     * @param string|null $path
+     * @param array $parameters
+     * @param bool|null $secure
+     *
+     * @return UrlGenerator|string
+     */
+    function backend_url(string $path = null, array $parameters = [], bool $secure = null)
+    {
+        if (is_null($path)) {
+            return app(UrlGenerator::class);
+        }
+
+        return app(UrlGenerator::class)->to($path, $parameters, $secure);
     }
 }
 

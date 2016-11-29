@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Http\Middleware;
 
 use Closure;
