@@ -11,8 +11,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'SleepingOwl\Framework\Providers\Events\SomeEvent' => [
-            'SleepingOwl\Framework\Providers\Listeners\SomeListener',
+        'Illuminate\Console\Events\ArtisanStarting' => [
+            'SleepingOwl\Framework\Listeners\Console\ChangeApplicationVersion',
         ],
     ];
 
