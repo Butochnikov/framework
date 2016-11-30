@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/SleepingOwlAdmin/framework.svg?branch=master)](https://travis-ci.org/SleepingOwlAdmin/framework)
 [![Latest Stable Version](https://poser.pugx.org/sleeping-owl/admin/v/unstable.svg)](https://packagist.org/packages/laravelrus/sleepingowl)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SleepingOwlAdmin/framework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SleepingOwlAdmin/framework/?branch=master)
 
 # SleepingOwl Framework built on Laravel
 
