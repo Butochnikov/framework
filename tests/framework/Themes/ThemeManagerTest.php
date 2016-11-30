@@ -23,7 +23,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
                     'default' => 'test',
                     'themes' => [
                         'test' => [
-                            'class' => TestTheme::class
+                            'class' => TestThemeTestManager::class
                         ]
                     ]
                 ]
@@ -62,7 +62,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
     public function testResolvingThemeObject()
     {
         $manager = new ThemesManager($this->getApplication());
-        $this->assertInstanceOf(TestTheme::class, $manager->theme());
+        $this->assertInstanceOf(TestThemeTestManager::class, $manager->theme());
     }
 
     public function testCallingThemeMethods()
@@ -134,7 +134,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
     }
 }
 
-class TestTheme implements \SleepingOwl\Framework\Contracts\Themes\Theme
+class TestThemeTestManager implements \SleepingOwl\Framework\Contracts\Themes\Theme
 {
     public function name(): string
     {

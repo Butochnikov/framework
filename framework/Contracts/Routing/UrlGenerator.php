@@ -12,12 +12,4 @@ interface UrlGenerator extends BaseUrlGeneratorContract
      * @return string
      */
     public function prefix(): string;
-
-    /**
-     * Указание текущей темы для генерации правильных путей до asset
-     *
-     * @param ThemeContract $theme
-     * @return void
-     */
-    public function setTheme(ThemeContract $theme);
 }

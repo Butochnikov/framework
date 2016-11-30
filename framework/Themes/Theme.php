@@ -5,11 +5,11 @@ use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View as ViewContract;
+use KodiComponents\Support\Contracts\Initializable;
 use SleepingOwl\Framework\Contracts\SleepingOwl;
 use SleepingOwl\Framework\Contracts\Template\Meta as MetaContract;
 use SleepingOwl\Framework\Contracts\Template\Navigation as NavigationContract;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
-use SleepingOwl\Framework\Routing\UrlGenerator;
 
 abstract class Theme implements ThemeContract
 {
@@ -149,6 +149,10 @@ abstract class Theme implements ThemeContract
      */
     public function renderMeta(string $title = null): string
     {
+        if ($this instanceof Initializable) {
+            $this->initialize();
+        }
+
         return $this->meta
             ->setFavicon($this->asset('favicon.ico'))
             ->setTitle($this->title($title))

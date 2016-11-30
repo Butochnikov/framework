@@ -6,7 +6,7 @@ use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator as BaseUrlGenerator;
 use SleepingOwl\Framework\Contracts\Routing\Router as RouterContract;
 use SleepingOwl\Framework\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
-use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
+use SleepingOwl\Framework\Contracts\Themes\Factory as ThemeFactory;
 
 class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
 {
@@ -16,30 +16,21 @@ class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
     protected $router;
 
     /**
-     * @var ThemeContract
+     * @var ThemeFactory
      */
-    protected $theme;
+    private $themeFactory;
 
     /**
      * @param RouteCollection $routes
      * @param RouterContract $router
      * @param Request $request
+     * @param ThemeFactory $factory
      */
-    public function __construct(RouteCollection $routes, RouterContract $router, Request $request)
+    public function __construct(RouteCollection $routes, RouterContract $router, Request $request, ThemeFactory $factory)
     {
         parent::__construct($routes, $request);
         $this->router = $router;
-    }
-
-    /**
-     * Указание текущей темы для генерации правильных путей до asset
-     *
-     * @param ThemeContract $theme
-     * @return void
-     */
-    public function setTheme(ThemeContract $theme)
-    {
-        $this->theme = $theme;
+        $this->themeFactory = $factory;
     }
 
     /**
@@ -62,7 +53,7 @@ class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
         }
 
         return parent::asset(
-            $this->theme->assetPath($path),
+            $this->themeFactory->assetPath($path),
             $secure
         );
     }
@@ -84,7 +75,7 @@ class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
     {
         return parent::assetFrom(
             $root,
-            $this->theme->assetPath($path),
+            $this->themeFactory->assetPath($path),
             $secure
         );
     }
@@ -103,8 +94,18 @@ class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
             return $path;
         }
 
-        $path = $this->prefix().'/'.$path;
+        $path = $this->prependUrlPrefix($path);
 
         return parent::to($path, $extra, $secure);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function prependUrlPrefix(string $path): string
+    {
+        return $this->prefix().'/'.ltrim($path, '/');
     }
 }

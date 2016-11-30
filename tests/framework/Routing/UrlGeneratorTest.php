@@ -18,14 +18,26 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
         $url = new SleepingOwl\Framework\Routing\UrlGenerator(
             $routes = new Illuminate\Routing\RouteCollection(),
             $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/hello/world', 'GET', [], [], [])
+            $request = Illuminate\Http\Request::create('http://www.foo.com/hello/world', 'GET', [], [], []),
+            new \SleepingOwl\Framework\Themes\ThemesManager($app = new \Illuminate\Foundation\Application())
         );
+
+        $app['config'] = new \Illuminate\Config\Repository([
+            'sleepingowl' => [
+                'theme' => [
+                    'default' => 'test',
+                    'themes' => [
+                        'test' => [
+                            'class' => TestUrlGeneratorTheme::class
+                        ]
+                    ]
+                ]
+            ]
+        ]);
 
         $request->headers->set('referer', 'http://hello/world');
 
         $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
-
-        $url->setTheme(new TestUrlGeneratorTheme());
 
         return $url;
     }
@@ -56,6 +68,7 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
         $url = $this->getUrlGeneratorObject();
 
         $this->assertEquals('http://www.foo.com/test_prefix/test/dir', $url->to('test/dir'));
+        $this->assertEquals('http://www.foo.com/test_prefix/test/dir', $url->to('/test/dir'));
         $this->assertEquals('http://test/dir', $url->to('http://test/dir'));
     }
 

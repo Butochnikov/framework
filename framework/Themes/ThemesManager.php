@@ -1,11 +1,9 @@
 <?php
 namespace SleepingOwl\Framework\Themes;
 
-use KodiComponents\Support\Contracts\Initializable;
 use SleepingOwl\Framework\Contracts\Themes\Factory as ThemeFactory;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
 use SleepingOwl\Framework\Exceptions\Themes\ThemeNotFound;
-use SleepingOwl\Framework\Routing\UrlGenerator;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThemesManager implements ThemeFactory
@@ -50,11 +48,7 @@ class ThemesManager implements ThemeFactory
     {
         $name = $this->getDefaultTheme();
 
-        $theme = $this->get($name);
-        $this->app[UrlGenerator::class]->setTheme($theme);
-        $this->themes[$name] = $this->get($name);
-
-        return $theme;
+        return $this->themes[$name] = $this->get($name);
     }
 
     /**
@@ -125,12 +119,6 @@ class ThemesManager implements ThemeFactory
         }
 
         $theme = $this->app->make($class, ['config' => $config]);
-
-        if ($theme instanceof Initializable) {
-            $this->app->booted(function() use($theme) {
-                $theme->initialize();
-            });
-        }
 
         return $theme;
     }

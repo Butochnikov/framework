@@ -22,8 +22,22 @@ class ThemeTest extends PHPUnit_Framework_TestCase
         $url = new SleepingOwl\Framework\Routing\UrlGenerator(
             $routes = new Illuminate\Routing\RouteCollection(),
             $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/')
+            $request = Illuminate\Http\Request::create('http://www.foo.com/'),
+            new \SleepingOwl\Framework\Themes\ThemesManager($app)
         );
+
+        $app['config'] = new \Illuminate\Config\Repository([
+            'sleepingowl' => [
+                'theme' => [
+                    'default' => 'test',
+                    'themes' => [
+                        'test' => [
+                            'class' => TestTheme::class
+                        ]
+                    ]
+                ]
+            ]
+        ]);
 
         $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
 
@@ -78,9 +92,7 @@ class ThemeTest extends PHPUnit_Framework_TestCase
     public function testAssetGenerating()
     {
         $theme = $this->getThemeObject();
-        $this->app[\SleepingOwl\Framework\Routing\UrlGenerator::class]->setTheme($theme);
 
-        $this->assertEquals('http://www.foo.com/'.$theme->assetPath('test.js'), $theme->asset('test.js'));
         $this->assertEquals($this->app[\SleepingOwl\Framework\Routing\UrlGenerator::class]->asset('test.js'), $theme->asset('test.js'));
     }
 
@@ -131,4 +143,31 @@ class ThemeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($newLogo, $theme->logoSmall());
         $this->assertNotEquals($newLogo, $theme->logo());
     }
+}
+
+class TestTheme implements \SleepingOwl\Framework\Contracts\Themes\Theme
+{
+    public function name(): string
+    {
+        return 'test theme';
+    }
+
+    public function logo(): string{}
+    public function logoSmall(): string{}
+    public function getConfig(): \Illuminate\Contracts\Config\Repository{}
+    public function title(string $title = null): string {}
+
+    public function assetPath(string $path = null): string {
+        return $this->assetDir().$path;
+    }
+
+    public function assetDir(): string{
+        return 'custom-dir/';
+    }
+    public function asset(string $path, bool $secure = null): string {}
+    public function namespace(): string{}
+    public function viewPath($view): string {}
+    public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
+    public function renderMeta(string $title = null): string {}
+    public function renderNavigation(): string {}
 }

@@ -3,6 +3,7 @@ namespace SleepingOwl\Framework\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use SleepingOwl\Framework\Contracts\SleepingOwl;
+use SleepingOwl\Framework\Contracts\Themes\Factory as ThemeFactory;
 use SleepingOwl\Framework\Routing\Router;
 use SleepingOwl\Framework\Routing\UrlGenerator;
 
@@ -16,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('sleepingowl.router', function($app) {
-            return new \SleepingOwl\Framework\Routing\Router(
+            return new Router(
                 $app['router'],
                 $app[SleepingOwl::class]->config()->get('url_prefix', 'backend')
             );
@@ -27,12 +28,13 @@ class RouteServiceProvider extends ServiceProvider
 
             return new UrlGenerator(
                 $routes,
-                $app['sleepingowl.router'],
+                $app[Router::class],
                 $app->rebinding(
                     'request', function ($app, $request) {
                         $app['url']->setRequest($request);
                     }
-                )
+                ),
+                $app[ThemeFactory::class]
             );
         });
 
