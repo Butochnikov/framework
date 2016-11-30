@@ -15,18 +15,6 @@ class Handler extends AppHandler
     protected $framework;
 
     /**
-     * Handler constructor.
-     *
-     * @param Container $container
-     * @param SleepingOwl $framework
-     */
-    public function __construct(Container $container, SleepingOwl $framework)
-    {
-        $this->container = $container;
-        $this->framework = $framework;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -47,7 +35,7 @@ class Handler extends AppHandler
      */
     protected function renderHttpException(HttpException $e)
     {
-        if ($this->framework->context(SleepingOwl::CTX_BACKEND)) {
+        if (framework()->context(SleepingOwl::CTX_BACKEND)) {
             return $this->renderBackendException($e);
         }
 
