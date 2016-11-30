@@ -96,6 +96,7 @@ class SleepingOwl implements SleepingOwlContract
             \SleepingOwl\Framework\Providers\ThemeServiceProvider::class,
             \SleepingOwl\Framework\Providers\AuthServiceProvider::class,
             \SleepingOwl\Framework\Providers\RouteServiceProvider::class,
+            \SleepingOwl\Framework\Providers\EventServiceProvider::class,
         ];
 
         foreach ($providers as $provider) {

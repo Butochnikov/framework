@@ -15,7 +15,7 @@
 
     <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
     <!-- the fixed layout is not compatible with sidebar-mini -->
-    <body class="skin-blue sidebar-mini" data-route="{{ $route or null }}">
+    <body class="skin-blue sidebar-mini" data-route="{{ $routeAction or null }}">
 
         @yield('content')
 

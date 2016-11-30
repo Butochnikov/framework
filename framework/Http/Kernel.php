@@ -28,7 +28,9 @@ class Kernel extends AppKernel
         $router->middleware('backend.auth', \SleepingOwl\Framework\Http\Middleware\Authenticate::class);
 
         $router->middlewareGroup('backend', [
-            'web', 'context:backend'
+            'web',
+            \SleepingOwl\Framework\Http\Middleware\ShareRouteActionToViews::class,
+            'context:backend'
         ]);
     }
 

@@ -1,6 +1,6 @@
 <header class="main-header">
 	<!-- Logo -->
-	<a href="{{ url('/') }}" class="logo">
+	<a href="{{ backend_url('/') }}" class="logo">
 		<!-- mini logo for sidebar mini 50x50 pixels -->
 		<span class="logo-lg">{!! theme()->logo() !!}</span>
 

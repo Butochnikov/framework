@@ -28,6 +28,7 @@
 @import "@{path}miscellaneous";
 @import "@{path}print";
 @import "@{path}header";
+@import "@{path}login_and_register.less";
 
 .skin-blue {
   //Navbar
@@ -79,10 +80,19 @@
   .logo-variant(@light-blue);
 }
 
+.simple-header {
+  background: @light-blue !important;
+
+  .logo, .navbar {
+    background: transparent !important;
+  }
+}
+
 .logo-lg {
   padding: 10px;
 
   svg {
+    fill: #fff;
     float: left;
     height: 30px;
   }
@@ -90,7 +100,6 @@
   span {
     font-size: 20px;
     line-height: 30px;
-    text-align: center;
     float: left;
   }
 }
@@ -99,6 +108,7 @@
   padding-top: 7px;
 
   svg {
+    fill: #fff;
     height: 35px;
   }
 }

@@ -8,8 +8,7 @@ $router->backendGroup([], function ($router) {
     $router->group(['middleware' => 'backend.auth:backend'], function($router) {
         $router->get('/', function(\Illuminate\Http\Request $request) {
             return themeView('layouts.backend', [
-                'title' => 'Test title',
-                'route' => 'test'
+                'title' => 'Test title'
             ]);
         });
     });
