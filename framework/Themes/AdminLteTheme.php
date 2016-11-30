@@ -1,16 +1,17 @@
 <?php
 namespace SleepingOwl\Framework\Themes;
 
+use KodiComponents\Support\Contracts\Initializable;
 use SleepingOwl\Framework\Contracts\Template\Meta;
 
-class AdminLteTheme extends Theme
+class AdminLteTheme extends Theme implements Initializable
 {
     /**
      * Инициализация компонентов шаблона
      *
      * @return void
      */
-    protected function initialize()
+    public function initialize()
     {
         $this->meta
             ->addJs($this->name(), $this->asset('framework.js'), Meta::FRAMEWORK_SCRIPTS)

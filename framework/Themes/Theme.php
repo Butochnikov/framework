@@ -9,6 +9,7 @@ use SleepingOwl\Framework\Contracts\SleepingOwl;
 use SleepingOwl\Framework\Contracts\Template\Meta as MetaContract;
 use SleepingOwl\Framework\Contracts\Template\Navigation as NavigationContract;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
+use SleepingOwl\Framework\Routing\UrlGenerator;
 
 abstract class Theme implements ThemeContract
 {
@@ -148,9 +149,6 @@ abstract class Theme implements ThemeContract
      */
     public function renderMeta(string $title = null): string
     {
-        // TODO назвать метод более адекватно
-        $this->initialize();
-
         return $this->meta
             ->setFavicon($this->asset('favicon.ico'))
             ->setTitle($this->title($title))
@@ -173,11 +171,4 @@ abstract class Theme implements ThemeContract
             $this->viewPath('layouts.partials.navigation')
         );
     }
-
-    /**
-     * Инициализация компонентов шаблона
-     *
-     * @return void
-     */
-    abstract protected function initialize();
 }

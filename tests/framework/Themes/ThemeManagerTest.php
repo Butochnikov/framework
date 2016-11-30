@@ -1,10 +1,41 @@
 <?php
 
+use Mockery as m;
 use Illuminate\Foundation\Application;
 use SleepingOwl\Framework\Themes\ThemesManager;
 
 class ThemeManagerTest extends PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplication()
+    {
+        $app = new Application();
+        $app['config'] =  new \Illuminate\Config\Repository([
+            'sleepingowl' => [
+                'theme' => [
+                    'default' => 'test',
+                    'themes' => [
+                        'test' => [
+                            'class' => TestTheme::class
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $app['request'] = m::mock(\Illuminate\Http\Request::class);
+        $app['SleepingOwl\Framework\Contracts\Routing\Router'] = m::mock(\SleepingOwl\Framework\Contracts\Routing\Router::class);
+
+        return $app;
+    }
+
     /**
      * @covers ThemesManager::getDefaultTheme()
      * @covers ThemesManager::setDefaultTheme()
@@ -30,41 +61,13 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
 
     public function testResolvingThemeObject()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
-            'sleepingowl' => [
-                'theme' => [
-                    'default' => 'test',
-                    'themes' => [
-                        'test' => [
-                            'class' => TestTheme::class
-                        ]
-                    ]
-                ]
-            ]
-        ]);
-
-        $manager = new ThemesManager($app);
+        $manager = new ThemesManager($this->getApplication());
         $this->assertInstanceOf(TestTheme::class, $manager->theme());
     }
 
     public function testCallingThemeMethods()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
-            'sleepingowl' => [
-                'theme' => [
-                    'default' => 'test',
-                    'themes' => [
-                        'test' => [
-                            'class' => TestTheme::class
-                        ]
-                    ]
-                ]
-            ]
-        ]);
-
-        $manager = new ThemesManager($app);
+        $manager = new ThemesManager($this->getApplication());
         $this->assertEquals('test theme', $manager->name());
     }
 
@@ -148,6 +151,6 @@ class TestTheme implements \SleepingOwl\Framework\Contracts\Themes\Theme
     public function namespace(): string{}
     public function viewPath($view): string {}
     public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
-    public function renderMeta(string $title): string {}
+    public function renderMeta(string $title = null): string {}
     public function renderNavigation(): string {}
 }

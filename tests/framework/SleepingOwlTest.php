@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Mockery as m;
 use SleepingOwl\Framework\SleepingOwl;
-use Illuminate\Foundation\Application;
 
 class SleepingOwlTest extends PHPUnit_Framework_TestCase
 {
@@ -10,6 +10,24 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
     public function tearDown()
     {
         m::close();
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return Application
+     */
+    protected function getApplication(array $config = [])
+    {
+        $app = new Application();
+        $app['config'] = new \Illuminate\Config\Repository([
+            'sleepingowl' => [
+
+            ]
+        ] + $config);
+
+
+        return $app;
     }
 
     public function testConstructor()
@@ -24,13 +42,23 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
         }));
 
         $app->shouldReceive('alias');
+        $app->shouldReceive('offsetGet')->andReturnUsing(function($key) {
+            if ($key == 'config') {
+                return new \Illuminate\Config\Repository([
+                    'sleepingowl' => [
+
+                    ]
+                ]);
+            }
+        });
+
         $framework = new SleepingOwl($app);
         $this->assertEquals(SleepingOwl::VERSION, $framework->version());
     }
 
     public function testVersionMethod()
     {
-        $framework = new SleepingOwl(new Application());
+        $framework = new SleepingOwl($this->getApplication());
         $this->assertEquals(SleepingOwl::VERSION, $framework->version());
     }
 
@@ -42,7 +70,8 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
      */
     public function testSettingBasePath($path, $correctPath)
     {
-        $framework = new SleepingOwl($app = new Application(), $path);
+        $app = $this->getApplication();
+        $framework = new SleepingOwl($app, $path);
 
         $this->assertEquals($correctPath, $framework->basePath());
         $this->assertEquals($correctPath, $app['sleepingowl.path.base']);
@@ -59,7 +88,7 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
 
     public function testSettingContext()
     {
-        $framework = new SleepingOwl(new Application());
+        $framework = new SleepingOwl($this->getApplication());
         $framework->setContext('test', 'test1');
 
         $this->assertEquals(['test', 'test1'], $framework->context());
@@ -73,7 +102,7 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
 
     public function testCheckingContext()
     {
-        $framework = new SleepingOwl(new Application());
+        $framework = new SleepingOwl($this->getApplication());
         $framework->setContext('test', 'test1');
 
         $this->assertTrue($framework->context('test'));

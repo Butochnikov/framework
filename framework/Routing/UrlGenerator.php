@@ -5,13 +5,20 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator as BaseUrlGenerator;
 use SleepingOwl\Framework\Contracts\Routing\Router as RouterContract;
+use SleepingOwl\Framework\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
+use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
 
-class UrlGenerator extends BaseUrlGenerator
+class UrlGenerator extends BaseUrlGenerator implements UrlGeneratorContract
 {
     /**
      * @var RouterContract
      */
     protected $router;
+
+    /**
+     * @var ThemeContract
+     */
+    protected $theme;
 
     /**
      * @param RouteCollection $routes
@@ -25,9 +32,22 @@ class UrlGenerator extends BaseUrlGenerator
     }
 
     /**
+     * Указание текущей темы для генерации правильных путей до asset
+     *
+     * @param ThemeContract $theme
+     * @return void
+     */
+    public function setTheme(ThemeContract $theme)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
+     * Получение префикса админ панели
+     *
      * @return string
      */
-    public function prefix()
+    public function prefix(): string
     {
         return $this->router->getUrlPrefix();
     }
@@ -37,10 +57,24 @@ class UrlGenerator extends BaseUrlGenerator
      */
     public function asset($path, $secure = null)
     {
+        if ($this->isValidUrl($path)) {
+            return $path;
+        }
+
         return parent::asset(
-            theme()->assetPath($path),
+            $this->theme->assetPath($path),
             $secure
         );
+    }
+
+    /**
+     * Get the current URL for the request.
+     *
+     * @return string
+     */
+    public function current()
+    {
+        return parent::to($this->request->getPathInfo());
     }
 
     /**
@@ -50,16 +84,27 @@ class UrlGenerator extends BaseUrlGenerator
     {
         return parent::assetFrom(
             $root,
-            theme()->assetPath($path),
+            $this->theme->assetPath($path),
             $secure
         );
     }
 
     /**
-     * {@inheritdoc}
+     * Generate an absolute URL to the given path.
+     *
+     * @param  string  $path
+     * @param  mixed  $extra
+     * @param  bool|null  $secure
+     * @return string
      */
-    protected function trimUrl($root, $path, $tail = '')
+    public function to($path, $extra = [], $secure = null)
     {
-        return trim($root.'/'.$this->prefix().'/'.trim($path.'/'.$tail, '/'), '/');
+        if ($this->isValidUrl($path)) {
+            return $path;
+        }
+
+        $path = $this->prefix().'/'.$path;
+
+        return parent::to($path, $extra, $secure);
     }
 }

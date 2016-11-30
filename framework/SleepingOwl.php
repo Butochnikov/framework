@@ -18,7 +18,7 @@ class SleepingOwl implements SleepingOwlContract
     /**
      * @var \Illuminate\Foundation\Application
      */
-    private $application;
+    private $app;
 
     /**
      * The base path for the SleepingOwl installation.
@@ -40,9 +40,9 @@ class SleepingOwl implements SleepingOwlContract
      */
     public function __construct(Application $application, string $basePath = null)
     {
-        $this->application = $application;
+        $this->app = $application;
         $this->config = new ConfigRepository(
-            $this->application['config']->get('sleepingowl', [])
+            $this->app['config']->get('sleepingowl', [])
         );
 
         $this->registerBaseServiceProviders();
@@ -83,7 +83,6 @@ class SleepingOwl implements SleepingOwlContract
         return $this->config;
     }
 
-
     /**
      * Register all of the base service providers.
      *
@@ -100,7 +99,7 @@ class SleepingOwl implements SleepingOwlContract
         ];
 
         foreach ($providers as $provider) {
-            $this->application->register(new $provider($this->application));
+            $this->app->register(new $provider($this->app));
         }
     }
 
@@ -136,7 +135,7 @@ class SleepingOwl implements SleepingOwlContract
      */
     protected function bindPathsInContainer()
     {
-        $this->application->instance('sleepingowl.path.base', $this->basePath());
+        $this->app->instance('sleepingowl.path.base', $this->basePath());
     }
 
     /**
@@ -153,21 +152,13 @@ class SleepingOwl implements SleepingOwlContract
             'sleepingowl.navigation' => ['SleepingOwl\Framework\Contracts\Template\Navigation', 'SleepingOwl\Framework\Template\Navigation'],
             'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta'],
             'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router'],
-            'sleepingowl.url' => ['SleepingOwl\Framework\Routing\UrlGenerator']
+            'sleepingowl.url' => ['SleepingOwl\Framework\Routing\UrlGenerator', 'SleepingOwl\Framework\Contracts\Routing\UrlGenerator']
         ];
 
         foreach ($aliases as $key => $aliases) {
             foreach ($aliases as $alias) {
-                $this->application->alias($key, $alias);
+                $this->app->alias($key, $alias);
             }
         }
-    }
-
-    /**
-     * @param Repository $config
-     */
-    public function setConfig(Repository $config)
-    {
-        $this->config = $config;
     }
 }

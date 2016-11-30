@@ -4,9 +4,33 @@ use Mockery as m;
 
 class ThemeTest extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
     public function tearDown()
     {
         m::close();
+    }
+
+    public function setUp()
+    {
+        $app = app();
+
+        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
+            $routes = new Illuminate\Routing\RouteCollection(),
+            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
+            $request = Illuminate\Http\Request::create('http://www.foo.com/')
+        );
+
+        $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
+
+        $app['request'] = $request;
+        $app->instance(SleepingOwl\Framework\Routing\UrlGenerator::class, $url);
+
+        $this->app = $app;
     }
 
     /**
@@ -16,11 +40,6 @@ class ThemeTest extends PHPUnit_Framework_TestCase
      */
     public function getThemeObject(array $config = [])
     {
-        $url = m::mock(Illuminate\Contracts\Routing\UrlGenerator::class);
-        $url->shouldReceive('asset')->andReturnUsing(function($path) {
-            return 'http://'.$path;
-        });
-
         $meta = m::mock(SleepingOwl\Framework\Contracts\Template\Meta::class);
         $meta->shouldReceive('addJs')->andReturnSelf();
         $meta->shouldReceive('addCss')->andReturnSelf();
@@ -28,11 +47,10 @@ class ThemeTest extends PHPUnit_Framework_TestCase
         $framework = m::mock(SleepingOwl\Framework\SleepingOwl::class);
         $framework->shouldReceive('name')->andReturn('framework v.0.0.1');
 
-        $theme = new\SleepingOwl\Framework\Themes\AdminLteTheme(
+        $theme = new SleepingOwl\Framework\Themes\AdminLteTheme(
             $framework,
             $meta,
             $navigation = m::mock(SleepingOwl\Framework\Contracts\Template\Navigation::class),
-            $url,
             $view = m::mock(Illuminate\Contracts\View\Factory::class),
             $config
         );
@@ -60,8 +78,10 @@ class ThemeTest extends PHPUnit_Framework_TestCase
     public function testAssetGenerating()
     {
         $theme = $this->getThemeObject();
+        $this->app[\SleepingOwl\Framework\Routing\UrlGenerator::class]->setTheme($theme);
 
-        $this->assertEquals('http://'.$theme->assetDir().'/test.js', $theme->asset('test.js'));
+        $this->assertEquals('http://www.foo.com/'.$theme->assetPath('test.js'), $theme->asset('test.js'));
+        $this->assertEquals($this->app[\SleepingOwl\Framework\Routing\UrlGenerator::class]->asset('test.js'), $theme->asset('test.js'));
     }
 
     public function testViewPathGenerating()
