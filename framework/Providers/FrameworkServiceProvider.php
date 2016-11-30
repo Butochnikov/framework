@@ -49,7 +49,7 @@ class FrameworkServiceProvider extends ServiceProvider
 
             $this->publishes([
                 SLEEPINGOWL_PATH.'/public' => public_path('vendor/sleepingowl'),
-            ], 'sleepingowl-asset');
+            ], 'sleepingowl-assets');
         }
 
         $this->loadMigrationsFrom(SLEEPINGOWL_PATH.'/database/migrations');

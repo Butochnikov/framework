@@ -18,7 +18,7 @@
                 @yield('block.form.header')
 
                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input type="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required autofocus>
+                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required autofocus>
 
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
 
                     @if ($errors->has('password'))
                         <span class="help-block">

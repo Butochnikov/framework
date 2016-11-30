@@ -52,9 +52,9 @@ class Context
     /**
      * @param Request $request
      *
-     * @return mixed
+     * @return string
      */
-    protected function getContext(Request $request)
+    protected function getContext(Request $request): string
     {
         return ($request->is($this->urlPrefix) or $request->is($this->urlPrefix.'/*'))
             ? SleepingOwl::CTX_BACKEND

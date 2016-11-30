@@ -16,4 +16,11 @@ interface Installator
      * @return void
      */
     public function install();
+
+    /**
+     * При возврате методом true данный компонент будет пропущен
+     *
+     * @return bool
+     */
+    public function installed(): bool;
 }

@@ -2,6 +2,7 @@
 namespace SleepingOwl\Framework\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SleepingOwl\Framework\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -23,6 +24,17 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest:backend');
+    }
+
+
+    /**
+     * Get the guard to be used during password reset.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('backend');
     }
 
     /**

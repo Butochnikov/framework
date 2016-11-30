@@ -2,10 +2,14 @@
 namespace SleepingOwl\Framework\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
 use SleepingOwl\Framework\Console\Installation;
+use SleepingOwl\Framework\Contracts\SleepingOwl;
 
 class InstallCommand extends Command
 {
+    use ConfirmableTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -26,21 +30,33 @@ class InstallCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(SleepingOwl $framework)
     {
         if (! defined('SLEEPINGOWL_STUB_PATH')) {
             define('SLEEPINGOWL_STUB_PATH', SLEEPINGOWL_PATH.'/install-stubs');
         }
 
-        if ($this->alreadyInstalled() && ! $this->option('force')) {
-            return $this->line('SleepingOwl is already installed for this project.');
+        if (! $this->confirmToProceed($framework->name())) {
+            return;
         }
 
         $installers = collect([
+            Installation\InstallMigrations::class,
+            Installation\CreateRootUser::class,
             Installation\InstallConfiguration::class,
+            Installation\InstallAssets::class,
         ]);
 
-        $installers->each(function ($installer) { (new $installer($this))->install(); });
+        $installers
+        ->map(function($installer) {
+            return new $installer($this);
+        })
+        ->filter(function($installer) {
+            return ! $installer->installed();
+        })->each(function ($installer) {
+            $installer->install();
+            $installer->showInfo();
+        });
 
         $this->comment('SleepingOwl Framework installed.');
     }

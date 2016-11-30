@@ -1,14 +1,12 @@
 <?php
 namespace SleepingOwl\Framework\Console\Installation;
 
-use SleepingOwl\Framework\Contracts\Console\Installator;
-
-class InstallConfiguration implements Installator
+class InstallConfiguration extends Installator
 {
 
     public function showInfo()
     {
-        // TODO: Implement install() method.
+        $this->command->line('Install Configuration: <info>✔</info>');
     }
 
     /**
@@ -18,6 +16,18 @@ class InstallConfiguration implements Installator
      */
     public function install()
     {
-        // TODO: Implement install() method.
+        $this->command->call('vendor:publish', [
+            '--tag' => 'sleepingowl-config',
+        ]);
+    }
+
+    /**
+     * При возврате методом true данный компонент будет пропущен
+     *
+     * @return bool
+     */
+    public function installed(): bool
+    {
+        return false;
     }
 }

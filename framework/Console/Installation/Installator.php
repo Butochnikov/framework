@@ -14,11 +14,19 @@ abstract class Installator implements \SleepingOwl\Framework\Contracts\Console\I
      * Create a new installer instance.
      *
      * @param  \Illuminate\Console\Command  $command
-     * @return void
      */
     public function __construct($command)
     {
         $this->command = $command;
-        $this->showInfo();
+    }
+
+    /**
+     * При возврате методом true данный компонент будет пропущен
+     *
+     * @return bool
+     */
+    public function installed(): bool
+    {
+        return false;
     }
 }

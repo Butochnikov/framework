@@ -2,6 +2,7 @@
 namespace SleepingOwl\Framework\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use SleepingOwl\Framework\Http\Controllers\Controller;
 
 class LoginController extends Controller
@@ -30,6 +31,16 @@ class LoginController extends Controller
     {
         $this->redirectTo = backend_url('/');
         $this->middleware('guest:backend', ['except' => 'logout']);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('backend');
     }
 
     /**
