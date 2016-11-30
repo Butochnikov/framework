@@ -13,18 +13,25 @@ interface SleepingOwl
     const CTX_API = 'api';
 
     /**
-     * Get the version number of the framework.
+     * Получение версии фреймворка
      *
      * @return string
      */
     public function version(): string;
 
     /**
-     * Get the name of the framework.
+     * Получение название фреймворка
      *
      * @return string
      */
     public function name(): string;
+
+    /**
+     * Получение названия фреймворка с указанием версии
+     *
+     * @return string
+     */
+    public function longName(): string;
 
     /**
      * Получение настроек

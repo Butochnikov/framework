@@ -28,6 +28,8 @@ class InstallCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param SleepingOwl $framework
+     *
      * @return mixed
      */
     public function handle(SleepingOwl $framework)
@@ -36,7 +38,7 @@ class InstallCommand extends Command
             define('SLEEPINGOWL_STUB_PATH', SLEEPINGOWL_PATH.'/install-stubs');
         }
 
-        if (! $this->confirmToProceed($framework->name())) {
+        if (! $this->confirmToProceed($framework->longName())) {
             return;
         }
 

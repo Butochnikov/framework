@@ -18,7 +18,7 @@ class SleepingOwl implements SleepingOwlContract
     /**
      * @var \Illuminate\Foundation\Application
      */
-    private $app;
+    protected $app;
 
     /**
      * The base path for the SleepingOwl installation.
@@ -54,7 +54,7 @@ class SleepingOwl implements SleepingOwlContract
     }
 
     /**
-     * Get the version number of the framework.
+     * Получение версии фреймворка
      *
      * @return string
      */
@@ -64,13 +64,23 @@ class SleepingOwl implements SleepingOwlContract
     }
 
     /**
-     * Получить название фреймворка
+     * Получение название фреймворка
      *
      * @return string
      */
     public function name(): string
     {
-        return 'SleepingOwl framework v.'.$this->version();
+        return 'SleepingOwl framework';
+    }
+
+    /**
+     * Получение названия фреймворка с указанием версии
+     *
+     * @return string
+     */
+    public function longName(): string
+    {
+        return $this->name().' v.'.$this->version();
     }
 
     /**

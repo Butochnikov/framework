@@ -1,5 +1,5 @@
 <!-- Footer -->
 <footer class="main-footer">
-    {{ framework()->name() }}
+    {{ framework()->longName() }}
 </footer>
 <!-- /.footer -->

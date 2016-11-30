@@ -28,7 +28,7 @@ class ChangeApplicationVersion
         $artisan = $event->artisan;
 
         $artisan->setVersion(
-            $artisan->getVersion().'</comment> with <info>'.$this->framework->name().'</info>'
+            $artisan->getVersion().'</comment> with <info>'.$this->framework->longName().'</info>'
         );
     }
 }
