@@ -27,6 +27,7 @@ class AppController extends Controller
                 'locale' => $translator->getLocale(),
                 'trans' => [],
                 'url_prefix' => $framework->config()['url_prefix'],
+                'backend_url' => backend_url(''),
                 'theme' => $themeManager->theme()->toArray(),
             ]
         ]);

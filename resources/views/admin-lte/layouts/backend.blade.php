@@ -18,11 +18,9 @@
 
         <!-- Main content -->
         <section class="content">
-
             @yield('block.content.header')
-            {!! $content or null !!}
+            @yield('block.content')
             @yield('block.content.footer')
-
         </section>
         <!-- /.content -->
     </div>

@@ -30,7 +30,7 @@ module.exports = {
                 module.callback();
         })
     },
-    init () {
+    boot () {
         _.each(_.sortBy(this._modules, function (module) {
             return module.priority
         }), (module, name) => {

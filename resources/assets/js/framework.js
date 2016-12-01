@@ -5,17 +5,23 @@
  */
 require('./bootstrap');
 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-const app = new Vue({
-    el: 'body'
-});
+
+Vue.component('filemanager',  require('./vuejs/components/filemanager.vue'))
 
 $(function () {
+    window.Framework.Modules.boot();
+
     window.Framework.Controllers.dispatch(
         $('body:first').data('route')
     )
+
+    const app = new Vue({
+        el: '.content'
+    });
 })

@@ -1,0 +1,285 @@
+/* ==========================================================================
+   Files
+   ========================================================================== */
+
+.files-manager {
+  .clearfix();
+}
+
+.files-manager-side {
+  float:        left;
+  width:        168px;
+  position:     relative;
+  background:   @sidebar-light-bg;
+  border-right: solid 1px @gray;
+}
+
+.files-manager-side-title {
+  padding:     15px;
+  font-weight: 600;
+}
+
+.files-manager-side-list {
+  font-weight: 600;
+  padding:     0 0 5px;
+  list-style:  none;
+  a {
+    display:     block;
+    color:       @gray-darker;
+    padding:     6px 10px 7px 11px;
+    border-left: solid 4px transparent;
+    &:hover, &.active {
+      background-color: @gray-lighter;
+      color:            @light-blue;
+    }
+    &:hover {
+      border-left-color: @gray;
+    }
+    &.active {
+      border-left-color: @blue;
+    }
+  }
+}
+
+.files-manager-panel {
+  float:       right;
+  width:       100%;
+  margin-left: -168px;
+  background:  #fff;
+}
+
+.files-manager-panel-in {
+  margin-left: 168px;
+  .clearfix();
+}
+
+.files-manager-header {
+  border-bottom: solid 1px @gray;
+  padding:       10px 15px;
+  background:    @sidebar-light-bg;
+
+  .clearfix();
+
+  .files-manager-header-left {
+    float: left;
+  }
+
+  .files-manager-header-right {
+    float: right;
+    .clearfix();
+  }
+
+  .btn, .btn-icon {
+    vertical-align: top;
+  }
+
+  .btn {
+    margin: 0 22px 0 0;
+  }
+
+  .btn-icon {
+    height:     38px;
+    padding:    0;
+    background: none;
+    border:     none;
+    color:      @light-blue;
+    margin:     0 8px 0 0;
+
+    &:hover {
+      color: @blue;
+    }
+
+    .font-icon {
+      vertical-align: middle;
+      position:       relative;
+      top:            1px;
+    }
+
+    &.view {
+      color: @gray;
+      &:hover, &.active {
+        color: @light-blue;
+      }
+    }
+  }
+  .views {
+    float:  left;
+    margin: 0 10px 0 0;
+  }
+
+  .search {
+    float:    left;
+    width:    216px;
+    position: relative;
+    .form-control {
+      padding-right: 35px;
+    }
+    .btn-icon {
+      position: absolute;
+      right:    5px;
+      top:      -1px;
+    }
+  }
+}
+
+.files-manager-aside {
+  float:    right;
+  width:    280px;
+  position: relative;
+}
+
+.files-manager-aside-section {
+  border-top: solid 1px @gray;
+  padding:    15px 15px 20px;
+  &:first-child {
+    border-top: none;
+  }
+  .box-typical-header-sm {
+    padding: 0 0 10px;
+  }
+  .info-list {
+    padding: 0 0 10px;
+    p {
+      margin: 0 0 6px;
+    }
+  }
+}
+
+.files-manager-content {
+  float:        left;
+  width:        100%;
+  margin-right: -280px;
+}
+
+.files-manager-content-in {
+  margin-right: 280px;
+  border-right: solid 1px @gray;
+}
+
+.fm-file-list,
+.fm-file-grid {
+  padding: 18px 0 0 18px;
+  .clearfix();
+}
+
+.fm-file-list {
+  padding-right: 18px;
+}
+
+.fm-file {
+  float:            left;
+  width:            250px;
+  margin:           0 18px 18px 0;
+  padding:          10px;
+  cursor:           pointer;
+  height:           70px;
+  max-height:       70px;
+  background-color: @gray-lighter;
+  .clearfix();
+
+  .fm-file-icon {
+    height:      50px;
+    line-height: 50px;
+    float:       left;
+
+    img {
+      vertical-align: middle;
+      width:          50px;
+      height:         50px;
+    }
+  }
+
+  .fm-file-meta {
+    max-width: 180px;
+    display:   inline-block;
+    float:     left;
+    padding:   5px;
+
+    .fm-file-name, .fm-file-size {
+      white-space:   nowrap;
+      overflow:      hidden;
+      width:         100%;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .fm-file-size {
+    color:       @gray-dark;
+    font-size:   70%;
+    font-weight: bold;
+  }
+
+  &:hover,
+  &.selected {
+    background-color: @light-blue;
+
+    .fm-file-name, .fm-file-size {
+      color: #fff;
+    }
+  }
+}
+
+.fm-file-list {
+  .fm-file {
+    float:         none !important;
+    width:         100%;
+    padding:       3px 10px;
+    margin-bottom: 2px;
+    height:        auto;
+  }
+}
+
+@media (max-width: 830px) {
+  .files-manager-side {
+    float:                     none;
+    width:                     auto;
+    border-right:              none;
+    border-bottom-left-radius: 0;
+    border-bottom:             solid 1px @gray;
+  }
+
+  .files-manager-panel {
+    float:       none;
+    margin-left: 0;
+  }
+
+  .files-manager-panel-in {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: @screen-header-collapse) {
+  .files-manager-header {
+    .files-manager-header-left,
+    .files-manager-header-right {
+      float: none;
+    }
+    .files-manager-header-left {
+      padding-bottom: 10px;
+    }
+  }
+
+  .files-manager-aside {
+    float: none;
+    width: auto;
+  }
+
+  .files-manager-content {
+    float:        none;
+    margin-right: 0;
+  }
+
+  .files-manager-content-in {
+    margin-right: 0;
+    border-right: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .files-manager-header-left {
+    padding-bottom: 0 !important;
+    .btn {
+      display: block;
+    }
+  }
+}

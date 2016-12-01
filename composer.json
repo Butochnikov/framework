@@ -22,7 +22,8 @@
     ],
     "psr-4": {
       "SleepingOwl\\Framework\\": "framework/",
-      "SleepingOwl\\Api\\": "api/"
+      "SleepingOwl\\Api\\": "api/",
+      "SleepingOwl\\Filemanager\\": "filemanager/"
     }
   },
   "require": {
