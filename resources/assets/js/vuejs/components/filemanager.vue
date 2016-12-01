@@ -4,7 +4,7 @@
 			<header class="files-manager-side-title">Directories</header>
 			<ul class="files-manager-side-list">
 				<li v-for="dir in directories">
-					<a href="#" @click="openDir(dir.path)">{{ dir.path }}</a>
+					<a href="#" @click="openDir(dir)">{{ dir }}</a>
 				</li>
 			</ul>
 		</nav>
@@ -40,14 +40,14 @@
 				<div class="files-manager-content">
 					<div class="files-manager-content-in scrollable-block">
 						<div class="files-manager-breadcrumbs">
-							<a class="label label-default" href="#" @click="openDir()">/root</a>
+							<a class="label label-default" @click="openDir()">/root</a>
 
-							<a class="label label-default" v-for="segment in breadcrumbs" href="#" @click="openDir(segment.path)" style="margin-right: 3px;">
+							<a class="label label-default" v-for="segment in breadcrumbs" @click="openDir(segment.path)" style="margin-right: 3px;">
 								/{{ segment.name }}
 							</a>
 						</div>
 						<div v-bind:class="{'fm-file-grid': grid, 'fm-file-list': !grid}">
-							<div class="fm-file" v-bind:class="{ 'selected': file == selected }" @click="select(file)" v-for="file in files">
+							<div class="fm-file" v-bind:class="{ 'selected': file == selected }" @click="select(file)" v-on:dblclick="file.type == 'dir' && openDir(file.path)" v-for="file in files">
 								<div class="fm-file-icon">
 									<img v-bind:src="fileIcon(file)">
 								</div>
@@ -73,9 +73,24 @@
 							</p>
 						</div>
 
-						<a href="#" @click="deleteFile(selected)" class="btn btn-flat btn-danger">
-							<i class="fa fa-trash"></i>
-						</a>
+						<span v-if="selected.type == 'file'">
+							<button @click="deleteFile(selected)" class="btn btn-flat btn-danger">
+								<i class="fa fa-trash"></i>
+							</button>
+
+							<a v-bind:href="downloadPath(selected)" href="#" class="btn btn-flat btn-default">
+								<i class="fa fa-download"></i> Download
+							</a>
+						</span>
+						<span v-if="selected.type == 'dir'">
+							<button @click="deleteFile(selected)" class="btn btn-flat btn-danger">
+								<i class="fa fa-trash"></i>
+							</button>
+
+							<button @click="openDir(selected.path)" class="btn btn-flat btn-default">
+								<i class="fa fa-level-up"></i> Open
+							</button>
+						</span>
 					</div>
 				</section>
 			</div>
@@ -87,7 +102,7 @@
 	export default {
 		data() {
 			return {
-				currentPath: '',
+				currentPath: window.location.hash.substr(1),
 				grid: true,
 				directories: [],
 				files: [],
@@ -121,23 +136,31 @@
 					img: ['png', 'jpg', 'gif'],
 					doc: ['doc', 'txt'],
 					xls: ['xls', 'xlsx'],
-					pdf: ['pdf']
-				}, image;
+					pdf: ['pdf'],
+					php: ['php'],
+					js: ['js'],
+					less: ['less'],
+					scss: ['scss'],
+					css: ['css']
+				}, image = 'file'
 
 				switch(file.type) {
-				  case 'dir':
-					image = 'folder';
-					break
-				  default:
-					image = 'file';
+					case 'file':
+						for (let ext in types) {
+							if (_.indexOf(types[ext], file.extension) !== -1) {
+								image = 'file-'+ext;
+								break
+							}
+						}
+						break
+					case 'dir':
+						image = 'folder';
+						break
 				}
+
 				return '/vendor/sleepingowl/admin-lte/images/filemanager/'+image+'.png'
 			},
 			deleteFile(file) {
-				if (file.type != 'file') {
-					swal('You can delete only files')
-				}
-
 				let self = this
 
 				swal({
@@ -155,7 +178,12 @@
 				})
 			},
 			openDir (path) {
-				this.currentPath = path
+				if (this.currentPath != path) {
+					this.currentPath = path || ''
+					window.location.href = path ? "#"+path : '#'
+
+					this.select(null)
+				}
 
 				// GET /someUrl
 				this.$http.get('/backend/api/filemanager', {params: {path: path}}).then((response) => {
@@ -164,12 +192,10 @@
 				}, (response) => {});
 			},
 			select (file) {
-				if(file.type == 'dir') {
-					this.selected = null
-					return this.openDir(file.path)
-				}
-
 				this.selected = file;
+			},
+			downloadPath(file) {
+				return '/backend/api/filemanager/download?file='+file.path
 			}
 		},
 		computed: {
@@ -194,5 +220,6 @@
 			}
 		}
 	}
+
 
 </script>
