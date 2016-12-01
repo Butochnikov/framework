@@ -2,11 +2,10 @@
 namespace SleepingOwl\Framework\Contracts\Themes;
 
 use Illuminate\Contracts\Config\Repository as ConfigContract;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\View as ViewContract;
-use SleepingOwl\Framework\Contracts\Template\Meta;
-use SleepingOwl\Framework\Contracts\Template\Navigation;
 
-interface Theme
+interface Theme extends Arrayable
 {
 
     /**
@@ -14,21 +13,42 @@ interface Theme
      *
      * @return string
      */
-    public function name() : string;
+    public function name(): string;
+
+    /**
+     * Версия темы
+     *
+     * @return string
+     */
+    public function version(): string;
+
+    /**
+     * Название с указанием версии
+     *
+     * @return string
+     */
+    public function longName(): string;
+
+    /**
+     * URL проекта
+     *
+     * @return string
+     */
+    public function homepage(): string;
 
     /**
      * Получение HTML кода логотипа
      *
      * @return string
      */
-    public function logo() : string;
+    public function logo(): string;
 
     /**
      * Получение HTML кода компактной версии логотипа
      *
      * @return string
      */
-    public function logoSmall() : string;
+    public function logoSmall(): string;
 
     /**
      * Настройки темы
@@ -44,7 +64,7 @@ interface Theme
      *
      * @return string
      */
-    public function title(string $title = null) : string;
+    public function title(string $title = null): string;
 
     /**
      * Генерация относительно пути до asset файлов для текущей темы
@@ -53,14 +73,14 @@ interface Theme
      *
      * @return string
      */
-    public function assetPath(string $path = null) : string;
+    public function assetPath(string $path = null): string;
 
     /**
      * Получение относительного пути директории хранения asset файлов
      *
      * @return string
      */
-    public function assetDir() : string;
+    public function assetDir(): string;
 
     /**
      * Генерация абсолютного пути до asset файлов для текущей темы
@@ -70,14 +90,14 @@ interface Theme
      *
      * @return string
      */
-    public function asset(string $path, bool $secure = null) : string;
+    public function asset(string $path, bool $secure = null): string;
 
     /**
      * Получение неймспейса для view шаблонов
      *
      * @return string
      */
-    public function namespace() : string;
+    public function namespace(): string;
 
     /**
      * Генерация пути до view для текущей темы с учетом namespace
@@ -86,7 +106,7 @@ interface Theme
      *
      * @return string
      */
-    public function viewPath($view) : string;
+    public function viewPath($view): string;
 
     /**
      * @param string|ViewContract $view
@@ -95,7 +115,7 @@ interface Theme
      *
      * @return \Illuminate\Contracts\View\Factory|ViewContract
      */
-    public function view($view, $data = [], $mergeData = []) : ViewContract;
+    public function view($view, $data = [], $mergeData = []): ViewContract;
 
     /**
      * Генерация html meta

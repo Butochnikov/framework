@@ -26,6 +26,7 @@ class Router implements RouterContract
     public function __construct(RegistrarContract $router, string $urlPrefix)
     {
         $this->router = $router;
+
         $this->urlPrefix = $urlPrefix;
     }
 
@@ -49,6 +50,45 @@ class Router implements RouterContract
      */
     public function backendGroup(array $attributes, Closure $callback)
     {
+        $this->router->group(
+            $this->mergeGroupAttributes($attributes),
+            $callback
+        );
+    }
+
+    /**
+     * Dynamically call the default router instance.
+     *
+     * @param  string $method
+     * @param  array $parameters
+     *
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        return $this->router->$method(...$parameters);
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function mergeGroupAttributes(array $attributes)
+    {
+        $attributes = $this->mergeAttributeMiddleware($attributes);
+        $attributes = $this->mergeAttributePrefix($attributes);
+
+        return $attributes;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function mergeAttributeMiddleware(array $attributes)
+    {
         if (isset($attributes['middleware'])) {
             $attributes['middleware'] = (array) $attributes['middleware'];
             if (! in_array('backend', $attributes['middleware'])) {
@@ -58,20 +98,22 @@ class Router implements RouterContract
             $attributes['middleware'] = 'backend';
         }
 
-        $attributes['prefix'] = $this->urlPrefix;
-
-        $this->router->group($attributes, $callback);
+        return $attributes;
     }
 
     /**
-     * Dynamically call the default router instance.
+     * @param array $attributes
      *
-     * @param  string  $method
-     * @param  array   $parameters
-     * @return mixed
+     * @return array
      */
-    public function __call($method, $parameters)
+    protected function mergeAttributePrefix(array $attributes)
     {
-        return $this->router->$method(...$parameters);
+        if (isset($attributes['prefix'])) {
+            $attributes['prefix'] = $this->urlPrefix.'/'.ltrim($attributes['prefix'], '/');
+        } else {
+            $attributes['prefix'] = $this->urlPrefix;
+        }
+
+        return $attributes;
     }
 }

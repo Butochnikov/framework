@@ -1,5 +1,9 @@
 <!-- Footer -->
 <footer class="main-footer">
-    {{ framework()->longName() }}
+    <div class="pull-right hidden-xs">
+        <b>{{ theme()->longName() }}</b>
+    </div>
+
+    <small>{{ framework()->longName() }}</small>
 </footer>
 <!-- /.footer -->

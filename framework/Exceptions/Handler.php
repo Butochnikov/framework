@@ -1,9 +1,10 @@
 <?php
 namespace SleepingOwl\Framework\Exceptions;
 
+use Exception;
 use App\Exceptions\Handler as AppHandler;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Container\Container;
+use SleepingOwl\Api\Contracts\Exceptions\Handler as ApiExceptionsHandler;
 use SleepingOwl\Framework\Contracts\SleepingOwl;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -13,6 +14,24 @@ class Handler extends AppHandler
      * @var SleepingOwl
      */
     protected $framework;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function render($request, Exception $exception)
+    {
+        // Если текущий контекст - api, то все ошибки обрабатываем с помощью обработчика
+        // SleepingOwl\Api\Contracts\Exceptions\Handler
+
+        if (framework()->context(SleepingOwl::CTX_API)) {
+            /** @var ApiExceptionsHandler $handler */
+            $handler = $this->container->make(ApiExceptionsHandler::class);
+
+            return $handler->render($request, $exception);
+        }
+
+        return parent::render($request, $exception);
+    }
 
     /**
      * {@inheritdoc}
@@ -35,6 +54,7 @@ class Handler extends AppHandler
      */
     protected function renderHttpException(HttpException $e)
     {
+        // Если текущий контекст - backend, то вывод ошибок перенаправляем на свой метод
         if (framework()->context(SleepingOwl::CTX_BACKEND)) {
             return $this->renderBackendException($e);
         }

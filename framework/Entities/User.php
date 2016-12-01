@@ -4,6 +4,16 @@ namespace SleepingOwl\Framework\Entities;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ * @package SleepingOwl\Framework\Entities
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $remember_token
+ */
 class User extends Authenticatable
 {
     use Notifiable;

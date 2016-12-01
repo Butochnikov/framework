@@ -25,7 +25,37 @@ class AdminLteTheme extends Theme implements Initializable
      */
     public function name(): string
     {
-        return 'admin-lte';
+        return 'AdminLTE 2';
+    }
+
+    /**
+     * Версия темы
+     *
+     * @return string
+     */
+    public function version(): string
+    {
+        return '2.3.8';
+    }
+
+    /**
+     * Название с указанием версии
+     *
+     * @return string
+     */
+    public function longName(): string
+    {
+        return $this->name() . ' v.'. $this->version();
+    }
+
+    /**
+     * URL проекта
+     *
+     * @return string
+     */
+    public function homepage(): string
+    {
+        return 'https://almsaeedstudio.com/';
     }
 
     /**

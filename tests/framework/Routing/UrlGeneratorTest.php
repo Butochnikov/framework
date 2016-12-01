@@ -123,4 +123,8 @@ class TestUrlGeneratorTheme implements \SleepingOwl\Framework\Contracts\Themes\T
     public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
     public function renderMeta(string $title = null): string {}
     public function renderNavigation(): string {}
+    public function toArray() {}
+    public function version(): string {}
+    public function longName(): string{}
+    public function homepage(): string{}
 }

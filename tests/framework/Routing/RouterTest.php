@@ -77,6 +77,20 @@ class RouterTest extends PHPUnit_Framework_TestCase
             "middleware" => ['test', "backend"],
             "prefix" => "test_preffix",
         ], $this->router->data);
+
+        $router->backendGroup(['prefix' => 'test'], function() {});
+
+        $this->assertEquals([
+            "middleware" => 'backend',
+            "prefix" => "test_preffix/test",
+        ], $this->router->data);
+
+        $router->backendGroup(['prefix' => '/test'], function() {});
+
+        $this->assertEquals([
+            "middleware" => 'backend',
+            "prefix" => "test_preffix/test",
+        ], $this->router->data);
     }
 }
 

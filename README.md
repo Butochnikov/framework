@@ -11,4 +11,5 @@
 1. `composer require sleepingowl/framework`
 2. Добавить `SleepingOwl\Framework\Providers\FrameworkServiceProvider::class` в сервис провайдеры
 3. Добавить `require __DIR__.'/../vendor/sleepingowl/framework/bootstrap/app.php';` в `public/index.php`
-4. Выполнить команду `php artisan sleepingowl:install`
+4. Добавить `require __DIR__.'/../vendor/sleepingowl/framework/bootstrap/app.php';` в `artisan`
+5. Выполнить команду `php artisan sleepingowl:install`

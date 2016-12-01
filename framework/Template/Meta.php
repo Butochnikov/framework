@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Template;
 
 use KodiCMS\Assets\Meta as BaseMeta;

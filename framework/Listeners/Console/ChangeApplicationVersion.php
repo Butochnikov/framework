@@ -1,5 +1,4 @@
 <?php
-
 namespace SleepingOwl\Framework\Listeners\Console;
 
 use Illuminate\Console\Events\ArtisanStarting;

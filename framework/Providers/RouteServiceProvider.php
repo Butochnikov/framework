@@ -62,8 +62,8 @@ class RouteServiceProvider extends ServiceProvider
                 }
             );
 
-            $router->group([
-                'namespace' => 'SleepingOwl\Api\Http\Controllers'],
+            $router->backendGroup([
+                'namespace' => 'SleepingOwl\Api\Http\Controllers', 'prefix' => 'api', 'middleware' => 'context:'.SleepingOwl::CTX_API],
                 function () use($router) {
                     require SLEEPINGOWL_PATH.'/routes/api.php';
                 }

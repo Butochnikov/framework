@@ -62,6 +62,16 @@ abstract class Theme implements ThemeContract
     }
 
     /**
+     * Название с указанием версии
+     *
+     * @return string
+     */
+    public function longName(): string
+    {
+        return $this->name() . ' v.'. $this->version();
+    }
+
+    /**
      * Настройки темы
      *
      * @return ConfigContract
@@ -174,5 +184,18 @@ abstract class Theme implements ThemeContract
         return $this->navigation->render(
             $this->viewPath('layouts.partials.navigation')
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'asset_dir' => $this->assetDir(),
+            'name' => $this->name(),
+            'version' => $this->version(),
+            'homepage' => $this->homepage()
+        ];
     }
 }

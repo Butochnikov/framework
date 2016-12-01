@@ -34,7 +34,7 @@ return [
     |
     */
     'theme' => [
-        'default' => env('SLEEPINGOWL_THEME', 'admin-lte'), // Тема используемая по умолачанию
+        'default' => env('SLEEPINGOWL_THEME', 'admin-lte'), // Тема используемая по умолчанию
 
         'themes' => [
             'admin-lte' => [

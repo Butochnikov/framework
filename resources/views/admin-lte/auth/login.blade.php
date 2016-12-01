@@ -40,8 +40,11 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-xs-8">
-                            <div class="checkbox">
-                                <label> <input type="checkbox" name="remember"> Remember Me </label>
+                            <div class="checkbox checkbox-primary">
+                                <input id="remember" class="styled" name="remember" type="checkbox" checked>
+                                <label for="remember">
+                                    Remember Me
+                                </label>
                             </div>
                         </div>
                         <!-- /.col -->
