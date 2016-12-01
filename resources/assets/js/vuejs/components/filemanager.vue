@@ -225,52 +225,9 @@
 				selected: null
 			}
 		},
-		mounted() {
-			let self = this;
-			self.fileManagerHeight();
-
-			$(window).resize(function () {
-				self.fileManagerHeight();
-			});
-		},
 		methods: {
 			fileIcon(file) {
 				return '/vendor/sleepingowl/admin-lte/images/filemanager/'+file.type+'.png'
-			},
-			fileManagerHeight() {
-				$('.files-manager').each(function () {
-					var box = $(this),
-						boxColLeft = box.find('.files-manager-side'),
-						boxSubHeader = box.find('.files-manager-header'),
-						boxCont = box.find('.files-manager-content-in'),
-						boxColRight = box.find('.files-manager-aside');
-
-					var paddings = parseInt($('.content-wrapper').css('padding-top')) +
-						parseInt($('.content-wrapper').css('padding-bottom')) +
-						parseInt(box.css('margin-bottom')) + 2;
-
-					boxColLeft.height('auto');
-					boxCont.height('auto');
-					boxColRight.height('auto');
-
-					if (boxColLeft.height() <= ($(window).height() - paddings)) {
-						boxColLeft.height(
-							$(window).height() - paddings
-						);
-					}
-
-					if (boxColRight.height() <= ($(window).height() - paddings - boxSubHeader.outerHeight())) {
-						boxColRight.height(
-							$(window).height() -
-							paddings -
-							boxSubHeader.outerHeight()
-						);
-					}
-
-					boxCont.height(
-						boxColRight.height()
-					);
-				});
 			}
 		}
 	}
