@@ -3,4 +3,4 @@
  *
  * @see https://limonte.github.io/sweetalert2/
  */
-require('sweetalert2');
+var swal = require('sweetalert2');

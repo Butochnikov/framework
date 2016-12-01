@@ -9,7 +9,7 @@
 
 .files-manager-side {
   float:        left;
-  width:        168px;
+  width:        200px;
   position:     relative;
   background:   @sidebar-light-bg;
   border-right: solid 1px @gray;
@@ -45,12 +45,12 @@
 .files-manager-panel {
   float:       right;
   width:       100%;
-  margin-left: -168px;
+  margin-left: -200px;
   background:  #fff;
 }
 
 .files-manager-panel-in {
-  margin-left: 168px;
+  margin-left: 200px;
   .clearfix();
 }
 
@@ -132,6 +132,8 @@
 .files-manager-aside-section {
   border-top: solid 1px @gray;
   padding:    15px 15px 20px;
+  font-size:  80%;
+
   &:first-child {
     border-top: none;
   }
@@ -158,6 +160,13 @@
   border-right: solid 1px @gray;
 }
 
+.files-manager-breadcrumbs {
+  font-size:     90%;
+  padding:       5px;
+  border-bottom: solid 1px @gray;
+  background:    @sidebar-light-bg;
+}
+
 .fm-file-list,
 .fm-file-grid {
   padding: 18px 0 0 18px;
@@ -165,7 +174,8 @@
 }
 
 .fm-file-list {
-  padding-right: 18px;
+  padding-right:  18px;
+  padding-bottom: 18px;
 }
 
 .fm-file {
@@ -229,6 +239,10 @@
     margin-bottom: 2px;
     height:        auto;
   }
+
+  .fm-file-meta {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 830px) {
@@ -251,6 +265,16 @@
 }
 
 @media (max-width: @screen-header-collapse) {
+  .fm-file-grid {
+    .fm-file {
+      width: 200px;
+    }
+
+    .fm-file-meta {
+      max-width: 130px;
+    }
+  }
+
   .files-manager-header {
     .files-manager-header-left,
     .files-manager-header-right {
@@ -277,6 +301,12 @@
   }
 }
 
+@media (max-width: 485px) {
+  .fm-file {
+    width: 100% !important;
+  }
+}
+
 @media (max-width: 380px) {
   .files-manager-header-left {
     padding-bottom: 0 !important;
@@ -285,3 +315,4 @@
     }
   }
 }
+

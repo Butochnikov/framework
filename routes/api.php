@@ -6,4 +6,8 @@ $router->group(['middleware' => 'backend.auth:backend'], function($router) {
     $router->get('user/{id}', 'UserController@show');
     $router->get('users', 'UserController@index');
 
+
+    $router->get('filemanager', 'FilemanagerController@listFiles');
+    $router->post('filemanager', 'FilemanagerController@upload');
+    $router->delete('filemanager', 'FilemanagerController@delete');
 });
