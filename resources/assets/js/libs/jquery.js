@@ -6,10 +6,10 @@
  *
  * @see https://api.jquery.com/
  */
-window.$ = global.jQuery = require('jquery');
+window.$ = global.jQuery = require('jquery')
 
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': window.Framework.Settings.token
+        'X-CSRF-TOKEN': Framework.token
     }
 });

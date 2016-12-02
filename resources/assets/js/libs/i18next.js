@@ -4,16 +4,16 @@
  *
  * @see http://i18next.com/
  */
-window.i18next = require('i18next');
+window.i18next = require('i18next')
 
 i18next.init({
-    lng: window.Framework.Settings.locale,
+    lng: Framework.locale,
     fallbackLng: 'en',
     defaultNS: 'core',
     ns: 'core',
     nsSeparator: '::',
     resources: {
-        [window.Framework.Settings.locale]: window.Framework.Settings.trans
+        [Framework.locale]: Framework.Config.get('trans', {})
     }
 });
 

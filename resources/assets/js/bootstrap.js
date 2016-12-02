@@ -1,15 +1,16 @@
-window.Framework.Settings.token = document.querySelector("meta[name='csrf-token']").getAttribute('content');
-
 /**
- * Components
+ * A modern JavaScript utility library delivering modularity, performance & extras.
  */
-window.Framework.log = (error) => {
-    console.log(error)
-}
-
 require('./libs/lodash')
+let Framework = require('./components/framework');
+window.Framework = new Framework(
+    document.querySelector("meta[name='csrf-token']").getAttribute('content'),
+    window.GlobalConfig || {}
+)
+
 require('./libs/jquery')
 require('./libs/bootstrap')
+require('./libs/urijs')
 require('./libs/moment')
 require('./libs/i18next')
 require('./libs/dropzone')
@@ -32,3 +33,4 @@ window.Framework.Events = require('./components/events');
 window.Framework.Controllers = require('./components/controllers');
 window.Framework.Modules = require('./components/modules');
 window.Framework.WYSIWYG = require('./components/wysiwyg');
+window.Framework.Message = require('./components/messages');

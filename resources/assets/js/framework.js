@@ -15,9 +15,9 @@ require('./bootstrap');
 Vue.component('filemanager',  require('./vuejs/components/filemanager.vue'))
 
 $(function () {
-    window.Framework.Modules.boot();
+    Framework.Modules.boot();
 
-    window.Framework.Controllers.dispatch(
+    Framework.Controllers.dispatch(
         $('body:first').data('route')
     )
 

@@ -15,7 +15,7 @@ window.Vue = require('vue');
  */
 require('vue-resource');
 
-Vue.http.headers.common['X-CSRF-TOKEN'] = window.Framework.Settings.token;
+Vue.http.headers.common['X-CSRF-TOKEN'] = Framework.token;
 
 /**
  * We'll register a HTTP interceptor to attach the "XSRF" header to each of
@@ -31,33 +31,22 @@ Vue.http.interceptors.push((request, next) => {
             case 422:
                 break;
             case 401:
-                sweetAlert(
-                    i18next.t('core::message.need_auth'),
-                    response.data.message,
-                    'error'
-                )
+                swal('Unauthorized!', "", "error")
                 break;
             case 403:
-                sweetAlert(
-                    i18next.t('core::message.access_denied'),
-                    response.data.message,
-                    'error'
-                )
+                swal('Access denied', "", "error")
                 break;
             default:
-                sweetAlert(
-                    i18next.t('core::message.something_went_wrong'),
-                    response.data.message,
-                    'error'
-                )
+                //response.data.message
+                swal('Something went wrong', "", "error")
         }
     });
 });
 
 Vue.use({
     install (Vue, options) {
-        Vue.prototype.$trans = (key) => i18next.t(key),
-        Vue.prototype.$settings = window.Framework.Settings
+        Vue.prototype.$trans = (key) => i18next.t(key)
+        Vue.prototype.$settings = Framework.Config
     }
 });
 

@@ -3,4 +3,4 @@
  *
  * @see http://mm.onokumus.com/
  */
-require('metismenu');
+require('metismenu')

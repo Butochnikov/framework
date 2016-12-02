@@ -22,14 +22,13 @@ class AppController extends Controller
         Factory $themeManager
     )
     {
-        $content = 'window.Framework = '.json_encode([
-            'Settings' => [
-                'locale' => $translator->getLocale(),
-                'trans' => [],
-                'url_prefix' => $framework->config()['url_prefix'],
-                'backend_url' => backend_url(''),
-                'theme' => $themeManager->theme()->toArray(),
-            ]
+        $content = 'window.GlobalConfig = '.json_encode([
+            'locale' => $translator->getLocale(),
+            'trans' => [],
+            'url_prefix' => $framework->config()['url_prefix'],
+            'url' => url(''),
+            'backend_url' => backend_url(''),
+            'theme' => $themeManager->theme()->toArray(),
         ]);
 
         return new Response($content, 200, [

@@ -8,6 +8,6 @@ Vue.filter('relative', (value) => moment(value).local().fromNow());
  */
 Vue.filter('formated', (value, format) => {
     return moment(value).format(
-        format || this.$settings.config.date.format
+        format || this.$settings.date.format || 'Y.m.d'
     );
 });

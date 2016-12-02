@@ -2,7 +2,7 @@ module.exports = {
     _filters: [],
     _switchedOn: {},
     _editors: {},
-    add (name, switchOnHandler, switchOffHandler, execHandler) {
+    register (name, switchOnHandler, switchOffHandler, execHandler) {
         if (_.isUndefined(switchOnHandler) || _.isUndefined(switchOffHandler)) {
             Framework.log('System try to add filter without required callbacks.');
             return;
@@ -22,7 +22,7 @@ module.exports = {
         }
     },
     switchOn (textareaId, filter, params) {
-        $('#' + textareaId).css('display', 'block');
+        $(`#${textareaId}`).css('display', 'block');
 
         if (this._filters.length > 0) {
             let oldFilter = this.get(textareaId);
@@ -46,7 +46,7 @@ module.exports = {
                 Framework.Events.fire('wysiwyg:switchOn', this._editors[textareaId]);
 
             } catch (e) {
-                Admin.log(e);
+                Framework.log(e);
             }
         }
     },
@@ -67,10 +67,10 @@ module.exports = {
     exec (textareaId, command, data) {
         let filter = this.get(textareaId);
 
-        if (filter && _.isFunction(filter[3]))
-
+        if (filter && _.isFunction(filter[3])) {
             Framework.Events.fire('wysiwyg:exec', command, textareaId, data);
 
             return filter[3](this._editors[textareaId], command, textareaId, data);
+        }
     }
 }

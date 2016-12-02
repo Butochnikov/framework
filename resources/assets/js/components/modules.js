@@ -2,7 +2,7 @@ module.exports = {
     _modules: {},
     add (module, callback, priority, events) {
         if (!_.isFunction(callback)) {
-            Framework.log('[Modules] Module ' + module + ' not added. You need to specify callback');
+            Framework.log(`[Modules] Module ${module} not added. You need to specify callback`);
             return this;
         }
 
@@ -12,10 +12,10 @@ module.exports = {
             priority: priority || 0
         };
 
-        if(_.isString(events)) {
+        if (_.isString(events)) {
             Framework.Events.on(events, callback)
         } else if (_.isArray(events)) {
-            _.each(events, function(event) {
+            _.each(events, function (event) {
                 Framework.Events.on(event, callback)
             })
         }
@@ -37,7 +37,7 @@ module.exports = {
             try {
                 module.callback();
             } catch (e) {
-                Framework.log('[Modules] Error with loading module ' + name);
+                Framework.log(`[Modules] Error with loading module ${name}`);
             }
         })
     }
