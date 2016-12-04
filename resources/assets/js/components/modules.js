@@ -1,8 +1,8 @@
 module.exports = {
     _modules: {},
-    add (module, callback, priority, events) {
+    register (module, callback, priority, events) {
         if (!_.isFunction(callback)) {
-            Framework.log(`[Modules] Module ${module} not added. You need to specify callback`);
+            Framework.log(`Module ${module} not added. You need to specify callback`, 'Modules');
             return this;
         }
 
@@ -37,7 +37,7 @@ module.exports = {
             try {
                 module.callback();
             } catch (e) {
-                Framework.log(`[Modules] Error with loading module ${name}`);
+                Framework.log(`Error with loading module ${name}`, 'Modules');
             }
         })
     }

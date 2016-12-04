@@ -22,6 +22,6 @@ $(function () {
     )
 
     const app = new Vue({
-        el: '.content'
+        el: '#framework'
     });
 })

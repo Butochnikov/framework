@@ -48,7 +48,7 @@ class FilemanagerController extends Controller
                     $request->input('path')
                 )
             ),
-            'tree' => $this->pathsToTree(array_combine($directories, $directories))
+            //'tree' => $this->pathsToTree(array_combine($directories, $directories))
         ]);
     }
 
@@ -119,6 +119,9 @@ class FilemanagerController extends Controller
     {
         return collect($files)->map(function ($path) {
             return $this->filesystem->getMetadata($path);
+        })->map(function ($data) {
+            $data['basename'] = pathinfo($data['path'], PATHINFO_BASENAME);
+            return $data;
         });
     }
 

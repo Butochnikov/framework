@@ -1,13 +1,12 @@
+import Config from './config';
+import Url from './url';
+
 module.exports = class Framework {
     constructor(token, config) {
-        let ConfigReposirtory = require('./config');
+        this.__token = token
+        this.__config = new Config(config)
 
-        this.token = token
-        this.Config = new ConfigReposirtory(config)
-
-        let Url = require('./url');
-
-        this.Url = new Url(
+        this.__url = new Url(
             this.Config.get('url'),
             this.Config.get('backend_url'),
             this.Config.get('url_prefix', 'backend'),
@@ -18,44 +17,66 @@ module.exports = class Framework {
     /**
      * @returns {String}
      */
-    static get locale () {
+    get locale () {
         return this.Config.get('locale', 'en')
     }
 
     /**
      * @returns {String}
      */
-    static get token () {
-        return this.token
+    get token () {
+        return this.__token
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get debug () {
+        return this.Config.get('debug')
+    }
+
+    /**
+     * @returns {String}
+     */
+    get env () {
+        return this.Config.get('env')
     }
 
     /**
      * @returns {ConfigReposirtory}
      */
-    static get Config () {
-        return this.Config
+    get Config () {
+        return this.__config
     }
 
     /**
      * @returns {Url}
      */
-    static get Url () {
-        return this.Url
+    get Url () {
+        return this.__url
     }
 
-    static set token (value) {
-        throw new Error(`The token property cannot be written.`);
+    set token (value) {
+        throw new Error(`The token property cannot be written.`)
     }
 
-    static set Config (value) {
-        throw new Error(`The Config property cannot be written.`);
+    set debug (value) {
+        throw new Error(`The debug property cannot be written.`)
     }
 
-    static set Url (value) {
-        throw new Error(`The Url property cannot be written.`);
+    set env (value) {
+        throw new Error(`The env property cannot be written.`)
     }
 
-    log (error) {
-        console.log(error)
+    set Config (value) {
+        throw new Error(`The Config property cannot be written.`)
+    }
+
+    set Url (value) {
+        throw new Error(`The Url property cannot be written.`)
+    }
+
+    log (error, module) {
+        console.log(`[${module || 'SleepingOwl Framework'}]: ${error}`)
     }
 }

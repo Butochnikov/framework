@@ -5,4 +5,4 @@
  *
  * @see https://medialize.github.io/URI.js/
  */
-window.URI = require('urijs');
+require('urijs');

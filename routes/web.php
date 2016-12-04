@@ -1,8 +1,8 @@
 <?php
 
-$router->get('framework/scripts', 'AppController@settings');
-
 $router->backendGroup([], function ($router) {
+    $router->get('framework/scripts', 'AppController@settings');
+
     Auth::routes();
 
     $router->group(['middleware' => 'backend.auth:backend'], function($router) {

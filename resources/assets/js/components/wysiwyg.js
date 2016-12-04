@@ -4,7 +4,7 @@ module.exports = {
     _editors: {},
     register (name, switchOnHandler, switchOffHandler, execHandler) {
         if (_.isUndefined(switchOnHandler) || _.isUndefined(switchOffHandler)) {
-            Framework.log('System try to add filter without required callbacks.');
+            Framework.log('System try to add filter without required callbacks.', 'Wysiwyg');
             return;
         }
 
@@ -61,7 +61,7 @@ module.exports = {
             Framework.Events.fire('wysiwyg:switchOff', textareaId);
 
         } catch (e) {
-            Framework.log(e);
+            Framework.log(e, 'Wysiwyg');
         }
     },
     exec (textareaId, command, data) {

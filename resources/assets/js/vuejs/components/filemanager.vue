@@ -4,7 +4,7 @@
             <header class="files-manager-side-title">Directories</header>
             <ul class="files-manager-side-list">
                 <li v-for="dir in directories">
-                    <a href="#" @click="openDir(dir)">{{ dir }}</a>
+                    <a href="#" @click="openDir(dir.path)">{{ dir.basename }}</a>
                 </li>
             </ul>
         </nav>
@@ -78,7 +78,7 @@
 								<i class="fa fa-trash"></i>
 							</button>
 
-							<a v-bind:href="downloadPath(selected)" href="#" class="btn btn-flat btn-default">
+							<a v-bind:href="downloadPath(selected)" class="btn btn-flat btn-default">
 								<i class="fa fa-download"></i> Download
 							</a>
 						</span>
@@ -110,28 +110,29 @@
             }
         },
         mounted() {
-            let self = this
-
-            new Dropzone(".files-manager-content-in", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': Framework.token
-                },
-                previewsContainer: false,
-                clickable: '#filemanager-upload',
-                url: Framework.Url.api('filemanager'),
-                sending: function (file, xhr, formData) {
-                    formData.append('path', self.currentPath);
-                },
-                success (file, response) {
-                    self.openDir(self.currentPath)
-                }
-            });
-
+            this.__initDropzone()
             this.openDir(this.currentPath)
         },
         methods: {
-            fileIcon (file) {
+            __initDropzone() { // Инициализация Dropzone
+                let self = this
+                new Dropzone(".files-manager-content-in", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': Framework.token
+                    },
+                    previewsContainer: false,
+                    clickable: '#filemanager-upload',
+                    url: Framework.Url.api('filemanager'),
+                    sending: function (file, xhr, formData) {
+                        formData.append('path', self.currentPath);
+                    },
+                    success (file, response) {
+                        self.openDir(self.currentPath)
+                    }
+                })
+            },
+            fileIcon (file) { // Генерация пути до иконки файла
                 let types = {
                     img: ['png', 'jpg', 'gif'],
                     doc: ['doc', 'txt'],
@@ -160,62 +161,60 @@
 
                 return Framework.Url.asset(`images/filemanager/${image}.png`)
             },
-            deleteDir(dir) {
+            deleteDir(dir) { // Удаление директории
                 let self = this
 
-                Framework.Message.confirm()
-                swal({
-                    title: `Are you sure delete directory [${file.filename}] ?`,
-                    text: `You won't be able to revert this!`,
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then(function () {
-                    self.$http.delete(Framework.Url.api('filemanager/dir'), {params: {file: file.path}}).then((response) => {
-                        self.openDir(self.currentPath)
-                    }, (response) => {
-                    });
-                })
+                Framework.Message.confirm(
+                    `Are you sure delete directory [${dir.filename}] ?`,
+                    `You won't be able to revert this!`,
+                    function () {
+                        self.$http.delete(Framework.Url.api('filemanager/dir'), {params: {dir: dir.path}})
+                            .then(
+                                (response) => { // success
+                                    self.openDir(self.currentPath)
+                                },
+                                (response) => {} // error
+                            );
+                    }
+                )
             },
-            deleteFile(file) {
+            deleteFile(file) { // Удаление файла
                 let self = this
 
-                swal({
-                    title: `Are you sure delete file [${file.filename}] ?`,
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then(function () {
-                    self.$http.delete(Framework.Url.api('filemanager'), {params: {file: file.path}}).then((response) => {
-                        self.openDir(self.currentPath)
-                    }, (response) => {
-                    });
-                })
+                Framework.confirm(
+                    `Are you sure delete file [${file.filename}]?`,
+                    "You won't be able to revert this!",
+                    function () {
+                        self.$http.delete(Framework.Url.api('filemanager'), {params: {file: file.path}})
+                            .then(
+                                (response) => { // success
+                                    self.openDir(self.currentPath)
+                                },
+                                (response) => {} // error
+                            )
+                    }
+                )
             },
-            openDir (path) {
+            openDir (path) { // Открытие директории
                 if (this.currentPath != path) {
                     this.currentPath = path || ''
                     window.location.href = path ? "#" + path : '#'
-
                     this.select(null)
                 }
 
                 // GET /someUrl
-                this.$http.get(Framework.Url.api('filemanager'), {params: {path: path}}).then((response) => {
-                    this.populateResponseData(response)
-                }, (response) => {
-                });
+                this.$http.get(Framework.Url.api('filemanager'), {params: {path: path}})
+                    .then(
+                        (response) => { // success
+                            this.populateResponseData(response)
+                        },
+                        (response) => {} // error
+                    );
             },
-            select (file) {
+            select (file) { // При клике на любой файл он помечается как выбранный и для него показывается информация
                 this.selected = file;
             },
-            downloadPath(file) {
-                // TODO не работает
+            downloadPath(file) { // Генерация ссылки на скачивание файла
                 return Framework.Url.api(`filemanager/download`, {file: file.path})
             },
             populateResponseData(response) {
@@ -224,7 +223,7 @@
             }
         },
         computed: {
-            breadcrumbs () {
+            breadcrumbs () { // Генерация хлебных крошек
                 if (!this.currentPath) {
                     return []
                 }

@@ -31,12 +31,13 @@ Vue.http.interceptors.push((request, next) => {
             case 422:
                 break;
             case 401:
-                swal('Unauthorized!', "", "error")
+                Framework.Message.error('Unauthorized!')
                 break;
             case 403:
-                swal('Access denied', "", "error")
+                Framework.Message.error('Access denied')
                 break;
             default:
+                Framework.Message.error('Something went wrong')
                 //response.data.message
                 swal('Something went wrong', "", "error")
         }
