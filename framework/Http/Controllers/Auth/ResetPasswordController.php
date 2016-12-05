@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SleepingOwl\Framework\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use SleepingOwl\Framework\SleepingOwl;
 
 class ResetPasswordController extends Controller
 {
@@ -34,7 +35,7 @@ class ResetPasswordController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('backend');
+        return Auth::guard(SleepingOwl::guard());
     }
 
     /**

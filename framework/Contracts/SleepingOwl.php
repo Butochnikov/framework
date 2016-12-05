@@ -2,6 +2,7 @@
 namespace SleepingOwl\Framework\Contracts;
 
 use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 interface SleepingOwl
 {
@@ -91,4 +92,39 @@ interface SleepingOwl
      * @return string
      */
     public function urlPrefix(): string;
+
+    /**
+     * Получение названия класса модели пользователя админ панели
+     *
+     * @return string
+     */
+    public static function userModel(): string;
+
+    /**
+     * Получение объекта пользователя админ панели
+     *
+     * @return Authenticatable
+     */
+    public static function user(): Authenticatable;
+
+    /**
+     * Получение названия гарда для админ панели
+     *
+     * @return string
+     */
+    public static function guard(): string;
+
+    /**
+     * Получение настроек для гарда
+     *
+     * @return array
+     */
+    public function guardConfig(): array;
+
+    /**
+     * Получение настроек провайдера для гарда
+     *
+     * @return array
+     */
+    public function guardProvider(): array;
 }

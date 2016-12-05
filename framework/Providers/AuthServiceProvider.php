@@ -30,15 +30,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $framework = $this->app[SleepingOwl::class];
 
-        $this->app['config']->set('auth.guards.backend', [
-            'driver' => 'session',
-            'provider' => 'backend_users',
-        ]);
+        $this->app['config']->set('auth.guards.'.$framework->guard(), $framework->guardConfig());
 
-        $this->app['config']->set('auth.providers.backend_users', $framework->config()->get('guard_provider', [
-            'driver' => 'eloquent',
-            'model' => \SleepingOwl\Framework\Entities\User::class
-        ]));
+        $this->app['config']->set('auth.providers.backend_users', $framework->guardProvider());
 
         $this->registerPolicies();
 

@@ -7,11 +7,13 @@ use SleepingOwl\Framework\Contracts\SleepingOwl as SleepingOwlContract;
 
 class SleepingOwl implements SleepingOwlContract
 {
-    use Configuration\ManagesContext,
-        Configuration\ManagesAuthOptions;
+    use Configuration\ManagesAppDetails,
+        Configuration\ManagesContext,
+        Configuration\ManagesAuthOptions,
+        Configuration\ProvidesScriptVariables;
 
     /**
-     * The SleepingOwl version.
+     * Версия фреймворка
      */
     const VERSION = '0.0.1 alpha';
 

@@ -1,7 +1,7 @@
 <?php
 namespace SleepingOwl\Framework\Console\Installation;
 
-use SleepingOwl\Framework\Entities\User;
+use SleepingOwl\Framework\SleepingOwl;
 
 class CreateRootUser extends Installator
 {
@@ -28,11 +28,13 @@ class CreateRootUser extends Installator
             $email = $this->command->ask('Your email');
             $password = $this->command->secret('Your password');
 
-            $user = User::create([
+
+            $user = SleepingOwl::user()->create([
                 'name' => $name,
                 'email' => $email,
                 'password' => bcrypt($password)
             ]);
+
         } while(!$user->exists);
     }
 
@@ -43,6 +45,6 @@ class CreateRootUser extends Installator
      */
     public function installed(): bool
     {
-        return User::count() > 0;
+        return SleepingOwl::user()->count() > 0;
     }
 }

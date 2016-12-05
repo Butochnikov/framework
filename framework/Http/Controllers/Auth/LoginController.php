@@ -4,6 +4,7 @@ namespace SleepingOwl\Framework\Http\Controllers\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use SleepingOwl\Framework\Http\Controllers\Controller;
+use SleepingOwl\Framework\SleepingOwl;
 
 class LoginController extends Controller
 {
@@ -40,7 +41,7 @@ class LoginController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('backend');
+        return Auth::guard(SleepingOwl::guard());
     }
 
     /**
