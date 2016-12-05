@@ -23,7 +23,7 @@ return [
 
     'guard_provider' => [
         'driver' => 'eloquent',
-        'model' => SleepingOwl\Framework\Entities\User::class,
+        'model' => SleepingOwl\Framework\SleepingOwl::userModel(),
     ],
 
     /*
@@ -46,7 +46,7 @@ return [
 
         'themes' => [
             'admin-lte' => [
-                'class' => \SleepingOwl\Framework\Themes\AdminLteTheme::class,
+                'class' => SleepingOwl\Framework\Themes\AdminLteTheme::class,
                 // 'logo' => '...', // Переопределение логотипа
                 // 'logo_small' => '...' // Переопределение компактной версии логотипа
             ]
