@@ -13,6 +13,13 @@ interface SleepingOwl
     const CTX_API = 'api';
 
     /**
+     * Get the default JavaScript variables for Framework.
+     *
+     * @return array
+     */
+    public function scriptVariables(): array;
+
+    /**
      * Получение версии фреймворка
      *
      * @return string
@@ -70,4 +77,18 @@ interface SleepingOwl
      * @return bool|array
      */
     public function context();
+
+    /**
+     * URL префикс админ панели по умочанию
+     *
+     * @return string
+     */
+    public static function defaultUrlPrefix(): string;
+
+    /**
+     * URL префикс админ панели
+     *
+     * @return string
+     */
+    public function urlPrefix(): string;
 }

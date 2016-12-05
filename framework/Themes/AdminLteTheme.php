@@ -14,7 +14,7 @@ class AdminLteTheme extends Theme implements Initializable
     public function initialize()
     {
         $this->meta
-            ->addJs($this->name(), $this->asset('framework.js'), Meta::FRAMEWORK_SCRIPTS)
+            ->addJs($this->name(), $this->asset('framework.js'), Meta::FRAMEWORK_SCRIPTS, true)
             ->addCss($this->name(), $this->asset('framework.css'));
     }
 

@@ -1,5 +1,5 @@
-import Config from './config';
-import Url from './url';
+import Config from "./config";
+import Url from "./url";
 
 module.exports = class Framework {
     constructor(token, config) {
@@ -15,68 +15,81 @@ module.exports = class Framework {
     }
 
     /**
+     * @returns {Integer}
+     */
+    get userId() {
+        return this.Config.get('userId')
+    }
+
+    /**
      * @returns {String}
      */
-    get locale () {
+    get locale() {
         return this.Config.get('locale', 'en')
     }
 
     /**
      * @returns {String}
      */
-    get token () {
+    get token() {
         return this.__token
     }
 
     /**
      * @returns {boolean}
      */
-    get debug () {
+    get debug() {
         return this.Config.get('debug')
     }
 
     /**
      * @returns {String}
      */
-    get env () {
+    get env() {
         return this.Config.get('env')
     }
 
     /**
      * @returns {ConfigReposirtory}
      */
-    get Config () {
+    get Config() {
         return this.__config
     }
 
     /**
      * @returns {Url}
      */
-    get Url () {
+    get Url() {
         return this.__url
     }
 
-    set token (value) {
+    log(error, module) {
+        if (this.debug)
+            console.log(`[${module || 'SleepingOwl Framework'}]: ${error}`)
+    }
+
+
+    set token(value) {
         throw new Error(`The token property cannot be written.`)
     }
 
-    set debug (value) {
+    set debug(value) {
         throw new Error(`The debug property cannot be written.`)
     }
 
-    set env (value) {
+    set env(value) {
         throw new Error(`The env property cannot be written.`)
     }
 
-    set Config (value) {
+    set Config(value) {
         throw new Error(`The Config property cannot be written.`)
     }
 
-    set Url (value) {
+    set Url(value) {
         throw new Error(`The Url property cannot be written.`)
     }
 
-    log (error, module) {
-        console.log(`[${module || 'SleepingOwl Framework'}]: ${error}`)
+    set userId(value) {
+        throw new Error(`The userId property cannot be written.`)
     }
 }

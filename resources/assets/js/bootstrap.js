@@ -37,5 +37,6 @@ require('./libs/vuejs')
 require('admin-lte')
 
 window.Framework.Controllers = require('./components/controllers')
+window.Framework.Storage = require('./components/storage')
 window.Framework.Modules = require('./components/modules')
 window.Framework.WYSIWYG = require('./components/wysiwyg')

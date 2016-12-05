@@ -2,8 +2,8 @@
 namespace SleepingOwl\Framework\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use KodiCMS\Assets\Assets;
 use KodiCMS\Assets\PackageManager;
+use SleepingOwl\Framework\Template\Assets;
 use SleepingOwl\Framework\Template\Meta;
 
 class AssetsServiceProvider extends ServiceProvider

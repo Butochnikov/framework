@@ -14,14 +14,11 @@ require('./bootstrap');
 
 Vue.component('filemanager',  require('./vuejs/components/filemanager.vue'))
 
-$(function () {
-    Framework.Modules.boot();
+Framework.Modules.boot();
+Framework.Controllers.dispatch(
+    $('body:first').data('route')
+)
 
-    Framework.Controllers.dispatch(
-        $('body:first').data('route')
-    )
-
-    const app = new Vue({
-        el: '#framework'
-    });
-})
+const app = new Vue({
+    el: '#framework'
+});

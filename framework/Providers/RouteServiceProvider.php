@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->singleton('sleepingowl.router', function($app) {
             return new Router(
                 $app['router'],
-                $app[SleepingOwl::class]->config()->get('url_prefix', 'backend')
+                $app[SleepingOwl::class]->urlPrefix()
             );
         });
 

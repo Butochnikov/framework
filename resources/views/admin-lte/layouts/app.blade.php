@@ -18,7 +18,9 @@
     <body class="skin-blue sidebar-mini" data-route="{{ $routeAction or null }}">
         <div id="framework">
             @yield('content')
-            @stack('footer-scripts')
         </div>
+
+        {!! meta()->renderScripts(true) !!}
+        @stack('footer-scripts')
     </body>
 </html>

@@ -1,76 +1,131 @@
 module.exports = class Url {
-
+    
+    /**
+     * @param {String} url
+     * @param {String} backend_url
+     * @param {String} url_prefix
+     * @param {String} asset_dir
+     */
     constructor(url, backend_url, url_prefix, asset_dir) {
-        this.url = url
-        this.backend_url = backend_url
-        this.url_prefix = url_prefix
-        this.asset_dir = asset_dir
+        this._url = url
+        this._backend_url = backend_url
+        this._url_prefix = url_prefix
+        this._asset_dir = asset_dir
     }
 
-    static get hash() {
+    /**
+     * Получение якоря
+     *
+     * @returns {string}
+     */
+    static get hash () {
         return window.location.hash.substr(1)
     }
 
-    static set hash(value) {
-        throw new Error(`The hash property cannot be written.`);
+    /**
+     * Ссылка на front
+     *
+     * @returns {String}
+     */
+    get url() {
+        return this._url
     }
 
-    static get url() {
-        return this.url
-    }
-
-    static set url(value) {
+    set url(value) {
         throw new Error(`The url property cannot be written.`);
     }
 
-    static get backend_url() {
-        return this.backend_url
+    /**
+     * Ссылка на backend
+     *
+     * @returns {String}
+     */
+    get backend_url() {
+        return this._backend_url
     }
 
-    static set backend_url(value) {
+    set backend_url(value) {
         throw new Error(`The backend_url property cannot be written.`);
     }
 
-    static get url_prefix() {
-        return this.url_prefix
+    /**
+     * Получение значения url prefix админ панели
+     *
+     * @returns {String}
+     */
+    get url_prefix() {
+        return this._url_prefix
     }
 
-    static set url_prefix(value) {
+    set url_prefix(value) {
         throw new Error(`The url_prefix property cannot be written.`);
     }
 
-    static get asset_dir() {
-        return this.asset_dir
+    /**
+     * Относительный путь до хранения ассетов для текущей темы
+     *
+     * @returns {String}
+     */
+    get asset_dir() {
+        return this._asset_dir
     }
 
-    static set asset_dir(value) {
+    set asset_dir(value) {
         throw new Error(`The asset_dir property cannot be written.`);
     }
 
+    /**
+     * Генерация ссылки на asset файл для текущей темы
+     *
+     * @param {String} path относительный путь до файла
+     * @param {Object} query (Опционально) параметры для генерации query string {foo: bar, baz: bar} = ?foo=bar&baz=bar
+     * @returns {String}
+     */
     asset(path, query) {
         return this.app(
-            this.asset_dir + '/' + _.trimStart(path, '/'),
+            this._asset_dir + '/' + _.trimStart(path, '/'),
             query
         );
     }
 
+    /**
+     * Генерация api ссылки
+     *
+     * @param {String} path относительный путь
+     * @param {Object} query (Опционально) параметры для генерации query string {foo: bar, baz: bar} = ?foo=bar&baz=bar
+     * @returns {String}
+     */
     api(path, query) {
         return this.app(
-            this.url_prefix + '/api/' + _.trimStart(path, '/'),
+            this._url_prefix + '/api/' + _.trimStart(path, '/'),
             query
         );
     }
 
+    /**
+     * Генерация admin ссылки
+     *
+     * @param {String} path относительный путь
+     * @param {Object} query (Опционально) параметры для генерации query string {foo: bar, baz: bar} = ?foo=bar&baz=bar
+     * @returns {String}
+     */
     backend(path, query) {
         return this._buildUrl(
-            this.backend_url + '/' + _.trimStart(path, '/'),
+            this._backend_url + '/' + _.trimStart(path, '/'),
             query
         )
     }
 
+    /**
+     * Генерация front ссылки
+     *
+     * @param {String} path относительный путь
+     * @param {Object} query (Опционально) параметры для генерации query string {foo: bar, baz: bar} = ?foo=bar&baz=bar
+     * @returns {String}
+     */
     app(path, query) {
         return this._buildUrl(
-            this.url + '/' + _.trimStart(path, '/'),
+            this._url + '/' + _.trimStart(path, '/'),
             query
         );
     }

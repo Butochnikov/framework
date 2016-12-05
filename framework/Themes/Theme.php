@@ -135,6 +135,8 @@ abstract class Theme implements ThemeContract
     }
 
     /**
+     * Получение view объекта для текущего шаблона
+     *
      * @param string|ViewContract $view
      * @param array  $data
      * @param array  $mergeData
@@ -163,6 +165,8 @@ abstract class Theme implements ThemeContract
             $this->initialize();
         }
 
+        $this->setGlobalVariables();
+
         return $this->meta
             ->setFavicon($this->asset('favicon.ico'))
             ->setTitle($this->title($title))
@@ -170,7 +174,6 @@ abstract class Theme implements ThemeContract
             ->addMeta(['content' => csrf_token(), 'name' => 'csrf-token'])
             ->addMeta(['content' => 'width=device-width, initial-scale=1', 'name' => 'viewport'])
             ->addMeta(['content' => 'IE=edge', 'http-equiv' => 'X-UA-Compatible'])
-            ->addJs(MetaContract::FRAMEWORK_SCRIPTS, asset('framework/scripts'))
             ->render();
     }
 
@@ -197,5 +200,17 @@ abstract class Theme implements ThemeContract
             'version' => $this->version(),
             'homepage' => $this->homepage()
         ];
+    }
+
+    /**
+     * Регистрация стандартных глобальных Javascript перменных
+     */
+    protected function setGlobalVariables()
+    {
+        $globalVars = $this->framework->scriptVariables();
+
+        foreach ($globalVars as $var => $value) {
+            $this->meta->putGlobalVar($var, $value);
+        }
     }
 }
