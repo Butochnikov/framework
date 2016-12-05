@@ -17,6 +17,10 @@
                         <button type="button" class="btn btn-primary" id="filemanager-upload">
                             <i class="fa fa-upload" aria-hidden="true"></i> Upload file
                         </button>
+
+                        <button type="button" class="btn btn-default" @click="makeDirectory">
+                            <i class="fa fa-plus" aria-hidden="true"></i> New folder
+                        </button>
                     </div>
 
                     <div class="files-manager-header-right">
@@ -181,8 +185,8 @@
             deleteFile(file) { // Удаление файла
                 let self = this
 
-                Framework.confirm(
-                    `Are you sure delete file [${file.filename}]?`,
+                Framework.Message.confirm(
+                    `Are you sure delete file [${file.path}]?`,
                     "You won't be able to revert this!",
                     function () {
                         self.$http.delete(Framework.Url.api('filemanager'), {params: {file: file.path}})
@@ -197,8 +201,9 @@
             },
             openDir (path) { // Открытие директории
                 if (this.currentPath != path) {
-                    this.currentPath = path || ''
-                    window.location.href = path ? "#" + path : '#'
+                    this.currentPath = path
+                    Framework.Url.hash = path
+
                     this.select(null)
                 }
 
@@ -210,6 +215,31 @@
                         },
                         (response) => {} // error
                     );
+            },
+            makeDirectory() {
+                let self = this
+
+                Framework.Message.prompt(
+                    `Enter folder name`,
+                    '',
+                    function(dirName) {
+                        if(_.isEmpty(dirName)) {
+                            return false
+                        }
+
+                        let path = self.currentPath || ''
+
+                        // GET /someUrl
+                        self.$http.post(Framework.Url.api('filemanager/mkdir'), {path: `${path}/${dirName}`})
+                            .then(
+                                (response) => { // success
+                                    self.openDir(self.currentPath)
+                                },
+                                (response) => {} // error
+                            );
+                    },
+                    'Directory name'
+                )
             },
             select (file) { // При клике на любой файл он помечается как выбранный и для него показывается информация
                 this.selected = file;

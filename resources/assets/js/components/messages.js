@@ -66,7 +66,7 @@ module.exports = (function () {
             swal({
                 title: title,
                 text: message || '',
-                type: 'input',
+                input: 'text',
                 showCancelButton: true,
                 closeOnConfirm: false,
                 inputPlaceholder: inputPlaceholder || ''

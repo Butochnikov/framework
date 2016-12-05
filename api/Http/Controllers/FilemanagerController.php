@@ -37,8 +37,6 @@ class FilemanagerController extends Controller
             'path' => 'string'
         ]);
 
-        $directories = $this->filesystem->allDirectories();
-
         return new JsonResponse([
             'files' => $this->filesystem->listContents(
                 $request->input('path')
@@ -97,6 +95,24 @@ class FilemanagerController extends Controller
      *
      * @return JsonResponse
      */
+    public function makeDirectory(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            'path' => 'required|string'
+        ]);
+
+        $this->filesystem->makeDirectory(
+            $request->input('path')
+        );
+
+        return $this->listFiles($request);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function delete(Request $request): JsonResponse
     {
         $this->validate($request, [
@@ -105,6 +121,24 @@ class FilemanagerController extends Controller
 
         $this->filesystem->delete(
             $request->input('file')
+        );
+
+        return $this->listFiles($request);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function deleteDirectory(Request $request): JsonResponse
+    {
+        $this->validate($request, [
+            'dir' => 'required|string'
+        ]);
+
+        $this->filesystem->deleteDirectory(
+            $request->input('dir')
         );
 
         return $this->listFiles($request);

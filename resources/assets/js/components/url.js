@@ -11,6 +11,8 @@ module.exports = class Url {
         this._backend_url = backend_url
         this._url_prefix = url_prefix
         this._asset_dir = asset_dir
+
+        window.history.go(-(window.history.length - 1));
     }
 
     /**
@@ -18,8 +20,18 @@ module.exports = class Url {
      *
      * @returns {string}
      */
-    static get hash () {
-        return window.location.hash.substr(1)
+    get hash () {
+        return window.location.hash ? window.location.hash.substr(1) : ''
+    }
+
+    /**
+     * @param {String} path
+     */
+    set hash(path) {
+        if(_.isString(path) && path.length > 0)
+            window.history.pushState({ path: this.hash }, document.title, `#${path}`)
+        else
+            window.history.pushState({ path: this.hash }, document.title, window.location.pathname)
     }
 
     /**
