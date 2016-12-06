@@ -14,6 +14,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Console\Events\ArtisanStarting' => [
             'SleepingOwl\Framework\Listeners\Console\ChangeApplicationVersion',
         ],
+        'SleepingOwl\Framework\Events\ThemeLoaded' => [
+
+        ]
     ];
 
     /**
@@ -24,7 +27,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
         //
     }
 }

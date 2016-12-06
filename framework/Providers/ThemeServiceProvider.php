@@ -9,7 +9,7 @@ class ThemeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('sleepingowl.themes', function () {
-            return new ThemesManager($this->app);
+            return new ThemesManager($this->app, $this->app['events']);
         });
     }
 

@@ -1,8 +1,11 @@
 <?php
 namespace SleepingOwl\Framework\Themes;
 
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use SleepingOwl\Framework\Contracts\Themes\Factory as ThemeFactory;
 use SleepingOwl\Framework\Contracts\Themes\Theme as ThemeContract;
+use SleepingOwl\Framework\Events\ThemeLoaded;
 use SleepingOwl\Framework\Exceptions\Themes\ThemeNotFound;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,7 +15,7 @@ class ThemesManager implements ThemeFactory
     /**
      * The application instance.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var Application
      */
     protected $app;
 
@@ -29,11 +32,18 @@ class ThemesManager implements ThemeFactory
     protected $resolver;
 
     /**
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @var Dispatcher
      */
-    public function __construct(\Illuminate\Contracts\Foundation\Application $app)
+    private $events;
+
+    /**
+     * @param Application $app
+     * @param Dispatcher $events
+     */
+    public function __construct(Application $app, Dispatcher $events)
     {
         $this->app = $app;
+        $this->events = $events;
         $this->resolver = new OptionsResolver();
 
         $this->configureOptions($this->resolver);
@@ -119,6 +129,8 @@ class ThemesManager implements ThemeFactory
         }
 
         $theme = $this->app->make($class, ['config' => $config]);
+
+        $this->events->fire(new ThemeLoaded($theme));
 
         return $theme;
     }
