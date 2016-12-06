@@ -110,6 +110,7 @@ class SleepingOwl implements SleepingOwlContract
             \SleepingOwl\Framework\Providers\RouteServiceProvider::class,
             \SleepingOwl\Framework\Providers\EventServiceProvider::class,
             \SleepingOwl\Api\Providers\ApiServiceProvider::class,
+            \SleepingOwl\Framework\Providers\BreadcrumbsServiceProvider::class,
         ];
 
         foreach ($providers as $provider) {
@@ -168,7 +169,8 @@ class SleepingOwl implements SleepingOwlContract
             'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router'],
             'sleepingowl.url' => ['SleepingOwl\Framework\Routing\UrlGenerator', 'SleepingOwl\Framework\Contracts\Routing\UrlGenerator'],
             'sleepingowl.api' => ['SleepingOwl\Api\Contracts\Manager', 'SleepingOwl\Api\Manager'],
-            'sleepingowl.api.exception' => ['SleepingOwl\Api\Exceptions\Handler', 'SleepingOwl\Api\Contracts\Exceptions\Handler']
+            'sleepingowl.api.exception' => ['SleepingOwl\Api\Exceptions\Handler', 'SleepingOwl\Api\Contracts\Exceptions\Handler'],
+            'sleepingowl.breadcrumbs' => ['SleepingOwl\Framework\Contracts\Template\Breadcrumbs']
         ];
 
         foreach ($aliases as $key => $aliases) {

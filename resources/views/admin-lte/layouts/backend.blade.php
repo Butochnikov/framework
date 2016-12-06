@@ -13,6 +13,8 @@
                 <h1>
                     {{{ $title }}}
                 </h1>
+
+                {!! $breadcrumbs or null !!}
             </section>
         @endif
 
