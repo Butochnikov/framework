@@ -15,17 +15,26 @@ class ThemeTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
+
+    /**
+     * @param \Illuminate\Foundation\Application $application
+     *
+     * @return \SleepingOwl\Framework\Themes\ThemesManager
+     */
+    protected function makeManager(\Illuminate\Foundation\Application $application)
+    {
+        $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
+        $events->shouldReceive('fire');
+
+        return new \SleepingOwl\Framework\Themes\ThemesManager(
+            $application,
+            $events
+        );
+    }
+
     public function setUp()
     {
         $app = app();
-
-        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
-            $routes = new Illuminate\Routing\RouteCollection(),
-            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/'),
-            new \SleepingOwl\Framework\Themes\ThemesManager($app)
-        );
-
         $app['config'] = new \Illuminate\Config\Repository([
             'sleepingowl' => [
                 'theme' => [
@@ -38,6 +47,13 @@ class ThemeTest extends PHPUnit_Framework_TestCase
                 ]
             ]
         ]);
+
+        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
+            $routes = new Illuminate\Routing\RouteCollection(),
+            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
+            $request = Illuminate\Http\Request::create('http://www.foo.com/'),
+            $this->makeManager($app)
+        );
 
         $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
 
@@ -100,7 +116,7 @@ class ThemeTest extends PHPUnit_Framework_TestCase
     {
         $theme = $this->getThemeObject();
 
-        $this->assertEquals($theme->namespace().'app', $theme->viewPath('app'));
+        $this->assertEquals($theme->viewNamespace().'app', $theme->viewPath('app'));
     }
 
     public function testGettingThemeConfig()
@@ -165,7 +181,7 @@ class TestTheme implements \SleepingOwl\Framework\Contracts\Themes\Theme
         return 'custom-dir/';
     }
     public function asset(string $path, bool $secure = null): string {}
-    public function namespace(): string{}
+    public function viewNamespace(): string{}
     public function viewPath($view): string {}
     public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
     public function renderMeta(string $title = null): string {}

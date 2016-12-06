@@ -28,12 +28,14 @@ class BreadcrumbsServiceProvider extends ServiceProvider
     {
         $this->app->booted(function () use($framework) {
             $breadcrumbs = $this->app['sleepingowl.breadcrumbs'];
+            $navigation = $this->app['sleepingowl.navigation'];
 
             // Load the app breadcrumbs if they're in routes/breadcrumbs.php (Laravel 5.3)
             if (file_exists($file = $framework->basePath().'/routes/breadcrumbs.php')) {
                 require $file;
             }
-        });
 
+            $navigation->buildBreadcrumbs($breadcrumbs);
+        });
     }
 }

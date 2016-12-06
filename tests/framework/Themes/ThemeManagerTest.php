@@ -1,7 +1,7 @@
 <?php
 
-use Mockery as m;
 use Illuminate\Foundation\Application;
+use Mockery as m;
 use SleepingOwl\Framework\Themes\ThemesManager;
 
 class ThemeManagerTest extends PHPUnit_Framework_TestCase
@@ -17,7 +17,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
     protected function getApplication()
     {
         $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
+        $app['config'] = new \Illuminate\Config\Repository([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test',
@@ -37,6 +37,24 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param Application|null $app
+     *
+     * @return ThemesManager
+     */
+    protected function makeManager(Application $app = null, $events = null)
+    {
+        if (! $events) {
+            $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
+            $events->shouldReceive('fire');
+        }
+
+        return new ThemesManager(
+            $app ?: $this->getApplication(),
+            $events
+        );
+    }
+
+    /**
      * @covers ThemesManager::getDefaultTheme()
      * @covers ThemesManager::setDefaultTheme()
      */
@@ -51,7 +69,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $manager = new ThemesManager($app);
+        $manager = $this->makeManager($app);
 
         $this->assertEquals('testTheme', $manager->getDefaultTheme());
         $manager->setDefaultTheme('anotherTestTheme');
@@ -61,13 +79,16 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
 
     public function testResolvingThemeObject()
     {
-        $manager = new ThemesManager($this->getApplication());
+        $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
+        $events->shouldReceive('fire')->once()->with(\SleepingOwl\Framework\Events\ThemeLoaded::class);
+
+        $manager = $this->makeManager(null, $events);
         $this->assertInstanceOf(TestThemeTestManager::class, $manager->theme());
     }
 
     public function testCallingThemeMethods()
     {
-        $manager = new ThemesManager($this->getApplication());
+        $manager = $this->makeManager();
         $this->assertEquals('test theme', $manager->name());
     }
 
@@ -85,7 +106,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $manager = new ThemesManager($app);
+        $manager = $this->makeManager($app);
         $manager->theme();
     }
 
@@ -108,7 +129,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $manager = new ThemesManager($app);
+        $manager = $this->makeManager($app);
         $manager->theme();
     }
 
@@ -129,7 +150,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $manager = new ThemesManager($app);
+        $manager = $this->makeManager($app);
         $manager->theme();
     }
 }
@@ -148,7 +169,7 @@ class TestThemeTestManager implements \SleepingOwl\Framework\Contracts\Themes\Th
     public function assetPath(string $path = null): string {}
     public function assetDir(): string{}
     public function asset(string $path, bool $secure = null): string {}
-    public function namespace(): string{}
+    public function viewNamespace(): string{}
     public function viewPath($view): string {}
     public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
     public function renderMeta(string $title = null): string {}

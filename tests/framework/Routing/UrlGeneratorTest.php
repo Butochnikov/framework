@@ -11,17 +11,28 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param \Illuminate\Foundation\Application $application
+     *
+     * @return \SleepingOwl\Framework\Themes\ThemesManager
+     */
+    protected function makeManager(\Illuminate\Foundation\Application $application)
+    {
+        $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
+        $events->shouldReceive('fire');
+
+        return new \SleepingOwl\Framework\Themes\ThemesManager(
+            $application,
+            $events
+        );
+    }
+
+
+    /**
      * @return \SleepingOwl\Framework\Routing\UrlGenerator
      */
     public function getUrlGeneratorObject()
     {
-        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
-            $routes = new Illuminate\Routing\RouteCollection(),
-            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/hello/world', 'GET', [], [], []),
-            new \SleepingOwl\Framework\Themes\ThemesManager($app = new \Illuminate\Foundation\Application())
-        );
-
+        $app = new \Illuminate\Foundation\Application();
         $app['config'] = new \Illuminate\Config\Repository([
             'sleepingowl' => [
                 'theme' => [
@@ -34,6 +45,13 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                 ]
             ]
         ]);
+
+        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
+            $routes = new Illuminate\Routing\RouteCollection(),
+            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
+            $request = Illuminate\Http\Request::create('http://www.foo.com/hello/world', 'GET', [], [], []),
+            $this->makeManager($app)
+        );
 
         $request->headers->set('referer', 'http://hello/world');
 
@@ -118,7 +136,7 @@ class TestUrlGeneratorTheme implements \SleepingOwl\Framework\Contracts\Themes\T
         return 'dir/';
     }
     public function asset(string $path, bool $secure = null): string {}
-    public function namespace(): string{}
+    public function viewNamespace(): string{}
     public function viewPath($view): string {}
     public function view($view, $data = [], $mergeData = []): \Illuminate\Contracts\View\View {}
     public function renderMeta(string $title = null): string {}
