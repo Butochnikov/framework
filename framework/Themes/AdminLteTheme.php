@@ -73,7 +73,7 @@ class AdminLteTheme extends Theme implements Initializable
      *
      * @return string
      */
-    public function namespace(): string
+    public function viewNamespace(): string
     {
         return 'sleepingowl::admin-lte.';
     }

@@ -97,7 +97,7 @@ interface Theme extends Arrayable
      *
      * @return string
      */
-    public function namespace(): string;
+    public function viewNamespace(): string;
 
     /**
      * Генерация пути до view для текущей темы с учетом namespace
