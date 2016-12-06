@@ -31,10 +31,7 @@ class Assets extends BaseAssets implements AssetsContract
      */
     public function render()
     {
-        return $this->renderStyles()
-            .PHP_EOL.$this->renderGlobalVars()
-            .PHP_EOL.$this->renderVars()
-            .PHP_EOL.$this->renderScripts();
+        return $this->renderGlobalVars().PHP_EOL.parent::render();
     }
 
     /**
