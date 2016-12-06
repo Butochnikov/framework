@@ -37,10 +37,20 @@ class FilemanagerController extends Controller
             'path' => 'string'
         ]);
 
+        $files = collect($this->filesystem->listContents(
+            $request->input('path')
+        ))->map(function ($file) {
+            if ($file['type'] == 'file') {
+                $file['url'] = $this->filesystem->url($file['path']);
+            }
+
+            return $file;
+        })->sortBy(function($file) {
+            return $file['type'];
+        })->values();
+
         return new JsonResponse([
-            'files' => $this->filesystem->listContents(
-                $request->input('path')
-            ),
+            'files' => $files,
             'directories' => $this->getMetaInformation(
                 $this->filesystem->directories(
                     $request->input('path')

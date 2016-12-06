@@ -11,8 +11,6 @@ module.exports = class Url {
         this._backend_url = backend_url
         this._url_prefix = url_prefix
         this._asset_dir = asset_dir
-
-        window.history.go(-(window.history.length - 1));
     }
 
     /**

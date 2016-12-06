@@ -14,12 +14,16 @@
                 <header class="files-manager-header">
 
                     <div class="files-manager-header-left">
-                        <button type="button" class="btn btn-primary" id="filemanager-upload">
+                        <button type="button" class="btn btn-flat btn-primary" id="filemanager-upload">
                             <i class="fa fa-upload" aria-hidden="true"></i> Upload file
                         </button>
 
-                        <button type="button" class="btn btn-default" @click="makeDirectory">
+                        <button type="button" class="btn btn-flat btn-default" @click="makeDirectory">
                             <i class="fa fa-plus" aria-hidden="true"></i> New folder
+                        </button>
+
+                        <button type="button" class="btn btn-flat btn-default" @click="openDir(currentPath)">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
                         </button>
                     </div>
 
@@ -44,11 +48,14 @@
                 <div class="files-manager-content">
                     <div class="files-manager-content-in scrollable-block">
                         <div class="files-manager-breadcrumbs">
-                            <a class="label label-default" @click="openDir()">/root</a>
-
-                            <a class="label label-default" v-for="segment in breadcrumbs" @click="openDir(segment.path)" style="margin-right: 3px;">
-                                /{{ segment.name }}
-                            </a>
+                            <ol class="breadcrumb">
+                                <li><a @click="openDir()">root</a></li>
+                                <li v-for="segment in breadcrumbs" >
+                                    <a @click="openDir(segment.path)">
+                                        {{ segment.name }}
+                                    </a>
+                                </li>
+                            </ol>
                         </div>
                         <div v-bind:class="{'fm-file-grid': grid, 'fm-file-list': !grid}">
                             <div class="fm-file" v-bind:class="{ 'selected': file == selected }" @click="select(file)" v-on:dblclick="file.type == 'dir' && openDir(file.path)" v-for="file in files">
@@ -71,13 +78,18 @@
                         <div class="box-typical-header-sm">
                             <img v-bind:src="fileIcon(selected)" width="50px" /> {{ selected.filename }}
                         </div>
-                        <div class="info-list">
-                            <p>
-                                <b>Path:</b> {{ selected.path }}
-                            </p>
-                        </div>
 
-                        <span v-if="selected.type == 'file'">
+                        <div v-if="selected.type == 'file'">
+
+                            <div class="info-list">
+                                <p>
+                                    <b>Path:</b> {{ selected.path }}
+                                </p>
+                                <p>
+                                    <b>Url:</b> <a v-bind:href="selected.url" target="_blank">{{ selected.url }}</a>
+                                </p>
+                            </div>
+
 							<button @click="deleteFile(selected)" class="btn btn-flat btn-danger">
 								<i class="fa fa-trash"></i>
 							</button>
@@ -85,8 +97,15 @@
 							<a v-bind:href="downloadPath(selected)" class="btn btn-flat btn-default">
 								<i class="fa fa-download"></i> Download
 							</a>
-						</span>
-                        <span v-if="selected.type == 'dir'">
+						</div>
+                        <div v-if="selected.type == 'dir'">
+
+                            <div class="info-list">
+                                <p>
+                                    <b>Path:</b> {{ selected.path }}
+                                </p>
+                            </div>
+
 							<button @click="deleteDir(selected)" class="btn btn-flat btn-danger">
 								<i class="fa fa-trash"></i>
 							</button>
@@ -94,7 +113,7 @@
 							<button @click="openDir(selected.path)" class="btn btn-flat btn-default">
 								<i class="fa fa-level-up"></i> Open
 							</button>
-						</span>
+						</div>
                     </div>
                 </section>
             </div>
@@ -135,6 +154,9 @@
                         self.openDir(self.currentPath)
                     }
                 })
+            },
+            isImage(file) {
+                return _.indexOf(['png', 'jpg', 'gif'], file.extension)
             },
             fileIcon (file) { // Генерация пути до иконки файла
                 let types = {
@@ -198,6 +220,9 @@
                             )
                     }
                 )
+            },
+            refresh () {
+                this.openDir(this.currentPath)
             },
             openDir (path) { // Открытие директории
                 if (this.currentPath != path) {
