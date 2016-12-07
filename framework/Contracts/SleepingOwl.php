@@ -2,7 +2,7 @@
 namespace SleepingOwl\Framework\Contracts;
 
 use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Contracts\Auth\Authenticatable;
+use SleepingOwl\Framework\Contracts\Auth\User as UserContract;
 
 interface SleepingOwl
 {
@@ -101,11 +101,19 @@ interface SleepingOwl
     public static function userModel(): string;
 
     /**
+     * Переопределение класса пользователя
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setUserModel(string $class);
+
+    /**
      * Получение объекта пользователя админ панели
      *
-     * @return Authenticatable
+     * @return UserContract
      */
-    public static function user(): Authenticatable;
+    public static function user(): UserContract;
 
     /**
      * Получение названия гарда для админ панели

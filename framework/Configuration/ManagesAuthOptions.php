@@ -1,10 +1,18 @@
 <?php
 namespace SleepingOwl\Framework\Configuration;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use SleepingOwl\Framework\Contracts\Auth\User as UserContract;
 
 trait ManagesAuthOptions
 {
+    /**
+     * Класс пользователя используемы админ панелью для авторизации
+     *
+     * Должен содержать интерфейс `SleepingOwl\Framework\Contracts\Auth\User`
+     *
+     * @var string
+     */
+    protected static $userModel = \SleepingOwl\Framework\Entities\User::class;
 
     /**
      * Получение названия класса модели пользователя админ панели
@@ -13,15 +21,26 @@ trait ManagesAuthOptions
      */
     public static function userModel(): string
     {
-        return \SleepingOwl\Framework\Entities\User::class;
+        return static::$userModel;
+    }
+
+    /**
+     * Переопределение класса пользователя
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setUserModel(string $class)
+    {
+        static::$userModel = $class;
     }
 
     /**
      * Получение объекта пользователя админ панели
      *
-     * @return Authenticatable
+     * @return UserContract
      */
-    public static function user(): Authenticatable
+    public static function user(): UserContract
     {
         $model = static::userModel();
 
@@ -58,9 +77,9 @@ trait ManagesAuthOptions
      */
     public function guardProvider(): array
     {
-        return $this->config->get('guard_provider', [
+        return [
             'driver' => 'eloquent',
             'model' => static::userModel()
-        ]);
+        ];
     }
 }
