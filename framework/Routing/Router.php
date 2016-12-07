@@ -31,6 +31,25 @@ class Router implements RouterContract
     }
 
     /**
+     * Register the backend authentication routes
+     *
+     * @return void
+     */
+    public function auth()
+    {
+        // Authentication Routes...
+        $this->router->get('login', 'Auth\LoginController@showLoginForm')->name('login');
+        $this->router->post('login', 'Auth\LoginController@login');
+        $this->router->post('logout', 'Auth\LoginController@logout')->name('logout');
+
+        // Password Reset Routes...
+        $this->router->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+        $this->router->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+        $this->router->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+        $this->router->post('password/reset', 'Auth\ResetPasswordController@reset');
+    }
+
+    /**
      * Получение префикса для админ интерфеса
      *
      * @return string

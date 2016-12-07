@@ -1,7 +1,7 @@
 <?php
 
 $router->backendGroup([], function ($router) {
-    Auth::routes();
+    $router->auth();
 
     $router->group(['middleware' => 'backend.auth:backend'], function($router) {
         $router->get('/', function(\Illuminate\Http\Request $request) {
@@ -18,5 +18,4 @@ $router->backendGroup([], function ($router) {
             ]);
         })->name('filemanager');
     });
-
 });

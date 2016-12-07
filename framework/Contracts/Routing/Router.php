@@ -21,4 +21,11 @@ interface Router
      * @return string
      */
     public function getUrlPrefix(): string;
+
+    /**
+     * Register the backend authentication routes
+     *
+     * @return void
+     */
+    public function auth();
 }
