@@ -3,6 +3,8 @@ namespace SleepingOwl\Framework;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\ProviderRepository;
 use SleepingOwl\Framework\Contracts\SleepingOwl as SleepingOwlContract;
 
 class SleepingOwl implements SleepingOwlContract
@@ -103,19 +105,20 @@ class SleepingOwl implements SleepingOwlContract
     protected function registerBaseServiceProviders()
     {
         $providers = [
-            \SleepingOwl\Framework\Providers\NavigationServiceProvider::class,
-            \SleepingOwl\Framework\Providers\AssetsServiceProvider::class,
-            \SleepingOwl\Framework\Providers\ThemeServiceProvider::class,
-            \SleepingOwl\Framework\Providers\AuthServiceProvider::class,
-            \SleepingOwl\Framework\Providers\RouteServiceProvider::class,
-            \SleepingOwl\Framework\Providers\EventServiceProvider::class,
+            Providers\NavigationServiceProvider::class,
+            Providers\AssetsServiceProvider::class,
+            Providers\ThemeServiceProvider::class,
+            Providers\AuthServiceProvider::class,
+            Providers\RouteServiceProvider::class,
+            Providers\EventServiceProvider::class,
+            Providers\BreadcrumbsServiceProvider::class,
             \SleepingOwl\Api\Providers\ApiServiceProvider::class,
-            \SleepingOwl\Framework\Providers\BreadcrumbsServiceProvider::class,
         ];
 
-        foreach ($providers as $provider) {
-            $this->app->register(new $provider($this->app));
-        }
+        $manifestPath = $this->app->bootstrapPath().'/cache/sleepingowl-services.php';
+
+        (new ProviderRepository($this->app, new Filesystem(), $manifestPath))
+            ->load($providers);
     }
 
     /**

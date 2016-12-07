@@ -8,6 +8,13 @@ class BreadcrumbsServiceProvider extends ServiceProvider
 {
 
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
+    /**
      * Register the service provider.
      *
      * @return void
@@ -37,5 +44,16 @@ class BreadcrumbsServiceProvider extends ServiceProvider
 
             $navigation->buildBreadcrumbs($breadcrumbs);
         });
+    }
+
+    /**
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            'sleepingowl.breadcrumbs',
+            'SleepingOwl\Framework\Contracts\Template\Breadcrumbs'
+        ];
     }
 }
