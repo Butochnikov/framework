@@ -1,74 +1,35 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Mockery as m;
 use SleepingOwl\Framework\SleepingOwl;
 
-class SleepingOwlTest extends PHPUnit_Framework_TestCase
+class SleepingOwlTest extends TestCase
 {
-
-    public function tearDown()
-    {
-        m::close();
-    }
-
-    /**
-     * @param array $config
-     *
-     * @return Application
-     */
-    protected function getApplication(array $config = [])
-    {
-        $app = m::mock(new Application);
-        $app->shouldReceive('bootstrapPath')->andReturn(TEST_STUBS);
-
-        $app['config'] = new \Illuminate\Config\Repository([
-            'sleepingowl' => [
-                'url_prefix' => 'text_backend'
-            ]
-        ] + $config);
-
-        $app->shouldReceive('register')->with(m::on(function ($provider) {
-            if (! $provider instanceof \Illuminate\Support\ServiceProvider) {
-                return false;
-            }
-
-            return true;
-        }));
-
-
-        return $app;
-    }
-
     public function testConstructor()
     {
-        $app = $this->getApplication();
-        $app->shouldReceive('register')->with(m::on(function ($provider) {
-            if (! $provider instanceof \Illuminate\Support\ServiceProvider) {
-                return false;
-            }
+        $framework = $this->getFramework(function ($app) {
+            $app->shouldReceive('register')->with(m::on(function ($provider) {
+                if (! $provider instanceof \Illuminate\Support\ServiceProvider) {
+                    return false;
+                }
 
-            return true;
-        }));
+                return true;
+            }));
 
-        $app->shouldReceive('alias');
-        $app->shouldReceive('offsetGet')->andReturnUsing(function($key) {
-            if ($key == 'config') {
-                return new \Illuminate\Config\Repository([
-                    'sleepingowl' => [
-
-                    ]
-                ]);
-            }
+            $app->shouldReceive('alias');
+            $app->shouldReceive('offsetGet')->andReturnUsing(function($key) {
+                if ($key == 'config') {
+                    return new \Illuminate\Config\Repository(['sleepingowl' => []]);
+                }
+            });
         });
 
-        $framework = new SleepingOwl($app);
         $this->assertEquals(SleepingOwl::VERSION, $framework->version());
     }
 
     public function testVersionMethod()
     {
-        $framework = new SleepingOwl($this->getApplication());
+        $framework = $this->getFramework();
         $this->assertEquals(SleepingOwl::VERSION, $framework->version());
     }
 
@@ -80,11 +41,10 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
      */
     public function testSettingBasePath($path, $correctPath)
     {
-        $app = $this->getApplication();
-        $framework = new SleepingOwl($app, $path);
+        $framework = $this->getFramework(null, $path);
 
         $this->assertEquals($correctPath, $framework->basePath());
-        $this->assertEquals($correctPath, $app['sleepingowl.path.base']);
+        $this->assertEquals($correctPath, app('sleepingowl.path.base'));
     }
 
     public function pathsProvider()
@@ -98,7 +58,7 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
 
     public function testSettingContext()
     {
-        $framework = new SleepingOwl($this->getApplication());
+        $framework = $this->getFramework();
         $framework->setContext('test', 'test1');
 
         $this->assertEquals(['test', 'test1'], $framework->context());
@@ -112,7 +72,8 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
 
     public function testCheckingContext()
     {
-        $framework = new SleepingOwl($this->getApplication());
+        $framework = $this->getFramework();
+
         $framework->setContext('test', 'test1');
 
         $this->assertTrue($framework->context('test'));
@@ -128,14 +89,14 @@ class SleepingOwlTest extends PHPUnit_Framework_TestCase
 
     public function testUrlPrefix()
     {
-        $framework = new SleepingOwl($this->getApplication());
+        $framework = $this->getFramework();
 
         $this->assertEquals('text_backend', $framework->urlPrefix());
     }
 
     public function testDefaultUrlPrefix()
     {
-        $framework = new SleepingOwl($this->getApplication());
+        $framework = $this->getFramework();
 
         $this->assertEquals('backend', $framework->defaultUrlPrefix());
     }

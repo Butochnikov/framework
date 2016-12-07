@@ -2,7 +2,7 @@
 
 use Mockery as m;
 
-class ThemeTest extends PHPUnit_Framework_TestCase
+class ThemeTest extends TestCase
 {
 
     /**
@@ -10,32 +10,9 @@ class ThemeTest extends PHPUnit_Framework_TestCase
      */
     protected $app;
 
-    public function tearDown()
-    {
-        m::close();
-    }
-
-
-    /**
-     * @param \Illuminate\Foundation\Application $application
-     *
-     * @return \SleepingOwl\Framework\Themes\ThemesManager
-     */
-    protected function makeManager(\Illuminate\Foundation\Application $application)
-    {
-        $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
-        $events->shouldReceive('fire');
-
-        return new \SleepingOwl\Framework\Themes\ThemesManager(
-            $application,
-            $events
-        );
-    }
-
     public function setUp()
     {
-        $app = app();
-        $app['config'] = new \Illuminate\Config\Repository([
+        $this->app = $this->getApplication([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test',
@@ -47,20 +24,6 @@ class ThemeTest extends PHPUnit_Framework_TestCase
                 ]
             ]
         ]);
-
-        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
-            $routes = new Illuminate\Routing\RouteCollection(),
-            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/'),
-            $this->makeManager($app)
-        );
-
-        $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
-
-        $app['request'] = $request;
-        $app->instance(SleepingOwl\Framework\Routing\UrlGenerator::class, $url);
-
-        $this->app = $app;
     }
 
     /**
@@ -71,6 +34,7 @@ class ThemeTest extends PHPUnit_Framework_TestCase
     public function getThemeObject(array $config = [])
     {
         $meta = m::mock(SleepingOwl\Framework\Contracts\Template\Meta::class);
+
         $meta->shouldReceive('addJs')->andReturnSelf();
         $meta->shouldReceive('addCss')->andReturnSelf();
 

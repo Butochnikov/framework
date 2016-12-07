@@ -2,18 +2,13 @@
 
 use Mockery as m;
 
-class RouterTest extends PHPUnit_Framework_TestCase
+class RouterTest extends TestCase
 {
 
     /**
      * @var Illuminate\Routing\Router
      */
     protected $router;
-
-    public function tearDown()
-    {
-        m::close();
-    }
 
     /**
      * @param string $urlPrefix

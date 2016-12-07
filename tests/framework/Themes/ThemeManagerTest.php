@@ -1,23 +1,19 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Mockery as m;
+use Illuminate\Foundation\Application;
 use SleepingOwl\Framework\Themes\ThemesManager;
 
-class ThemeManagerTest extends PHPUnit_Framework_TestCase
+class ThemeManagerTest extends TestCase
 {
-    public function tearDown()
-    {
-        m::close();
-    }
-
     /**
+     * @param array $config
+     *
      * @return Application
      */
-    protected function getApplication()
+    protected function getApplication(array $config = null)
     {
-        $app = new Application();
-        $app['config'] = new \Illuminate\Config\Repository([
+        return parent::getApplication($config ?: [
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test',
@@ -29,29 +25,6 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
                 ]
             ]
         ]);
-
-        $app['request'] = m::mock(\Illuminate\Http\Request::class);
-        $app['SleepingOwl\Framework\Contracts\Routing\Router'] = m::mock(\SleepingOwl\Framework\Contracts\Routing\Router::class);
-
-        return $app;
-    }
-
-    /**
-     * @param Application|null $app
-     *
-     * @return ThemesManager
-     */
-    protected function makeManager(Application $app = null, $events = null)
-    {
-        if (! $events) {
-            $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
-            $events->shouldReceive('fire');
-        }
-
-        return new ThemesManager(
-            $app ?: $this->getApplication(),
-            $events
-        );
     }
 
     /**
@@ -60,16 +33,15 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testDefaultTheme()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
-            'sleepingowl' => [
-                'theme' => [
-                    'default' => 'testTheme'
+        $manager = $this->getThemeManager(
+            $this->getApplication([
+                'sleepingowl' => [
+                    'theme' => [
+                        'default' => 'testTheme'
+                    ]
                 ]
-            ]
-        ]);
-
-        $manager = $this->makeManager($app);
+            ])
+        );
 
         $this->assertEquals('testTheme', $manager->getDefaultTheme());
         $manager->setDefaultTheme('anotherTestTheme');
@@ -81,14 +53,14 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
     {
         $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
         $events->shouldReceive('fire')->once()->with(\SleepingOwl\Framework\Events\ThemeLoaded::class);
+        $manager = $this->getThemeManager(null, $events);
 
-        $manager = $this->makeManager(null, $events);
         $this->assertInstanceOf(TestThemeTestManager::class, $manager->theme());
     }
 
     public function testCallingThemeMethods()
     {
-        $manager = $this->makeManager();
+        $manager = $this->getThemeManager();
         $this->assertEquals('test theme', $manager->name());
     }
 
@@ -97,16 +69,14 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testNotFoundThemeObject()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
+        $manager = $this->getThemeManager($this->getApplication([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test1',
                 ]
             ]
-        ]);
+        ]));
 
-        $manager = $this->makeManager($app);
         $manager->theme();
     }
 
@@ -115,8 +85,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testThemeClassNotFound()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
+        $manager = $this->getThemeManager($this->getApplication([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test1',
@@ -127,9 +96,8 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
                     ]
                 ]
             ]
-        ]);
+        ]));
 
-        $manager = $this->makeManager($app);
         $manager->theme();
     }
 
@@ -138,8 +106,7 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testMissedThemeConfigClassParameter()
     {
-        $app = new Application();
-        $app['config'] =  new \Illuminate\Config\Repository([
+        $manager = $this->getThemeManager($this->getApplication([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test1',
@@ -148,9 +115,8 @@ class ThemeManagerTest extends PHPUnit_Framework_TestCase
                     ]
                 ]
             ]
-        ]);
+        ]));
 
-        $manager = $this->makeManager($app);
         $manager->theme();
     }
 }

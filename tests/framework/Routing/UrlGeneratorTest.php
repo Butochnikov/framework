@@ -2,38 +2,15 @@
 
 use Mockery as m;
 
-class UrlGeneratorTest extends PHPUnit_Framework_TestCase
+class UrlGeneratorTest extends TestCase
 {
-
-    public function tearDown()
-    {
-        m::close();
-    }
-
-    /**
-     * @param \Illuminate\Foundation\Application $application
-     *
-     * @return \SleepingOwl\Framework\Themes\ThemesManager
-     */
-    protected function makeManager(\Illuminate\Foundation\Application $application)
-    {
-        $events = m::mock(\Illuminate\Contracts\Events\Dispatcher::class);
-        $events->shouldReceive('fire');
-
-        return new \SleepingOwl\Framework\Themes\ThemesManager(
-            $application,
-            $events
-        );
-    }
-
 
     /**
      * @return \SleepingOwl\Framework\Routing\UrlGenerator
      */
     public function getUrlGeneratorObject()
     {
-        $app = new \Illuminate\Foundation\Application();
-        $app['config'] = new \Illuminate\Config\Repository([
+        return $this->getApplication([
             'sleepingowl' => [
                 'theme' => [
                     'default' => 'test',
@@ -44,20 +21,7 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
                     ]
                 ]
             ]
-        ]);
-
-        $url = new SleepingOwl\Framework\Routing\UrlGenerator(
-            $routes = new Illuminate\Routing\RouteCollection(),
-            $router = m::mock(SleepingOwl\Framework\Contracts\Routing\Router::class),
-            $request = Illuminate\Http\Request::create('http://www.foo.com/hello/world', 'GET', [], [], []),
-            $this->makeManager($app)
-        );
-
-        $request->headers->set('referer', 'http://hello/world');
-
-        $router->shouldReceive('getUrlPrefix')->andReturn('test_prefix');
-
-        return $url;
+        ])[\SleepingOwl\Framework\Routing\UrlGenerator::class];
     }
 
     public function testGetPrefix()
@@ -102,7 +66,7 @@ class UrlGeneratorTest extends PHPUnit_Framework_TestCase
     {
         $url = $this->getUrlGeneratorObject();
 
-        $this->assertEquals('http://hello/world', $url->previous());
+        $this->assertEquals('http://www.site.com/hello/world', $url->previous());
 
         $url->getRequest()->headers->remove('referer');
         $this->assertEquals('http://test', $url->previous('http://test'));

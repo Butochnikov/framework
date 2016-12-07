@@ -26,6 +26,11 @@
       "SleepingOwl\\Filemanager\\": "filemanager/"
     }
   },
+  "autoload-dev": {
+    "classmap": [
+      "tests/TestCase.php"
+    ]
+  },
   "require": {
     "php": ">=7.0.0",
     "laravel/framework": "5.3.*",
