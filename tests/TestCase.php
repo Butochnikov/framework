@@ -48,6 +48,14 @@ class TestCase extends PHPUnit_Framework_TestCase
             ]
         ], $config));
 
+        $app['view'] = $view = m::mock(\Illuminate\Contracts\View\View::class);
+        $view->shouldReceive('make')->andReturnUsing(function () {
+            $view = m::mock(Illuminate\View\View::class);
+            $view->shouldReceive('render')->andReturn('string');
+
+            return $view;
+        });
+
         $app['request'] = $this->getRequest();
         $app['SleepingOwl\Framework\Contracts\Routing\Router'] = $router = $this->getRouter();
 

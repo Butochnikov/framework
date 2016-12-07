@@ -24,7 +24,7 @@ class NavigationServiceProvider extends ServiceProvider
         $this->app->bind(PageInterface::class, Page::class);
         $this->app->bind(BadgeInterface::class, Badge::class);
 
-        $this->app->singleton('sleepingowl.navigation', function () use($framework) {
+        $this->app->singleton('sleepingowl.navigation', function () {
             return new Navigation();
         });
 
@@ -35,7 +35,7 @@ class NavigationServiceProvider extends ServiceProvider
                 $navigation = [];
             }
 
-            $this->app['sleepingowl.navigation']->setFromArray($navigation);
+            $this->app[\SleepingOwl\Framework\Contracts\Template\Navigation::class]->setFromArray($navigation);
         });
     }
 

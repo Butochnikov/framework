@@ -14,6 +14,8 @@ class Assets extends BaseAssets implements AssetsContract
     protected $globalVars = [];
 
     /**
+     * Добавление глобальной переменной
+     *
      * @param string $key
      * @param mixed $value
      *
@@ -24,6 +26,16 @@ class Assets extends BaseAssets implements AssetsContract
         $this->globalVars[$key] = $value;
 
         return $this;
+    }
+
+    /**
+     * Получение массива глобальных перменных
+     *
+     * @return array
+     */
+    public function globalVars(): array
+    {
+        return $this->globalVars;
     }
 
     /**
@@ -39,7 +51,7 @@ class Assets extends BaseAssets implements AssetsContract
      */
     public function renderGlobalVars(): string
     {
-        $json = json_encode($this->globalVars, JSON_PRETTY_PRINT);
+        $json = json_encode($this->globalVars);
 
         return (new Html())->vars("{$this->namespace}.GlobalConfig = {$json};");
     }

@@ -7,12 +7,21 @@ interface Assets extends AssetsInterface
 {
 
     /**
+     * Добавление глобальной переменной
+     *
      * @param string $key
      * @param mixed $value
      *
      * @return self
      */
     public function putGlobalVar(string $key, $value);
+
+    /**
+     * Получение массива глобальных перменных
+     *
+     * @return array
+     */
+    public function globalVars(): array;
 
     /**
      * @return string

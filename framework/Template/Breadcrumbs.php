@@ -1,11 +1,31 @@
 <?php
 namespace SleepingOwl\Framework\Template;
 
+use DaveJamesMiller\Breadcrumbs\CurrentRoute;
+use DaveJamesMiller\Breadcrumbs\Generator;
 use DaveJamesMiller\Breadcrumbs\Manager as BreadcrumbsManager;
 use SleepingOwl\Framework\Contracts\Template\Breadcrumbs as BreadcrumbsContract;
+use SleepingOwl\Framework\Contracts\Themes\Theme;
 
 class Breadcrumbs extends BreadcrumbsManager implements BreadcrumbsContract
 {
+    /**
+     * @var Theme
+     */
+    protected $theme;
+
+    /**
+     * @param CurrentRoute $currentRoute
+     * @param Generator $generator
+     * @param Theme $theme
+     */
+    public function __construct(CurrentRoute $currentRoute, Generator $generator, Theme $theme)
+    {
+        $this->generator    = $generator;
+        $this->currentRoute = $currentRoute;
+        $this->theme = $theme;
+    }
+
     /**
      * @param string|null $name
      *
@@ -76,6 +96,6 @@ class Breadcrumbs extends BreadcrumbsManager implements BreadcrumbsContract
      */
     protected function view(array $breadcrumbs)
     {
-        return theme()->view('layouts.partials.breadcrumbs', compact('breadcrumbs'))->render();
+        return $this->theme->view('layouts.partials.breadcrumbs', compact('breadcrumbs'))->render();
     }
 }
