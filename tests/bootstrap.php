@@ -1,5 +1,7 @@
 <?php
 
+define('TEST_STUBS', __DIR__.'/stubs/');
+
 /*
 |--------------------------------------------------------------------------
 | Register The Composer Auto Loader

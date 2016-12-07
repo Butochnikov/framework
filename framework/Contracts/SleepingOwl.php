@@ -127,12 +127,12 @@ interface SleepingOwl
      *
      * @return array
      */
-    public function guardConfig(): array;
+    public static function guardConfig(): array;
 
     /**
      * Получение настроек провайдера для гарда
      *
      * @return array
      */
-    public function guardProvider(): array;
+    public static function guardProvider(): array;
 }

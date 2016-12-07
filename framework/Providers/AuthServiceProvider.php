@@ -28,11 +28,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $framework = $this->app[SleepingOwl::class];
+        $this->app['config']->set('auth.guards.'.SleepingOwl::guard(), SleepingOwl::guardConfig());
 
-        $this->app['config']->set('auth.guards.'.$framework->guard(), $framework->guardConfig());
-
-        $this->app['config']->set('auth.providers.backend_users', $framework->guardProvider());
+        $this->app['config']->set('auth.providers.backend_users', SleepingOwl::guardProvider());
 
         $this->registerPolicies();
 

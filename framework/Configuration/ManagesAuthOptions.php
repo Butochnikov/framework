@@ -62,7 +62,7 @@ trait ManagesAuthOptions
      *
      * @return array
      */
-    public function guardConfig(): array
+    public static function guardConfig(): array
     {
         return [
             'driver' => 'session',
@@ -75,7 +75,7 @@ trait ManagesAuthOptions
      *
      * @return array
      */
-    public function guardProvider(): array
+    public static function guardProvider(): array
     {
         return [
             'driver' => 'eloquent',
