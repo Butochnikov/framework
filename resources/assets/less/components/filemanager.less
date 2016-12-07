@@ -1,81 +1,64 @@
-/* ==========================================================================
-   Files
-   ========================================================================== */
-
 .files-manager {
-  border: 1px solid @gray;
-  .clearfix();
+  border:         1px solid @gray;
+  display:        flex;
+  flex-direction: row;
 }
 
+/**
+Левое меню
+ */
 .files-manager-side {
-  float:        left;
   width:        200px;
-  position:     relative;
   background:   @sidebar-light-bg;
   border-right: solid 1px @gray;
-}
 
-.files-manager-side-title {
-  padding:     15px;
-  font-weight: 600;
-}
+  .files-manager-side-title {
+    padding:     15px;
+    font-weight: 600;
+  }
 
-.files-manager-side-list {
-  font-weight: 600;
-  padding:     0 0 5px;
-  list-style:  none;
-  a {
-    display:     block;
-    color:       @gray-darker;
-    padding:     6px 10px 7px 11px;
-    border-left: solid 4px transparent;
-    &:hover, &.active {
-      background-color: @gray-lighter;
-      color:            @light-blue;
-    }
-    &:hover {
-      border-left-color: @gray;
-    }
-    &.active {
-      border-left-color: @blue;
+  .files-manager-side-list {
+    font-weight: 600;
+    padding:     0 0 5px;
+    list-style:  none;
+    a {
+      display:     block;
+      color:       @gray-darker;
+      padding:     6px 10px 7px 11px;
+      border-left: solid 4px transparent;
+      &:hover, &.active {
+        background-color: @gray-lighter;
+        color:            @light-blue;
+      }
+      &:hover {
+        border-left-color: @gray;
+      }
+      &.active {
+        border-left-color: @blue;
+      }
     }
   }
 }
 
+/**
+Центральный блокв
+ */
 .files-manager-panel {
-  float:       right;
-  width:       100%;
-  margin-left: -200px;
-  background:  #fff;
-}
-
-.files-manager-panel-in {
-  margin-left: 200px;
-  .clearfix();
+  flex:       1;
+  width:      auto;
+  background: #fff;
 }
 
 .files-manager-header {
-  border-bottom: solid 1px @gray;
-  padding:       10px 15px;
-  background:    @sidebar-light-bg;
+  border-bottom:   solid 1px @gray;
+  padding:         10px 15px;
+  background:      @sidebar-light-bg;
+  display:         flex;
+  justify-content: space-between;
 
-  .clearfix();
-
-  .files-manager-header-left {
-    float: left;
-  }
-
+  .files-manager-header-left,
   .files-manager-header-right {
-    float: right;
-    .clearfix();
-  }
-
-  .btn, .btn-icon {
-    vertical-align: top;
-  }
-
-  .btn {
-    margin: 0 22px 0 0;
+    flex: 1;
   }
 
   .btn-icon {
@@ -104,17 +87,15 @@
     }
   }
   .views {
-    float:  left;
+    float:  right;
     margin: 0 10px 0 0;
   }
 
   .search {
-    float:    left;
+    float:    right;
     width:    216px;
     position: relative;
-    .form-control {
-      padding-right: 35px;
-    }
+
     .btn-icon {
       position: absolute;
       right:    5px;
@@ -124,7 +105,6 @@
 }
 
 .files-manager-aside {
-  float:    right;
   width:    280px;
   position: relative;
 }
@@ -149,15 +129,13 @@
 }
 
 .files-manager-content {
-  float:        left;
-  width:        100%;
-  margin-right: -280px;
+  flex:    1;
+  display: flex;
 }
 
 .files-manager-content-in {
-  margin-right: 280px;
-  min-height:   500px;
   border-right: solid 1px @gray;
+  flex:         1;
 }
 
 .files-manager-breadcrumbs {
@@ -167,8 +145,8 @@
   background:    @sidebar-light-bg;
 
   .breadcrumb {
-    margin: 0;
-    padding: 0;
+    margin:     0;
+    padding:    0;
     background: transparent;
 
     a {
@@ -179,7 +157,7 @@
 
 .fm-file-list,
 .fm-file-grid {
-  padding: 18px 0 0 18px;
+  padding: 10px 0 0 10px;
   .clearfix();
 }
 
@@ -188,11 +166,20 @@
   padding-bottom: 18px;
 }
 
+.fm-file-grid {
+  .fm-file {
+    float: left;
+    width: @file-width;
+  }
+}
+
+@file-width: 249px;
+@file-icon-width: 50px;
+@file-padding: 10px;
+
 .fm-file {
-  float:            left;
-  width:            250px;
-  margin:           0 18px 18px 0;
-  padding:          10px;
+  margin:           0 10px 10px 0;
+  padding:          @file-padding;
   cursor:           pointer;
   height:           70px;
   max-height:       70px;
@@ -204,7 +191,7 @@
     height:      50px;
     line-height: 50px;
     float:       left;
-    width:       50px;
+    width:       @file-icon-width;
     text-align:  center;
 
     img {
@@ -214,7 +201,7 @@
   }
 
   .fm-file-meta {
-    max-width: 180px;
+    max-width: @file-width - @file-padding*2 - @file-icon-width;
     display:   inline-block;
     float:     left;
     padding:   5px;
@@ -259,20 +246,7 @@
 
 @media (max-width: 830px) {
   .files-manager-side {
-    float:                     none;
-    width:                     auto;
-    border-right:              none;
-    border-bottom-left-radius: 0;
-    border-bottom:             solid 1px @gray;
-  }
-
-  .files-manager-panel {
-    float:       none;
-    margin-left: 0;
-  }
-
-  .files-manager-panel-in {
-    margin-left: 0;
+    display: none;
   }
 }
 
@@ -288,32 +262,43 @@
   }
 
   .files-manager-header {
-    .files-manager-header-left,
-    .files-manager-header-right {
-      float: none;
-    }
+    flex-direction: column;
+
     .files-manager-header-left {
       padding-bottom: 10px;
     }
   }
 
   .files-manager-aside {
-    float: none;
-    width: auto;
+    width: 100%;
+    border-top: 1px solid @gray;
   }
 
   .files-manager-content {
-    float:        none;
-    margin-right: 0;
+    flex-direction: column;
   }
 
   .files-manager-content-in {
-    margin-right: 0;
     border-right: none;
   }
 }
 
 @media (max-width: 485px) {
+  .fm-file-grid {
+    padding: 10px;
+  }
+
+  .files-manager-header {
+    .view {
+      display: none;
+    }
+
+    .search {
+      width: 100%;
+      float: none;
+    }
+  }
+
   .fm-file {
     width: 100% !important;
   }
@@ -321,9 +306,10 @@
 
 @media (max-width: 380px) {
   .files-manager-header-left {
-    padding-bottom: 0 !important;
     .btn {
       display: block;
+      width: 100%;
+      margin-bottom: 5px;
     }
   }
 }

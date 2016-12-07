@@ -14,34 +14,34 @@
                 <header class="files-manager-header">
 
                     <div class="files-manager-header-left">
-                        <button type="button" class="btn btn-flat btn-primary" id="filemanager-upload">
-                            <i class="fa fa-upload" aria-hidden="true"></i> Upload file
-                        </button>
+						<button type="button" class="btn btn-flat btn-primary" id="filemanager-upload">
+							<i class="fa fa-upload" aria-hidden="true"></i> Upload file
+						</button>
 
-                        <button type="button" class="btn btn-flat btn-default" @click="makeDirectory">
-                            <i class="fa fa-plus" aria-hidden="true"></i> New folder
-                        </button>
+						<button type="button" class="btn btn-flat btn-default" @click="makeDirectory">
+							<i class="fa fa-plus" aria-hidden="true"></i> New folder
+						</button>
 
-                        <button type="button" class="btn btn-flat btn-default" @click="openDir(currentPath)">
-                            <i class="fa fa-refresh" aria-hidden="true"></i>
-                        </button>
+						<button type="button" class="btn btn-flat btn-default" @click="openDir(currentPath)">
+							<i class="fa fa-refresh" aria-hidden="true"></i>
+						</button>
                     </div>
 
                     <div class="files-manager-header-right">
-                        <div class="views">
-                            <button type="button" class="btn-icon view" @click="grid=true" v-bind:class="{ 'active': grid }">
-                                <i class="fa fa-th-large fa-lg" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn-icon view" @click="grid=false" v-bind:class="{ 'active': !grid }">
-                                <i class="fa fa-list fa-lg" aria-hidden="true"></i>
-                            </button>
-                        </div>
                         <div class="search">
                             <input type="text" class="form-control form-control-rounded" placeholder="Search" />
                             <button type="submit" class="btn-icon">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
+						<div class="views">
+							<button type="button" class="btn-icon view" @click="grid=true" v-bind:class="{ 'active': grid }">
+								<i class="fa fa-th-large fa-lg" aria-hidden="true"></i>
+							</button>
+							<button type="button" class="btn-icon view" @click="grid=false" v-bind:class="{ 'active': !grid }">
+								<i class="fa fa-list fa-lg" aria-hidden="true"></i>
+							</button>
+						</div>
                     </div>
                 </header>
 
@@ -49,11 +49,22 @@
                     <div class="files-manager-content-in scrollable-block">
                         <div class="files-manager-breadcrumbs">
                             <ol class="breadcrumb">
-                                <li><a @click="openDir()">root</a></li>
-                                <li v-for="segment in breadcrumbs" >
-                                    <a @click="openDir(segment.path)">
+                                <li>
+                                    <a @click="openDir()"><i class="fa fa-folder-open-o"></i></a>
+                                </li>
+                                <li v-for="(segment, index) in breadcrumbs" >
+                                    <a @click="openDir(segment.path)" v-if="(breadcrumbs.length - 1) !== index">
                                         {{ segment.name }}
                                     </a>
+                                    <span v-if="(breadcrumbs.length - 1) === index">
+                                        {{ segment.name }}
+                                    </span>
+                                </li>
+
+                                <li v-if="selected && isFile(selected)">
+                                    <span>
+                                        {{ selected.basename }}
+                                    </span>
                                 </li>
                             </ol>
                         </div>
@@ -71,51 +82,50 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                    <section class="files-manager-aside">
+                        <div v-if="selected" class="files-manager-aside-section">
+                            <div class="box-typical-header-sm">
+                                <img v-bind:src="fileIcon(selected)" width="50px" /> {{ selected.filename }}
+                            </div>
 
-                <section class="files-manager-aside" v-if="selected">
-                    <div class="files-manager-aside-section">
-                        <div class="box-typical-header-sm">
-                            <img v-bind:src="fileIcon(selected)" width="50px" /> {{ selected.filename }}
+                            <div v-if="isFile(selected)">
+
+                                <div class="info-list">
+                                    <p>
+                                        <b>Path:</b> {{ selected.path }}
+                                    </p>
+                                    <p>
+                                        <b>Url:</b> <a v-bind:href="selected.url" target="_blank">{{ selected.url }}</a>
+                                    </p>
+                                </div>
+
+                                <button @click="deleteFile(selected)" class="btn btn-flat btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+
+                                <a v-bind:href="downloadPath(selected)" class="btn btn-flat btn-default">
+                                    <i class="fa fa-download"></i> Download
+                                </a>
+                            </div>
+                            <div v-if="!isFile(selected)">
+
+                                <div class="info-list">
+                                    <p>
+                                        <b>Path:</b> {{ selected.path }}
+                                    </p>
+                                </div>
+
+                                <button @click="deleteDir(selected)" class="btn btn-flat btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+
+                                <button @click="openDir(selected.path)" class="btn btn-flat btn-default">
+                                    <i class="fa fa-level-up"></i> Open
+                                </button>
+                            </div>
                         </div>
-
-                        <div v-if="selected.type == 'file'">
-
-                            <div class="info-list">
-                                <p>
-                                    <b>Path:</b> {{ selected.path }}
-                                </p>
-                                <p>
-                                    <b>Url:</b> <a v-bind:href="selected.url" target="_blank">{{ selected.url }}</a>
-                                </p>
-                            </div>
-
-							<button @click="deleteFile(selected)" class="btn btn-flat btn-danger">
-								<i class="fa fa-trash"></i>
-							</button>
-
-							<a v-bind:href="downloadPath(selected)" class="btn btn-flat btn-default">
-								<i class="fa fa-download"></i> Download
-							</a>
-						</div>
-                        <div v-if="selected.type == 'dir'">
-
-                            <div class="info-list">
-                                <p>
-                                    <b>Path:</b> {{ selected.path }}
-                                </p>
-                            </div>
-
-							<button @click="deleteDir(selected)" class="btn btn-flat btn-danger">
-								<i class="fa fa-trash"></i>
-							</button>
-
-							<button @click="openDir(selected.path)" class="btn btn-flat btn-default">
-								<i class="fa fa-level-up"></i> Open
-							</button>
-						</div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </div>
     </section>
@@ -155,6 +165,10 @@
                     }
                 })
             },
+            isFile(file) {
+                return file.type == 'file'
+            },
+
             isImage(file) {
                 return _.indexOf(['png', 'jpg', 'gif'], file.extension)
             },
