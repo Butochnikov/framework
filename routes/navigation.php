@@ -3,9 +3,9 @@
 return [
     [
         'title' => 'Filemanager',
-        'id' => 'filemanager',
+        'id' => 'backend.filemanager',
         'icon' => 'fa fa-folder',
-        'url' => route('filemanager'),
+        'url' => route('backend.filemanager'),
         'priority' => 7000,
     ],
 ];

@@ -56,14 +56,14 @@ class RouteServiceProvider extends ServiceProvider
         // controller namespace. After that we will load the Spark routes file.
         if (! $this->app->routesAreCached()) {
             $router->group([
-                'namespace' => 'SleepingOwl\Framework\Http\Controllers'],
+                'namespace' => 'SleepingOwl\Framework\Http\Controllers', 'as' => 'backend.'],
                 function () use($router) {
                     require SLEEPINGOWL_PATH.'/routes/web.php';
                 }
             );
 
             $router->backendGroup([
-                'namespace' => 'SleepingOwl\Api\Http\Controllers', 'prefix' => 'api', 'middleware' => 'context:'.SleepingOwl::CTX_API],
+                'namespace' => 'SleepingOwl\Api\Http\Controllers', 'as' => 'backend.api.', 'prefix' => 'api', 'middleware' => 'context:'.SleepingOwl::CTX_API],
                 function () use($router) {
                     require SLEEPINGOWL_PATH.'/routes/api.php';
                 }

@@ -30,7 +30,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->redirectTo = backend_url('/');
+        $this->redirectTo = route('backend.dashboard');
         $this->middleware('guest:backend', ['except' => 'logout']);
     }
 
