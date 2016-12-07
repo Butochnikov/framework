@@ -25,14 +25,17 @@ class NavigationServiceProvider extends ServiceProvider
         $this->app->bind(BadgeInterface::class, Badge::class);
 
         $this->app->singleton('sleepingowl.navigation', function () use($framework) {
+            return new Navigation();
+        });
 
+        $this->app->booted(function() use($framework) {
             if (file_exists($file = $framework->basePath().'/routes/navigation.php')) {
                 $navigation = require $file;
             } else {
                 $navigation = [];
             }
 
-            return new Navigation($navigation);
+            $this->app['sleepingowl.navigation']->setFromArray($navigation);
         });
     }
 
