@@ -39,16 +39,6 @@ class AdminLteTheme extends Theme implements Initializable
     }
 
     /**
-     * Название с указанием версии
-     *
-     * @return string
-     */
-    public function longName(): string
-    {
-        return $this->name() . ' v.'. $this->version();
-    }
-
-    /**
      * URL проекта
      *
      * @return string
