@@ -1,9 +1,8 @@
 <?php
 namespace SleepingOwl\Framework\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use SleepingOwl\Framework\Contracts\SleepingOwl;
+use SleepingOwl\Framework\SleepingOwl;
 
 class AuthServiceProvider extends ServiceProvider
 {
