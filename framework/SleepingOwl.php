@@ -169,6 +169,7 @@ class SleepingOwl implements SleepingOwlContract
             'sleepingowl.theme' => ['SleepingOwl\Framework\Contracts\Themes\Theme', 'SleepingOwl\Framework\Themes\Theme'],
             'sleepingowl.navigation' => ['SleepingOwl\Framework\Contracts\Template\Navigation', 'SleepingOwl\Framework\Template\Navigation'],
             'sleepingowl.meta' => ['SleepingOwl\Framework\Contracts\Template\Meta', 'SleepingOwl\Framework\Template\Meta'],
+            'sleepingowl.assets' => ['SleepingOwl\Framework\Template\Assets', 'SleepingOwl\Framework\Contracts\Template\Assets'],
             'sleepingowl.router' => ['SleepingOwl\Framework\Routing\Router', 'SleepingOwl\Framework\Contracts\Routing\Router'],
             'sleepingowl.url' => ['SleepingOwl\Framework\Routing\UrlGenerator', 'SleepingOwl\Framework\Contracts\Routing\UrlGenerator'],
             'sleepingowl.api' => ['SleepingOwl\Api\Contracts\Manager', 'SleepingOwl\Api\Manager'],

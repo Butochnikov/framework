@@ -23,11 +23,11 @@ class AssetsServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('sleepingowl.meta', function ($app) {
-            return new Meta(
-                new Assets(
-                    $app['assets.packages']
-                )
-            );
+            $this->app->instance('sleepingowl.assets', $assets =  new Assets(
+                $app['assets.packages']
+            ));
+
+            return new Meta($assets);
         });
     }
 
@@ -39,8 +39,12 @@ class AssetsServiceProvider extends ServiceProvider
         return [
             'assets.packages',
             'sleepingowl.meta',
+            'sleepingowl.assets',
+            'KodiCMS\Assets\PackageManager',
             'SleepingOwl\Framework\Contracts\Template\Meta',
-            'SleepingOwl\Framework\Template\Meta'
+            'SleepingOwl\Framework\Template\Meta',
+            'SleepingOwl\Framework\Contracts\Template\Assets',
+            'SleepingOwl\Framework\Template\Assets'
         ];
     }
 }
