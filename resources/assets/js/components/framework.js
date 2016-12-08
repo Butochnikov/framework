@@ -1,10 +1,12 @@
 import Config from "./config";
 import Url from "./url";
+import User from "./user";
 
 module.exports = class Framework {
     constructor(token, config) {
         this.__token = token
         this.__config = new Config(config)
+        this.__user = new User(this.userId)
 
         this.__url = new Url(
             this.Config.get('url'),
@@ -19,6 +21,13 @@ module.exports = class Framework {
      */
     get userId() {
         return this.Config.get('userId')
+    }
+
+    /**
+     * @returns {User}
+     */
+    get User() {
+        return this.__user
     }
 
     /**
@@ -87,6 +96,10 @@ module.exports = class Framework {
 
     set Url(value) {
         throw new Error(`The Url property cannot be written.`)
+    }
+
+    set User(value) {
+        throw new Error(`The User property cannot be written.`)
     }
 
     set userId(value) {
