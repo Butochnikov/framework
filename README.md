@@ -6,10 +6,15 @@
 
 # SleepingOwl Framework built on Laravel
 
-## Установка
+### Requirements
+The minimum requirement by Framework is that your Web server supports PHP 7.0.
 
-1. `composer require sleepingowl/framework`
-2. Добавить `SleepingOwl\Framework\Providers\FrameworkServiceProvider::class` в сервис провайдеры
-3. Добавить `require __DIR__.'/../vendor/sleepingowl/framework/bootstrap/app.php';` в `public/index.php`
-4. Добавить `require __DIR__.'/vendor/sleepingowl/framework/bootstrap/app.php';` в `artisan`
-5. Выполнить команду `php artisan sleepingowl:install`
+### Documentation
+See https://github.com/SleepingOwlAdmin/framework/wiki
+
+### Installation
+1. Run `composer require sleepingowl/framework`
+2. Add ServiceProvider `SleepingOwl\Framework\Providers\FrameworkServiceProvider::class` to `config/app.php`
+3. Add `require __DIR__.'/../vendor/sleepingowl/framework/bootstrap/app.php';` to `public/index.php`
+4. Add `require __DIR__.'/vendor/sleepingowl/framework/bootstrap/app.php';` to `artisan`
+5. Run `php artisan sleepingowl:install`
