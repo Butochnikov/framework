@@ -100,9 +100,9 @@ class ThemesManager implements ThemeFactory
      *
      * @return array
      */
-    protected function getConfig($name)
+    protected function getConfig($name): array
     {
-        return $this->app['config']["sleepingowl.theme.themes.{$name}"];
+        return (array) $this->app['config']["sleepingowl.theme.themes.{$name}"];
     }
 
     /**

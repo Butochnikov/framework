@@ -93,7 +93,7 @@ class Router implements RouterContract
      *
      * @return array
      */
-    protected function mergeGroupAttributes(array $attributes)
+    protected function mergeGroupAttributes(array $attributes): array
     {
         $attributes = $this->mergeAttributeMiddleware($attributes);
         $attributes = $this->mergeAttributePrefix($attributes);
@@ -106,7 +106,7 @@ class Router implements RouterContract
      *
      * @return array
      */
-    protected function mergeAttributeMiddleware(array $attributes)
+    protected function mergeAttributeMiddleware(array $attributes): array
     {
         if (isset($attributes['middleware'])) {
             $attributes['middleware'] = (array) $attributes['middleware'];
@@ -125,7 +125,7 @@ class Router implements RouterContract
      *
      * @return array
      */
-    protected function mergeAttributePrefix(array $attributes)
+    protected function mergeAttributePrefix(array $attributes): array
     {
         if (isset($attributes['prefix'])) {
             $attributes['prefix'] = $this->urlPrefix.'/'.ltrim($attributes['prefix'], '/');

@@ -59,7 +59,7 @@ class Kernel extends AppKernel
      *
      * @return string
      */
-    protected function detectContext(\Illuminate\Http\Request $request)
+    protected function detectContext(\Illuminate\Http\Request $request): string
     {
         $urlPrefix = $this->app[RouterContract::class]->getUrlPrefix();
 

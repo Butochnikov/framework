@@ -192,7 +192,7 @@ abstract class Theme implements ThemeContract
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'asset_dir' => $this->assetDir(),
