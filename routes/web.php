@@ -5,8 +5,8 @@ $router->backendGroup([], function ($router) {
 
     $router->group(['middleware' => 'backend.auth:backend'], function($router) {
         $router->get('/', function(\Illuminate\Http\Request $request) {
-            return themeView('layouts.backend', [
-                'title' => 'File manager',
+            return themeView('dashboard', [
+                'title' => 'Dashboard',
                 'breadcrumbs' => $this->app[\SleepingOwl\Framework\Contracts\Template\Breadcrumbs::class]->renderIfExists()
             ]);
         })->name('dashboard');

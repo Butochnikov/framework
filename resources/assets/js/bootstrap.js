@@ -26,6 +26,7 @@ require('./libs/metismenu')
 require('./libs/cookies')
 require('./libs/magnific-popup')
 require('./libs/vuejs')
+require('./libs/gridster')
 
 /**
  * Best open source admin dashboard & control panel theme.

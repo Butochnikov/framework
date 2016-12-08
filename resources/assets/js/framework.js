@@ -13,6 +13,7 @@ require('./bootstrap');
  */
 
 Vue.component('filemanager',  require('./vuejs/components/filemanager.vue'))
+Vue.component('dashboard',  require('./vuejs/components/dashboard.vue'))
 
 Framework.Modules.boot();
 Framework.Controllers.dispatch(
