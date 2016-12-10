@@ -3,7 +3,7 @@
 $router->group(['middleware' => 'backend.auth:backend'], function($router) {
 
     $router->get('me/meta', 'UserMetaController@get');
-    $router->post('me/meta', 'UserMetaController@create');
+    $router->post('me/meta', 'UserMetaController@store');
     $router->delete('me/meta', 'UserMetaController@delete');
 
     $router->get('me', 'UserController@me');

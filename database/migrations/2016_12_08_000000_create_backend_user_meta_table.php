@@ -14,12 +14,12 @@ class CreateBackendUserMetaTable extends Migration
     public function up()
     {
         Schema::create('backend_users_meta', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('user_id');
             $table->string('key');
             $table->json('data')->nullable();
             $table->timestamps();
-
-            $table->primary(['user_id', 'key']);
+            $table->unique(['user_id', 'key']);
         });
     }
 

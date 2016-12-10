@@ -26,7 +26,7 @@ class UserMeta extends Model
      * @var array
      */
     protected $fillable = [
-        'key', 'data',
+        'key', 'data', 'user_id'
     ];
 
 

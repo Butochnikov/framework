@@ -3,13 +3,32 @@ namespace SleepingOwl\Api\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use SleepingOwl\Api\Contracts\Manager;
 use SleepingOwl\Api\Transformers\UserMeta as UserMetaTransformer;
+use SleepingOwl\Framework\Contracts\Repositories\UserMetaRepository as UserMetaRepositoryContract;
 use SleepingOwl\Framework\Entities\User;
 use SleepingOwl\Framework\Entities\UserMeta;
 
 class UserMetaController extends Controller
 {
+    /**
+     * @var UserMetaRepositoryContract
+     */
+    private $repository;
+
+    /**
+     * UserMetaController constructor.
+     *
+     * @param Manager $manager
+     * @param UserMetaRepositoryContract $repository
+     */
+    public function __construct(Manager $manager, UserMetaRepositoryContract $repository)
+    {
+        parent::__construct($manager);
+
+        $this->repository = $repository;
+    }
+
     /**
      * @param Request $request
      *
@@ -21,10 +40,10 @@ class UserMetaController extends Controller
             'key' => 'required|string'
         ]);
 
-        /** @var UserMeta $meta */
-        $meta = $request->user()->meta()
-            ->where('key', $request->input('key'))
-            ->firstOrFail();
+        $meta = $this->repository->getByKey(
+            $request->user()->id,
+            $request->input('key')
+        );
 
         return $this->responseItem(
             $meta,
@@ -37,25 +56,23 @@ class UserMetaController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        /** @var User $user */
-        $user = $request->user();
-
         $this->validate($request, [
             'key' => 'required|string',
             'data' => 'required|array'
         ]);
 
-        /** @var UserMeta $meta */
-        $user->meta()->create([
-            'key' => $request->input('key'),
-            'data' => $request->input('data'),
-        ]);
+        $meta = $this->repository->store(
+            $request->user()->id,
+            $request->input('key'),
+            $request->input('data')
+        );
 
-        return new JsonResponse([
-            'status' => 'ok'
-        ]);
+        return $this->responseItem(
+            $meta,
+            new UserMetaTransformer()
+        );
     }
 
     /**
@@ -69,13 +86,13 @@ class UserMetaController extends Controller
             'key' => 'required|string'
         ]);
 
-        /** @var UserMeta $meta */
-        $request->user()->meta()
-            ->where('key', $request->input('key'))
-            ->delete();
+        $status = $this->repository->delete(
+            $request->user()->id,
+            $request->input('key')
+        );
 
         return new JsonResponse([
-            'status' => 'ok'
+            'status' => $status
         ]);
     }
 }
