@@ -51,6 +51,7 @@ class SleepingOwl implements SleepingOwlContract
 
         $this->registerBaseServiceProviders();
         $this->registerCoreContainerAliases();
+        $this->registerCoreRepositories();
 
         if ($basePath) {
             $this->setBasePath($basePath);
@@ -181,6 +182,21 @@ class SleepingOwl implements SleepingOwlContract
             foreach ($aliases as $alias) {
                 $this->app->alias($key, $alias);
             }
+        }
+    }
+
+    protected function registerCoreRepositories()
+    {
+        $repositories = [
+            'Contracts\Repositories\UserMetaRepository' => 'Repositories\UserMetaRepository',
+            'Contracts\Repositories\DashboardRepository' => 'Repositories\DashboardRepository',
+        ];
+
+        foreach ($repositories as $contract => $repository) {
+            $this->app->singleton(
+                'SleepingOwl\Framework\\'.$contract,
+                'SleepingOwl\Framework\\'.$repository
+            );
         }
     }
 }
