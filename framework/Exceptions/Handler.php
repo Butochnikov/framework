@@ -42,7 +42,7 @@ class Handler extends AppHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        if (in_array($this->framework->guard(), $exception->guards())) {
+        if (in_array(framework()->guard(), $exception->guards())) {
             return redirect()->guest(backend_url('login'));
         }
 
