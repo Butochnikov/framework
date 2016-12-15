@@ -13,7 +13,7 @@ class CreateBackendUserMetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('backend_users_meta', function (Blueprint $table) {
+        Schema::create('sof_users_meta', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->string('key');
@@ -30,6 +30,6 @@ class CreateBackendUserMetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('backend_users_meta');
+        Schema::dropIfExists('sof_users_meta');
     }
 }

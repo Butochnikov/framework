@@ -27,6 +27,7 @@ class FrameworkServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerNotificationChannel();
         $this->defineResources();
     }
 
@@ -71,5 +72,12 @@ class FrameworkServiceProvider extends ServiceProvider
                 \SleepingOwl\Framework\Console\Commands\InstallCommand::class,
             ]);
         }
+    }
+
+    protected function registerNotificationChannel()
+    {
+        $this->app[\Illuminate\Notifications\ChannelManager::class]->extend('backend', function($app) {
+            return $app->make(\SleepingOwl\Framework\Notifications\DatabaseChannel::class);
+        });
     }
 }

@@ -13,7 +13,7 @@ class CreateBackendUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('backend_users', function (Blueprint $table) {
+        Schema::create('sof_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
@@ -30,6 +30,6 @@ class CreateBackendUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('backend_users');
+        Schema::drop('sof_users');
     }
 }

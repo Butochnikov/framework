@@ -18,7 +18,7 @@ class UserMeta extends Model
      *
      * @var string
      */
-    protected $table = 'backend_users_meta';
+    protected $table = 'sof_users_meta';
 
     /**
      * The attributes that are mass assignable.

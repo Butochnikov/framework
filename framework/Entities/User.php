@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use SleepingOwl\Framework\Contracts\Auth\User as BackendUserContract;
+use SleepingOwl\Framework\Notifications\HasBackendDatabaseNotifications;
 
 /**
  * Class User
@@ -19,14 +20,14 @@ use SleepingOwl\Framework\Contracts\Auth\User as BackendUserContract;
  */
 class User extends Authenticatable implements BackendUserContract
 {
-    use Notifiable;
+    use Notifiable, HasBackendDatabaseNotifications;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'backend_users';
+    protected $table = 'sof_users';
 
     /**
      * The attributes that are mass assignable.

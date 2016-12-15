@@ -6,11 +6,20 @@ module.exports = class User {
     }
 
     /**
-     *
+     * Получение ID авторизованного пользователя
      * @returns {Integer}
      */
     get id() {
         return this.__userId
+    }
+
+    /**
+     * Получение статуса авторизации пользователя
+     *
+     * @return {boolean}
+     */
+    get loggedIn() {
+        return this.id > 0
     }
 
     /**
@@ -44,4 +53,14 @@ module.exports = class User {
     storeMeta (key, data) {
         return Vue.http.post(Framework.Url.api('me/meta'), {key, key, data: data})
     }
+
+
+    set id(value) {
+        throw new Error(`The id property cannot be written.`)
+    }
+
+    set loggedIn(value) {
+        throw new Error(`The loggedIn property cannot be written.`)
+    }
+
 }
