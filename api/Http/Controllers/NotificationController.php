@@ -5,22 +5,20 @@ use Illuminate\Http\JsonResponse;
 use SleepingOwl\Api\Contracts\Manager;
 use SleepingOwl\Api\Transformers\Notification as NotificationTransformer;
 use Illuminate\Http\Request;
-use SleepingOwl\Framework\Repositories\NotificationsRepository;
+use SleepingOwl\Framework\Contracts\Repositories\NotificationsRepository as NotificationsRepositoryContract;
 
 class NotificationController extends Controller
 {
     /**
-     * @var NotificationsRepository
+     * @var NotificationsRepositoryContract
      */
     private $repository;
 
     /**
-     * NotificationController constructor.
-     *
      * @param Manager $manager
-     * @param NotificationsRepository $repository
+     * @param NotificationsRepositoryContract $repository
      */
-    public function __construct(Manager $manager, NotificationsRepository $repository)
+    public function __construct(Manager $manager, NotificationsRepositoryContract $repository)
     {
         parent::__construct($manager);
 

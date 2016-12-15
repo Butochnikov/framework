@@ -188,7 +188,8 @@ class SleepingOwl implements SleepingOwlContract
     protected function registerCoreRepositories()
     {
         $repositories = [
-            'Contracts\Repositories\UserMetaRepository' => 'Repositories\UserMetaRepository'
+            'Contracts\Repositories\UserMetaRepository' => 'Repositories\UserMetaRepository',
+            'Contracts\Repositories\NotificationsRepository' => 'Repositories\NotificationsRepository'
         ];
 
         foreach ($repositories as $contract => $repository) {
