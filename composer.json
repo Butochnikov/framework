@@ -23,7 +23,7 @@
     "psr-4": {
       "SleepingOwl\\Framework\\": "framework/",
       "SleepingOwl\\Api\\": "api/",
-      "SleepingOwl\\Filemanager\\": "filemanager/"
+      "SleepingOwl\\Dashboard\\": "dashboard/"
     }
   },
   "autoload-dev": {
