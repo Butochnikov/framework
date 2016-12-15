@@ -11,11 +11,19 @@ class User extends Transformer
      *
      * @return array
      */
-    public function transform(UserEntity $user)
+    public function transform(UserEntity $user): array
     {
         return [
             'id' => $user->id,
             'name' => $user->name,
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function type(): string
+    {
+        return 'user';
     }
 }
