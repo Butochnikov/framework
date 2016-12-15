@@ -18,24 +18,20 @@ module.exports = class User {
      *
      * Получение настроек по ключу
      * @param {String} key
+     * @return Promise
      */
-    meta (key, callback) {
-        Vue.http.get(Framework.Url.api('me/meta'), {params: {key, key}}).then(function (response) {
-            if(_.isFunction(callback)) {
-                callback(response.data)
-            }
-        })
+    meta (key) {
+        return Vue.http.get(Framework.Url.api('me/meta'), {params: {key, key}})
     }
 
     /**
      * Удаление настроек по ключу
      *
      * @param {String} key
+     * @return Promise
      */
     deleteMeta (key) {
-        Vue.http.delete(Framework.Url.api('me/meta'), {params: {key, key}}).then(function (response) {
-            console.log(response)
-        })
+        return Vue.http.delete(Framework.Url.api('me/meta'), {params: {key, key}})
     }
 
     /**
@@ -43,10 +39,9 @@ module.exports = class User {
      *
      * @param {String} key
      * @param {Object} data
+     * @return Promise
      */
     storeMeta (key, data) {
-        Vue.http.post(Framework.Url.api('me/meta'), {key, key, data: data}).then(function (response) {
-            console.log(response)
-        })
+        return Vue.http.post(Framework.Url.api('me/meta'), {key, key, data: data})
     }
 }
