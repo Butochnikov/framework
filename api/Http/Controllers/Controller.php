@@ -10,7 +10,7 @@ use League\Fractal\Resource\Collection as ResourceCollection;
 use League\Fractal\Resource\Item as ResourceItem;
 use League\Fractal\Resource\ResourceAbstract;
 use SleepingOwl\Api\Contracts\Manager;
-use SleepingOwl\Api\Transformer;
+use SleepingOwl\Api\Contracts\Transformer as TransformerContract;
 use SleepingOwl\Framework\Http\Controllers\Controller as BaseController;
 
 abstract class Controller extends BaseController
@@ -30,41 +30,56 @@ abstract class Controller extends BaseController
 
     /**
      * @param Model $item
-     * @param Transformer $transformer
+     * @param TransformerContract $transformer
+     * @param string|null $type
      *
      * @return JsonResponse
      */
-    public function responseItem($item, Transformer $transformer): JsonResponse
+    public function responseItem($item, TransformerContract $transformer, string $type = null): JsonResponse
     {
+        if (is_null($type)) {
+            $type = $transformer->type();
+        }
+
         return $this->response(
-            new ResourceItem($item, $transformer)
+            new ResourceItem($item, $transformer, $type)
         );
     }
 
     /**
      * @param Collection $collection
-     * @param Transformer $transformer
+     * @param TransformerContract $transformer
+     * @param string|null $type
      *
      * @return JsonResponse
      */
-    public function responseCollection(Collection $collection, Transformer $transformer): JsonResponse
+    public function responseCollection(Collection $collection, TransformerContract $transformer, string $type = null): JsonResponse
     {
+        if (is_null($type)) {
+            $type = $transformer->type();
+        }
+
         return $this->response(
-            new ResourceCollection($collection, $transformer)
+            new ResourceCollection($collection, $transformer, $type)
         );
     }
 
     /**
      * @param AbstractPaginator $paginator
-     * @param Transformer $transformer
+     * @param TransformerContract $transformer
      * @param array $queryParams
+     * @param string|null $type
      *
      * @return JsonResponse
      */
-    public function responsePagination(AbstractPaginator $paginator, Transformer $transformer, array $queryParams = []): JsonResponse
+    public function responsePagination(AbstractPaginator $paginator, TransformerContract $transformer, array $queryParams = [], string $type = null): JsonResponse
     {
+        if (is_null($type)) {
+            $type = $transformer->type();
+        }
+
         $collection = $paginator->getCollection();
-        $resource = new ResourceCollection($collection, $transformer);
+        $resource = new ResourceCollection($collection, $transformer, $type);
 
         $paginator->appends($queryParams);
         $resource->setPaginator(

@@ -11,12 +11,20 @@ class UserMeta extends Transformer
      *
      * @return array
      */
-    public function transform(UserMetaEntity $meta)
+    public function transform(UserMetaEntity $meta): array
     {
         return [
             'id' => $meta->user_id,
             'key' => $meta->key,
             'data' => $meta->data
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function type(): string
+    {
+        return 'user_meta';
     }
 }
