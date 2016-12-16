@@ -6,9 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use SleepingOwl\Api\Contracts\Manager;
 
-class FilemanagerController extends Controller
+class FileManagerController extends Controller
 {
     /**
      * @var \Illuminate\Contracts\Filesystem\Filesystem|\Illuminate\Filesystem\FilesystemAdapter
@@ -16,12 +15,10 @@ class FilemanagerController extends Controller
     private $filesystem;
 
     /**
-     * @param Manager $manager
      * @param FilesystemContract $filesystem
      */
-    public function __construct(Manager $manager, FilesystemContract $filesystem)
+    public function __construct(FilesystemContract $filesystem)
     {
-        parent::__construct($manager);
         $this->filesystem = $filesystem->disk(config('sleepingowl.filemanager_disk'));
     }
 

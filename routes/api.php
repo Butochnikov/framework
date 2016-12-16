@@ -11,10 +11,10 @@ $router->group(['middleware' => 'backend.auth:backend'], function($router) {
     $router->get('user/{id}', 'UserController@show');
     $router->get('users', 'UserController@index');
 
-    $router->get('filemanager', 'FilemanagerController@listFiles');
-    $router->get('filemanager/download', 'FilemanagerController@download');
-    $router->post('filemanager', 'FilemanagerController@upload');
-    $router->post('filemanager/mkdir', 'FilemanagerController@makeDirectory');
-    $router->delete('filemanager', 'FilemanagerController@delete');
-    $router->delete('filemanager/dir', 'FilemanagerController@deleteDirectory');
+    $router->get('filemanager', 'FileManagerController@listFiles');
+    $router->get('filemanager/download', 'FileManagerController@download');
+    $router->post('filemanager', 'FileManagerController@upload');
+    $router->post('filemanager/mkdir', 'FileManagerController@makeDirectory');
+    $router->delete('filemanager', 'FileManagerController@delete');
+    $router->delete('filemanager/dir', 'FileManagerController@deleteDirectory');
 });
