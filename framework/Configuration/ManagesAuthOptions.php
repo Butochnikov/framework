@@ -15,6 +15,13 @@ trait ManagesAuthOptions
     protected static $userModel = \SleepingOwl\Framework\Entities\User::class;
 
     /**
+     * Название гарда, отвечающего за доступ в админ панель
+     *
+     * @var string
+     */
+    protected static $authGuard = 'backend';
+
+    /**
      * Получение названия класса модели пользователя админ панели
      *
      * @return string
@@ -54,7 +61,7 @@ trait ManagesAuthOptions
      */
     public static function guard(): string
     {
-        return 'backend';
+        return static::$authGuard;
     }
 
     /**
