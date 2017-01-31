@@ -114,6 +114,7 @@ class SleepingOwl implements SleepingOwlContract
             Providers\EventServiceProvider::class,
             Providers\BreadcrumbsServiceProvider::class,
             \SleepingOwl\Api\Providers\ApiServiceProvider::class,
+            Providers\ModulesServiceProvider::class,
         ];
 
         $manifestPath = $this->app->bootstrapPath().'/cache/sleepingowl-services.php';

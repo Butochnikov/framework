@@ -65,7 +65,7 @@ class ThemeManagerTest extends TestCase
     }
 
     /**
-     * @expectedException SleepingOwl\Framework\Exceptions\Themes\ThemeNotFound
+     * @expectedException Symfony\Component\OptionsResolver\Exception\MissingOptionsException
      */
     public function testNotFoundThemeObject()
     {

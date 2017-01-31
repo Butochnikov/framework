@@ -3,11 +3,8 @@ namespace SleepingOwl\Api\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use SleepingOwl\Api\Contracts\Manager;
 use SleepingOwl\Api\Transformers\UserMeta as UserMetaTransformer;
 use SleepingOwl\Framework\Contracts\Repositories\UserMetaRepository as UserMetaRepositoryContract;
-use SleepingOwl\Framework\Entities\User;
-use SleepingOwl\Framework\Entities\UserMeta;
 
 class UserMetaController extends Controller
 {
@@ -17,15 +14,10 @@ class UserMetaController extends Controller
     private $repository;
 
     /**
-     * UserMetaController constructor.
-     *
-     * @param Manager $manager
      * @param UserMetaRepositoryContract $repository
      */
-    public function __construct(Manager $manager, UserMetaRepositoryContract $repository)
+    public function __construct(UserMetaRepositoryContract $repository)
     {
-        parent::__construct($manager);
-
         $this->repository = $repository;
     }
 

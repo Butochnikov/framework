@@ -38,7 +38,7 @@ require('./libs/gridster')
 require('admin-lte')
 
 window.Framework.Dashboard = require('./components/dashboard')
-
+window.Framework.Asset = require('./components/asset')
 window.Framework.Controllers = require('./components/controllers')
 window.Framework.Storage = require('./components/storage')
 window.Framework.Modules = require('./components/modules')

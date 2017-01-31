@@ -25,16 +25,22 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = Framework.token;
 Vue.http.interceptors.push((request, next) => {
     next((response) => {
         switch (response.status) {
-            case 200:
-            case 202:
+            case 200: // OK
+            case 204: // No Content
+
                 break;
-            case 422:
+            case 201: // Created
+            case 202: // Accepted
+
                 break;
-            case 401:
+            case 401: // Unauthorized
                 Framework.Message.error('Unauthorized!')
                 break;
-            case 403:
+            case 403: // Forbidden
                 Framework.Message.error('Access denied')
+                break;
+            case 404: // Not Found
+                Framework.Message.error('Page not found')
                 break;
             default:
                 Framework.Message.error('Something went wrong')

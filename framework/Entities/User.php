@@ -26,7 +26,7 @@ class User extends Authenticatable implements BackendUserContract
      *
      * @var string
      */
-    protected $table = 'backend_users';
+    protected $table = 'sof_users';
 
     /**
      * The attributes that are mass assignable.
