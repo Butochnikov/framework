@@ -60,7 +60,10 @@
 
 				<!-- Control Sidebar Toggle Button -->
 				<li>
-					<a href="#" @click="showNotifications"><i class="fa fa-gears"></i></a>
+					<a href="#" @click="showNotifications">
+						<i class="fa fa-gears"></i>
+						<span class="label label-danger" v-if="hasUnreadNotifications">@{{ unreadNotifications }}</span>
+					</a>
 				</li>
 
 				@yield('block.navbar.after')

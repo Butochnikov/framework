@@ -1,6 +1,8 @@
 <?php
 namespace SleepingOwl\Framework\Console\Installation;
 
+use SleepingOwl\Framework\Entities\User;
+use SleepingOwl\Framework\Notifications\FrameworkInstalled;
 use SleepingOwl\Framework\SleepingOwl;
 
 class CreateRootUser extends Installator
@@ -28,12 +30,14 @@ class CreateRootUser extends Installator
             $email = $this->command->ask('Your email');
             $password = $this->command->secret('Your password');
 
-
+            /** @var User $user */
             $user = SleepingOwl::user()->create([
                 'name' => $name,
                 'email' => $email,
                 'password' => bcrypt($password)
             ]);
+
+            $user->notify(new FrameworkInstalled());
 
         } while(!$user->exists);
     }

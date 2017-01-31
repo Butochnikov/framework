@@ -1,18 +1,8 @@
-<div class="event" >
-    <div class="label">
-        <i class="circular {{ array_get($notification->data, 'icon') }} icon"></i>
-    </div>
-    <div class="content">
-        <div class="summary">
-            {!! array_get($notification->data, 'text') !!}
-        </div>
+<a href="#">
+    <i class="menu-icon fa fa-{{ array_get($notification->data, 'icon') }}"></i>
+    <div class="menu-info">
+        <h4 class="control-sidebar-subheading">{!! array_get($notification->data, 'text') !!}</h4>
 
-        <div class="meta">
-            <div>
-                <small class="date">
-                    @{{ notification.attributes.created_at }}
-                </small>
-            </div>
-        </div>
+        <p>@{{ notification.attributes.created_at }}</p>
     </div>
-</div>
+</a>

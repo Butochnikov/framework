@@ -15,13 +15,10 @@ class NotificationController extends Controller
     private $repository;
 
     /**
-     * @param Manager $manager
      * @param NotificationsRepositoryContract $repository
      */
-    public function __construct(Manager $manager, NotificationsRepositoryContract $repository)
+    public function __construct(NotificationsRepositoryContract $repository)
     {
-        parent::__construct($manager);
-
         $this->repository = $repository;
     }
 

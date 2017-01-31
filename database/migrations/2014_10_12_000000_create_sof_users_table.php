@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBackendUserMetaTable extends Migration
+class CreateSofUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateBackendUserMetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('sof_users_meta', function (Blueprint $table) {
+        Schema::create('sof_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('key');
-            $table->json('data')->nullable();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
-            $table->unique(['user_id', 'key']);
         });
     }
 
@@ -30,6 +30,6 @@ class CreateBackendUserMetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sof_users_meta');
+        Schema::drop('sof_users');
     }
 }
