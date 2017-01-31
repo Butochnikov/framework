@@ -1,6 +1,7 @@
 <?php
 namespace SleepingOwl\Framework\Entities;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use SleepingOwl\Framework\Contracts\Auth\User as BackendUserContract;
@@ -14,6 +15,7 @@ use SleepingOwl\Framework\Contracts\Auth\User as BackendUserContract;
  * @property string $email
  * @property string $password
  * @property string $remember_token
+ * @property UserMeta[]|Collection $meta
  */
 class User extends Authenticatable implements BackendUserContract
 {
@@ -24,7 +26,7 @@ class User extends Authenticatable implements BackendUserContract
      *
      * @var string
      */
-    protected $table = 'backend_users';
+    protected $table = 'sof_users';
 
     /**
      * The attributes that are mass assignable.
@@ -43,4 +45,12 @@ class User extends Authenticatable implements BackendUserContract
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function meta()
+    {
+        return $this->hasMany(UserMeta::class);
+    }
 }

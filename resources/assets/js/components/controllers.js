@@ -11,15 +11,24 @@ module.exports = (function(){
          * @param {Function} callback
          * @returns {exports}
          */
-        route (route, callback) {
+        route (route, callback, assets) {
             if (!_.isFunction(callback))
                 return this
 
             if (_.isObject(route))
-                for (let i = 0; i < route.length; i++)
-                    controllers.push([route[i], callback])
+                _.forEach(route, function(r) {
+                    controllers.push({
+                        route: r,
+                        callback: callback
+                    })
+                });
+
             else if (_.isString(route))
-                controllers.push([route, callback])
+                controllers.push({
+                    route: route,
+                    callback: callback
+
+                })
 
             return this
         },
@@ -29,12 +38,13 @@ module.exports = (function(){
          * @param {String} route
          */
         dispatch (route) {
-            for (let i = 0; i < controllers.length; i++) {
-                if (route == controllerss[i][0]) {
-                    Framework.Events.fire('controller:call', route)
-                    controllers[i][1](controllers[i][0])
+            _.forEach(controllers, function(controller) {
+                if (route == controller.route) {
+                    Framework.Events.fire('controller:call', controller.route)
+                    controller.callback(controller.route)
+
                 }
-            }
+            })
         }
     }
 })()
